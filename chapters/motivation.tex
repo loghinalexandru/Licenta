@@ -1,8 +1,17 @@
 \chapter*{Motivație} 
 \addcontentsline{toc}{chapter}{Motivație}
 
-Având în vedere necesitatea creării unor medii căt mai versatile ce respectă anumite conditii sau restricții fizice s-au dezvoltat anumite tehnici pentru a facilita constructia automata si randomizată a oricarui element ce intra în componența unui joc , de la modele tridimensionale până la coloana sonoră.\par
+Având în vedere necesitatea creării unor medii căt mai versatile ce respectă anumite condiții sau restricții fizice s-au dezvoltat anumite tehnici pentru a facilita construcția automată și randomizată a oricărui element ce intră în componența unui joc , de la modele tridimensionale până la coloana sonoră.\par
 
-Am decis așadar să încerc o abordare nouă , folosindu-mă de un model Markov ce a fost antrenat sa respecte anumite reguli pentru a genera spațiul 3D.Scopul acestei lucrări este de a aduce o nouă perspectivă asupra generării procedurale și de a demonstra validitatea acestei abordări.\par
+Am decis așadar să încerc o abordare nouă , folosindu-mă de un model Markov ce a fost antrenat sa respecte anumite reguli pentru a genera spațiul 3D. Scopul acestei lucrări este de a aduce o nouă perspectivă asupra generării procedurale și de a demonstra validitatea acestei abordări.\par
 
-Tema lucrării s-a ivit din cauza necesității de adaptare rapida a condițiilor folosite pentru generarea obiectelor din componența unui joc.Unul din avantajele acestei abordări este flexibilitatea oferită de modelul Markov fiind capabil sa adapteze constrăngerile folosite la generare cu o simpla reantrenare a modelului.
+Tema lucrării s-a ivit din cauza necesității de adaptare rapidă a condițiilor folosite pentru generarea obiectelor din componența unui joc.Unul din avantajele acestei abordări este flexibilitatea oferită de modelul Markov fiind capabil sa adapteze constrăngerile folosite la generare cu o simpla reantrenare a modelului.\par
+
+Aplicația prezentă este construită folosind un motor grafic peste care am dezvoltat o librărie capabilă să reprezinte un model Markov și să îl antreneze. Folosindu-mă de această librărie , pot genera o secvență de obiecte ce încearcă să respecte fidel constrăngerile folosite la antrenare.\par
+
+Procesul de generare procedurală este compus din două etape. Generarea obiectelor și plasarea lor convenabil în șpațiul virtual. Am încercat în special să decuplez cele două etape pentru o mai bună modularizare și o coeziune ridicată. Cele două sisteme lucrează independent unul față de celălalt , relația dintre cele două find una de agregare.
+
+Cele două sisteme sunt puse în funcțiune pentru a genera în timp real mediul pentru jucător , mediu ce este împărțit în trei zone de interes , urbana , rurală și desertică. De asemenea pentru a adauga complexitate se alternează între trei tipuri de platforme ce simulează un drum drept , cu viraj la stănga sau cu viraj la dreapta.\par
+
+
+
