@@ -14,14 +14,51 @@ Câteva exemple de unelte \textit{in-house} de care dispune motorul grafic ar fi
 
 Pentru modelele 3D folosite în cadrul jocului a fost necesară folosirea unei editor și anume \textbf{Blender}. Deși mare parte din obiectele importate în joc sunt preluate de pe magazinul integrat în \textbf{Unity} , există anumite obiecte ce au fost modelate de către mine. Cu acest prilej am aprofundat anumite tehnici ce implică modelarea 3D , unul dintre cele mai importante find \textit {UV unwrapping}.\par
 
-Am ales \textbf{Blender} datorită politcii \textit{open source} și a documentației vaste disponibile, fiind foarte ușor de lucrat în acesta, neputând aduce aplicația la un nivel dorit de finisaj fară acestă unealta.\par
+Am ales \textbf{Blender} datorită politcii \textit{open source} și a documentației vaste disponibile, fiind foarte ușor de lucrat în acesta, neputând aduce aplicația la un nivel dorit de finisaj fară acestă unealtă.\par
 
 Din punct de vedere al librăriilor externe am folosit \textbf{Math.NET} , importată în \textbf{Unity} folosind \textbf{NuGet}. Necesitatea acestei librări este dator algoritmului de invățare automată ce se bazează foarte mult pe lucrul și manipularea matricilor, de la adunarea cu un scalar până la înmulțirea/împărțirea element cu element. Detaliile legate de acest algoritm împreuna cu avantajele și dezavantajele acestuia vor fi discutate în secțiunea teoretică.\par
 
+Datorită motorului grafic folosit și a limitărilor acestuia întregul proiect a fost construit folosind \textbf{C\#} , alternativa sa fiind \textbf{JavaScript}. Din cauza experienței cu \textbf{C\#} și a performanței ridicate am luat decizia de a folosi acest limbaj.\par
 
-\section{Titlul secțiunii 1}
 
-Id donec ultrices tincidunt arcu non sodales neque. Integer eget aliquet nibh praesent. Euismod in pellentesque massa placerat duis ultricies lacus sed. Mauris ultrices eros in cursus turpis massa. Integer quis auctor elit sed vulputate mi. Nibh ipsum consequat nisl vel pretium lectus quam id leo. Vel elit scelerisque mauris pellentesque pulvinar pellentesque. Suscipit tellus mauris a diam maecenas. Ultrices eros in cursus turpis massa tincidunt. Tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse interdum consectetur libero id faucibus nisl tincidunt eget. Sed risus pretium quam vulputate dignissim suspendisse in. Donec adipiscing tristique risus nec feugiat in fermentum posuere. A lacus vestibulum sed arcu non odio euismod lacinia at.
+\section{Structura proiectului}
+
+Aplicația creată este împărțită în doua etape , generare și instanțiere. Din cauza unor motive de performanță fiecare zonă  , deșertică , rurală și urbană are propriul său generator. De asemenea fiecare tip de platforma foloșeste propriul său model Markov însumând astlfel un total de șase generatori , ce se ocupă doar cu producerea unei secvențe specifice de obiecte. Pentru partea de instanțiere am fost nevoit sa construiesc un sistem ce facilitează instațiera obiectelor generate , plasăndule pe platformă în sensul acelor de ceasornic.\par
+
+Aplicația fiind facută în \textbf{Unity} fișierele și directoarele au o structură arborescentă după cum urmează: \par
+
+\dirtree{%
+.1 \textbf{Assets}.
+.2 \textbf{Animations}.
+.2 \textbf{Generators}.
+.2 \textbf{HMM}.
+.2 \textbf{Sound}.
+.2 \textbf{Scripts}.
+.2 \textbf{Textures}.
+.2 \textbf{VolumetricLights}.
+.1 \textbf{Packages}.
+.2 \textbf{PostProcessing}.
+}
+\par
+
+Directorul de \textbf{Assets} conține toate elementele necesare aplicației , de la librăria folosită pentru generea obiectelor până la modulele de sunet și interfață iar directorul \textbf{Packages} conține cele mai importante uneltele folosite pentru realizarea si finisajul jocului importate direct de către \textbf{Unity}.\par
+
+\textbf{Animations}  este directorul responsabil cu toate animațiile necesare jocului , meniu , tranziți și altele.\par
+
+\textbf{Generators} aici se află cei sașe generatori folosiți pentru construirea mediului.\par
+
+\textbf{HMM} este directorul ce conține scripturile necesare pentru construirea modelului Markov și a antrenării lui.\par
+
+\textbf{Sound} conține toate efectele de sunet și muzica din joc.\par
+
+\textbf{Scripts} aici sunt stocate toate fișierele sursă ce modeleaza comportamentul jucatorului , al meniurilor și a sistemelui de generare/instanțiere , sumându-se în total la optsprezece fișiere.\par
+
+\textbf{Textures} directorul ce conține toate fisiere de tip \textit{Albedomap} , \textit{Heightmap} și \textit{Occlusionmap} folosite în cadrul materialelor ce au fost ulterior importate pe obiecte.\par
+
+\textbf{VolumetricLights} directorul ce contine fișierele preluate de pe github pentru lumina volumetrică.\par
+
+\textbf{PostProcessing} modulul folosit de \textit{Unity} pentru a putea integra efecte precum corectare de culoare , \textit{bloom} , \textit{motion blur} și multe altele.\par
+
 
 \section{Titlul secțiunii 2}
 
