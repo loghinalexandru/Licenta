@@ -33,6 +33,7 @@ Aplicația fiind facută în \textbf{Unity} fișierele și directoarele au o str
 .2 \textbf{Generators}.
 .2 \textbf{HMM}.
 .2 \textbf{Sound}.
+.2 \textbf{Prefabs}.
 .2 \textbf{Scripts}.
 .2 \textbf{Textures}.
 .2 \textbf{VolumetricLights}.
@@ -60,6 +61,56 @@ Directorul de \textbf{Assets} conține toate elementele necesare aplicației , d
 \textbf{PostProcessing} modulul folosit de \textit{Unity} pentru a putea integra efecte precum corectare de culoare , \textit{bloom} , \textit{motion blur} și multe altele.\par
 
 
-\section{Titlul secțiunii 2}
+\section{Componente}
+Aplicația prezentă este împărțită pe diferite module ce controlează sunetul , generarea , \textit{UI-ul} , instanțierea și multe altele. În \textbf{Unity} acest lucru se realizeză în mare parte prin scripturi atașate de obiectele din scena curentă. \par
+Am optat să construiesc jocul în jurul unei singure scene , ceea ce necesită un numar mai mare de controalere și scripturi. O consecință directă a folosiri unei singure scene este integrarea meniului principal în același mediul ca și jocul în sine. De aici derivă necesitatea de două scripturi ce controleaza tranziția de la meniu la joc intitulate sugestiv \textit{MenuController} și \textit{GameController}.\par
 
-Pellentesque pulvinar pellentesque habitant morbi tristique senectus et. Ornare suspendisse sed nisi lacus sed viverra tellus in hac. Non sodales neque sodales ut etiam sit. In hendrerit gravida rutrum quisque non. Diam quam nulla porttitor massa id neque aliquam. Diam sit amet nisl suscipit adipiscing bibendum est ultricies integer. Cras fermentum odio eu feugiat pretium nibh ipsum. Egestas integer eget aliquet nibh praesent tristique magna. Porttitor eget dolor morbi non arcu risus quis varius quam. Gravida rutrum quisque non tellus orci. Diam volutpat commodo sed egestas egestas.
+De asemenea exista un obiect \textit{Generator} ce conține toți generatori necesari pentru construirea scenei. Unul pentru fiecare tip de zonă de interes și tip de platformă. Legătura între cei sașe generatori este facută de cele două scripturi atașate de obiectul \textit{Camera} denumite \textit{PlatformBuilder} și \textit{PlatformController}. Primul se ocupă cu instanțiera si plasarea obiectelor pe platformă în funcție de parametri de instanțiere setați de un script atașat de un \textit{Spawn Point}. Cel de-al doilea se ocupă cu randomizarea și controlarea numarului de platforme pentru fiecare zonă rurală , urbană și deșertică.\par
+
+\includegraphics[width=0.8\linewidth]{Structure.png} \par
+
+\subsection{MenuController}
+
+Acest obiect se ocupă de toate aspectele ce țin de meniul principal. Deoarece există o singură scenă scriptul este destul de complex , rolul său fiind activarea tuturor componentelor ce țin de jocul principal , sunet , inamici , jucător , cameră , efecte și multe altele.\par
+
+În continuare se vor prezenta cele mai importante secvențe de cod ce se găsesc în fișierul \textbf{MenuController}.\par
+
+\begin{lstlisting}[caption=Caption example.,
+  label=a_label]
+public void OnGameExit()
+{
+        Application.Quit();
+}
+
+public static void OnGameReset()
+{
+        retry = true;
+}
+
+public void OnCredits()
+{
+        this.creditsStart = true;
+        this.credits.SetActive(true);
+}
+
+public void OnGameStart()
+{
+        gameStart = true;
+        gameController.SetActive(true);
+        player.constraints = RigidbodyConstraints.None;
+        AI.constraints = RigidbodyConstraints.None;
+        player.velocity = Vector3.forward * 3;
+        AI.velocity = Vector3.forward;
+        bars.SetActive(true);
+}
+\end{lstlisting}
+
+Cele patru funcții controlează tranzițiile aplicației în funcție de interacțiunea jucatorului cu meniul principal. De remarcat în funcția \textit{OnGameStart} linia ce predă controlul aplicație odata ce se pornește jocul și anume \textit{gameController.SetActive()}.\par
+
+\subsection{GameController}
+
+\subsection{PlatformBuilder}
+
+\subsection{PlatformController}
+
+
