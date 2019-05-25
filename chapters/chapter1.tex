@@ -29,7 +29,6 @@ Aplicația fiind facută în \textbf{Unity} fișierele și directoarele au o str
 
 \dirtree{%
 .1 \textbf{Assets}.
-.2 \textbf{Animations}.
 .2 \textbf{Generators}.
 .2 \textbf{HMM}.
 .2 \textbf{Sound}.
@@ -39,18 +38,18 @@ Aplicația fiind facută în \textbf{Unity} fișierele și directoarele au o str
 .2 \textbf{VolumetricLights}.
 .1 \textbf{Packages}.
 .2 \textbf{PostProcessing}.
-}
+}\par
 \par
-
+\par
 Directorul de \textbf{Assets} conține toate elementele necesare aplicației , de la librăria folosită pentru generea obiectelor până la modulele de sunet și interfață iar directorul \textbf{Packages} conține cele mai importante uneltele folosite pentru realizarea si finisajul jocului importate direct de către \textbf{Unity}.\par
-
-\textbf{Animations}  este directorul responsabil cu toate animațiile necesare jocului , meniu , tranziți și altele.\par
 
 \textbf{Generators} aici se află cei sașe generatori folosiți pentru construirea mediului.\par
 
 \textbf{HMM} este directorul ce conține scripturile necesare pentru construirea modelului Markov și a antrenării lui.\par
 
 \textbf{Sound} conține toate efectele de sunet și muzica din joc.\par
+
+\textbf{Prefabs} este directorul cu toate prefabricatele din joc , incluzând modelele pentru platforme, obiecte, jucător cât și inamici.
 
 \textbf{Scripts} aici sunt stocate toate fișierele sursă ce modeleaza comportamentul jucatorului , al meniurilor și a sistemelui de generare/instanțiere , sumându-se în total la optsprezece fișiere.\par
 
@@ -105,12 +104,87 @@ public void OnGameStart()
 }
 \end{lstlisting}
 
-Cele patru funcții controlează tranzițiile aplicației în funcție de interacțiunea jucatorului cu meniul principal. De remarcat în funcția \textit{OnGameStart} linia ce predă controlul aplicație odata ce se pornește jocul și anume \textit{gameController.SetActive()}.\par
+Cele patru funcții controlează tranzițiile aplicației în funcție de interacțiunea jucatorului cu meniul principal. De remarcat în funcția \textit{OnGameStart} linia ce activeză \textit{GameController} odată ce se pornește jocul și anume \textit{gameController.SetActive(true)}.\par
 
 \subsection{GameController}
 
+Obiectul ce se ocupă de funcționalitatea principală din joc. În mare parte meniul de pauză și meniul de final al jocului sunt controlate de acest script.\par
+
+Legat de parte de cod , fișierul sursă atașat de obiect arată astfel:\par
+
+\begin{lstlisting}[caption=Caption example.,
+  label=a_label]
+public void SetPausedState()
+{
+        gamePaused = gamePaused == true ? false : true;
+}
+
+public void SetGameOverState()
+{
+        player.GetComponent<CarController>().enabled = false;
+        cameraScript.enabled = false;
+        enemyScript.enabled = false;
+        gameOver = true;
+        gameOverScreen.SetActive(true);
+}
+
+public void TogglePause()
+{
+        ToggleSound();
+        ToggleRender();
+        TogglePauseMenu();
+        SetPausedState();
+}
+\end{lstlisting}
+
+Meniul din joc odată activat oprește randarea jocului, lucru ce complică apelu de funcții dependente de timp.\par
+
 \subsection{PlatformBuilder}
+
+Scriptul ce realizează construirea în timp real a platformelor și le instanțiază. Datorită volumului mare de cod mai jos este prezentată funcția ce adaugă obiectele pe platformă. Înainte de instanțiere funcția are grija să preia datele de \textit{spawn} , conținute de scriptul atașat \textit{SpawnSettings}.\par
+\begin{lstlisting}[caption=Caption example.,
+  label=a_label]
+public GameObject BuildPlatform(GameObject state)
+{
+        GameObject nextPlatform = Instantiate(state, new Vector3(currentPlatform.transform.position.x + xOffset, -15, currentPlatform.transform.position.z + zOffset), Quaternion.Euler(0, 0, 0));
+        HMM propGenerator = ChoosePropGenerator(nextPlatform.name);
+        Transform spawnPoints = nextPlatform.transform.Find("SpawnPoints");
+        foreach (Transform spawn in spawnPoints)
+        {
+            SpawnSettings spawnSettings = spawn.GetComponent<SpawnSettings>();
+            if (spawnSettings.isStackable == false && spawnSettings.maxObjectStack > 1)
+                throw new System.Exception("Spawn is not stackable!");
+            for (int i = 0; i < spawnSettings.maxObjectStack; ++i)
+            {
+                InstantiateProp(propGenerator, spawn, spawnSettings, i);
+            }
+        }
+        nextPlatform.transform.rotation = Quaternion.Euler(0, rotation, 0);
+        return nextPlatform;
+}
+\end{lstlisting}
+
 
 \subsection{PlatformController}
 
 
+\begin{lstlisting}[caption=Caption example.,
+  label=a_label]
+public GameObject GetNextPlatform()
+{
+        GameObject output;
+        currentEmissionCount++;
+        if (currentEmissionCount > maxEmissionCount)
+        {
+            output = transitionPlatforms[currentGeneratorIndex];
+            currentEmissionCount = 0;
+            currentGeneratorIndex = (currentGeneratorIndex + 1) \% generators.Length;
+            maxEmissionCount = Random.Range(lowerBound, upperBound);
+        }
+        else
+        {
+            output = generators[currentGeneratorIndex].NextEmission();
+        }
+        return output;
+}
+\end{lstlisting}
