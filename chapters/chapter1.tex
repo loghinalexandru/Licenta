@@ -1,29 +1,29 @@
 \chapter{Tehnologii}
 
-În cadrul acestui proiect s-au folosit urmatoarele tehnologii :
+În cadrul acestui proiect s-au folosit următoarele tehnologii :
 \begin{itemize}
 \item \textbf{Unity 2019.1b} : motorul grafic folosit pentru construirea și randarea jocului.
 \item \textbf{Blender} : program \textit{open source} folosit pentru modelarea 3D si contrucția obiectelor ce au fost ulterior importate în motorul grafic.
-\item \textbf{Math.NET} : librarie \textit{open source} folosită pentru realizarea algoritmului de învățare automată deoarece acesta se bazează foarte mult pe lucru cu matrici.
+\item \textbf{Math.NET} : librărie \textit{open source} folosită pentru realizarea algoritmului de învățare automată deoarece acesta se bazează foarte mult pe lucru cu matrici.
 \item \textbf{C\#} : limbajul nativ folosit de Unity pe lângă JavaScript , decizia fiind luată pur din motive de viteză.
 \end{itemize}
 
-Din multitudinea de motoare grafice disponibile am ales \textbf{Unity} doarece e o tehnologie cu care am mai lucrat , fiind conștient de capabilitățile acestuia. Multitudinea de unelte îl fac foarte ușor de recomandat și împreuna cu magazinul de \textit{assets} m-au ajutat foarte mult în procesul de construcție al acestui proiect. De asemenea \textbf{Unity} dispune de o documentație foarte bogată si bine pusă la punct , calități cheie pentru aprofundarea acestui motor grafic.\par
+Din multitudinea de motoare grafice disponibile am ales \textbf{Unity} doarece e o tehnologie cu care am mai lucrat , fiind conștient de capabilitățile acestuia. Multitudinea de unelte îl fac foarte ușor de recomandat și împreuna cu magazinul de \textit{assets} m-au ajutat foarte mult în procesul de construcție al acestui proiect. De asemenea \textbf{Unity} dispune de o documentație foarte bogată și bine pusă la punct , calități cheie pentru aprofundarea acestui motor grafic.\par
 
-Câteva exemple de unelte \textit{in-house} de care dispune motorul grafic ar fi , motorul de simularea a fizicii , motorul audio , sistemul de prefabricate , sistemul de iluminare și randare etc. Fara folosirea unei tehnologii ca \textbf{Unity} , acest proiect nu ar fi fost posibil într-un timp atăt de scurt , timpul de dezvoltare putând fi chiar triplat. Singurul dezavantaj imediat al acestui motor grafic este natura sa \textit{closed source}.\par
+Câteva exemple de unelte \textit{in-house} de care dispune motorul grafic ar fi , motorul de simularea a fizicii , motorul audio , sistemul de prefabricate , sistemul de iluminare și randare etc. Fără folosirea unei tehnologii ca \textbf{Unity} , acest proiect nu ar fi fost posibil într-un timp atăt de scurt , timpul de dezvoltare putând fi chiar triplat. Singurul dezavantaj imediat al acestui motor grafic este natura sa \textit{closed source}.\par
 
 Pentru modelele 3D folosite în cadrul jocului a fost necesară folosirea unei editor și anume \textbf{Blender}. Deși mare parte din obiectele importate în joc sunt preluate de pe magazinul integrat în \textbf{Unity} , există anumite obiecte ce au fost modelate de către mine. Cu acest prilej am aprofundat anumite tehnici ce implică modelarea 3D , unul dintre cele mai importante find \textit {UV unwrapping}.\par
 
 Am ales \textbf{Blender} datorită politcii \textit{open source} și a documentației vaste disponibile, fiind foarte ușor de lucrat în acesta, neputând aduce aplicația la un nivel dorit de finisaj fară acestă unealtă.\par
 
-Din punct de vedere al librăriilor externe am folosit \textbf{Math.NET} , importată în \textbf{Unity} folosind \textbf{NuGet}. Necesitatea acestei librări este dator algoritmului de invățare automată ce se bazează foarte mult pe lucrul și manipularea matricilor, de la adunarea cu un scalar până la înmulțirea/împărțirea element cu element. Detaliile legate de acest algoritm împreuna cu avantajele și dezavantajele acestuia vor fi discutate în secțiunea teoretică.\par
+Din punct de vedere al librăriilor externe am folosit \textbf{Math.NET} , importată în \textbf{Unity} folosind \textbf{NuGet}. Necesitatea acestei librări este datorat algoritmului de invățare automată ce se bazează foarte mult pe lucrul și manipularea matricilor, de la adunarea cu un scalar până la înmulțirea/împărțirea element cu element. Detaliile legate de acest algoritm împreuna cu avantajele și dezavantajele acestuia vor fi discutate în secțiunea teoretică.\par
 
 Datorită motorului grafic folosit și a limitărilor acestuia întregul proiect a fost construit folosind \textbf{C\#} , alternativa sa fiind \textbf{JavaScript}. Din cauza experienței cu \textbf{C\#} și a performanței ridicate am luat decizia de a folosi acest limbaj.\par
 
 
 \section{Structura proiectului}
 
-Aplicația creată este împărțită în doua etape , generare și instanțiere. Din cauza unor motive de performanță fiecare zonă  , deșertică , rurală și urbană are propriul său generator. De asemenea fiecare tip de platforma foloșeste propriul său model Markov însumând astlfel un total de șase generatori , ce se ocupă doar cu producerea unei secvențe specifice de obiecte. Pentru partea de instanțiere am fost nevoit sa construiesc un sistem ce facilitează instațiera obiectelor generate , plasăndule pe platformă în sensul acelor de ceasornic.\par
+Aplicația creată este împărțită în doua etape , generare și instanțiere. Din cauza unor motive de performanță fiecare zonă  , deșertică , rurală și urbană are propriul său generator. De asemenea fiecare tip de platforma foloșeste propriul său model Markov însumând astlfel un total de șase generatori , ce se ocupă doar cu producerea unei secvențe specifice de obiecte. Pentru partea de instanțiere am fost nevoit sa construiesc un sistem ce facilitează instațierea obiectelor generate , plasândule pe platformă în sensul acelor de ceasornic.\par
 
 Aplicația fiind facută în \textbf{Unity} fișierele și directoarele au o structură arborescentă după cum urmează: \par
 
@@ -53,19 +53,19 @@ Directorul de \textbf{Assets} conține toate elementele necesare aplicației , d
 
 \textbf{Scripts} aici sunt stocate toate fișierele sursă ce modeleaza comportamentul jucatorului , al meniurilor și a sistemelui de generare/instanțiere , sumându-se în total la optsprezece fișiere.\par
 
-\textbf{Textures} directorul ce conține toate fisiere de tip \textit{Albedomap} , \textit{Heightmap} și \textit{Occlusionmap} folosite în cadrul materialelor ce au fost ulterior importate pe obiecte.\par
+\textbf{Textures} directorul ce conține toate fișierele de tip \textit{Albedomap} , \textit{Heightmap} și \textit{Occlusionmap} folosite în cadrul materialelor ce au fost ulterior importate pe obiecte.\par
 
-\textbf{VolumetricLights} directorul ce contine fișierele preluate de pe github pentru lumina volumetrică.\par
+\textbf{VolumetricLights} directorul ce contine fișierele preluate de pe \textit{Github} pentru lumină volumetrică.\par
 
 \textbf{PostProcessing} modulul folosit de \textit{Unity} pentru a putea integra efecte precum corectare de culoare , \textit{bloom} , \textit{motion blur} și multe altele.\par
 
 
 \section{Componente}
 Aplicația prezentă este împărțită pe diferite module ce controlează sunetul , generarea , \textit{UI-ul} , instanțierea și multe altele. În \textbf{Unity} acest lucru se realizeză în mare parte prin scripturi atașate de obiectele din scena curentă. \par
-Am optat să construiesc jocul în jurul unei singure scene , ceea ce necesită un numar mai mare de controalere și scripturi. O consecință directă a folosiri unei singure scene este integrarea meniului principal în același mediul ca și jocul în sine. De aici derivă necesitatea de două scripturi ce controleaza tranziția de la meniu la joc intitulate sugestiv \textit{MenuController} și \textit{GameController}.\par
+Am optat să construiesc jocul în jurul unei singure scene , ceea ce necesită un numar mai mare de controalere și scripturi. O consecință directă a folosiri unei singure scene este integrarea meniului principal în același mediu ca și jocul în sine. De aici derivă necesitatea de două scripturi ce controleaza tranziția de la meniu la joc intitulate sugestiv \textit{MenuController} și \textit{GameController}.\par
 
 De asemenea exista un obiect \textit{Generator} ce conține toți generatori necesari pentru construirea scenei. Unul pentru fiecare tip de zonă de interes și tip de platformă. Legătura între cei sașe generatori este facută de cele două scripturi atașate de obiectul \textit{Camera} denumite \textit{PlatformBuilder} și \textit{PlatformController}. Primul se ocupă cu instanțiera si plasarea obiectelor pe platformă în funcție de parametri de instanțiere setați de un script atașat de un \textit{Spawn Point}. Cel de-al doilea se ocupă cu randomizarea și controlarea numarului de platforme pentru fiecare zonă rurală , urbană și deșertică.\par
-
+\par
 \includegraphics[width=0.8\linewidth]{Structure.png} \par
 
 \subsection{MenuController}
@@ -104,7 +104,7 @@ public void OnGameStart()
 }
 \end{lstlisting}
 
-Cele patru funcții controlează tranzițiile aplicației în funcție de interacțiunea jucatorului cu meniul principal. De remarcat în funcția \textit{OnGameStart} linia ce activeză \textit{GameController} odată ce se pornește jocul și anume \textit{gameController.SetActive(true)}.\par
+Cele patru funcții controlează tranzițiile aplicației în funcție de interacțiunea jucatorului cu meniul principal. De remarcat în funcția \textit{OnGameStart} linia ce activează \textit{GameController} odată ce se pornește jocul și anume \textit{gameController.SetActive(true)}.\par
 
 \subsection{GameController}
 
@@ -141,7 +141,8 @@ Meniul din joc odată activat oprește randarea jocului, lucru ce complică apel
 
 \subsection{PlatformBuilder}
 
-Scriptul ce realizează construirea în timp real a platformelor și le instanțiază. Datorită volumului mare de cod mai jos este prezentată funcția ce adaugă obiectele pe platformă. Înainte de instanțiere funcția are grija să preia datele de \textit{spawn} , conținute de scriptul atașat \textit{SpawnSettings}.\par
+Scriptul ce realizează construirea în timp real a platformelor și le instanțiază. Datorită volumului mare de cod mai jos este prezentată doar funcția ce adaugă obiectele pe platformă. Înainte de instanțiere funcția are grija să preia datele de \textit{spawn} , conținute de scriptul atașat \textit{SpawnSettings} pentru fiecare loc valid de instanțiere.\par
+
 \begin{lstlisting}[caption=Caption example.,
   label=a_label]
 public GameObject BuildPlatform(GameObject state)
@@ -164,9 +165,11 @@ public GameObject BuildPlatform(GameObject state)
 }
 \end{lstlisting}
 
+Scriptul \textit{SpawnSettings} conține doi parametri \textit{isStackable} și \textit{maxObjectStack} folosite pentru a specifica dacă locul de \textit{spawn} poate să conțină mai multe obiecte și în ce cantitate.\par
 
 \subsection{PlatformController}
 
+Din cauza necesității de a controla durata unei anumite zone evitănd astfel inconsistența, \textit{PlatformController} alege un număr de platforme pentru fiecare secțiune tinând cont de o limită superioara și inferioară.\par
 
 \begin{lstlisting}[caption=Caption example.,
   label=a_label]
