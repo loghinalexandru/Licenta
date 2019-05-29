@@ -4,7 +4,7 @@
 
 În domeniul probabilităților un model Markov este folosit pentru a modela un sistem ce se schimbă într-un mod aleator. De obicei acesta ține cont doar de starea curentă și nu depinde de evenimentele aleatoare , acest lucru numindu-se și prorietatea Markov. Ulterior s-au dezvoltat modele ce au un așa numit ordin , extinzând astfel numărul de stări de care se ține cont în cadrul modelului.\par
 
-De obicei există o separație clară între tipurile de modele Markov, criteriul folosit este disponibilitatea de a observa sau nu stările modelului. Așadar rezultă două mari categorii, sisteme cu stări complet observabile , din care fac parte lanțurile Markov și sisteme cu stări parțial observabile, cel mai cunoscut sistem fiind modelul Markov cu stări invizibile sau HMM \footnote{Hidden Markov model}. Pe langă aceste modele prezentate, s-au dezvoltat și anumite derivate fiecare cu avantajele sale demonstrând astfel flexibilitatea și capacitatea de exprimare a acestor sisteme.\par
+De obicei există o separație clară între tipurile de modele Markov, criteriul folosit este disponibilitatea de a observa sau nu stările modelului. Așadar rezultă două mari categorii, sisteme cu stări complet observabile , din care fac parte lanțurile Markov și sisteme cu stări parțial observabile, cel mai cunoscut sistem fiind modelul Markov cu stări invizibile sau HMM \footnote{Hidden Markov Model}. Pe langă aceste modele prezentate, s-au dezvoltat și anumite derivate fiecare cu avantajele sale demonstrând astfel flexibilitatea și capacitatea de exprimare a acestor sisteme.\par
 
 În mare parte această teză se axează în jurul parții discrete a acestor modele, numărul de stări/observații find finit numărabile și ușor de caracterizat dar există și o ramură ce se ocupă cu partea continuă a acestor modele, fiecare abordare avănd avantajele și dezavantajele ei.\par
 
@@ -13,16 +13,58 @@ Legat de partea practică, de-a lungul timpului aceste modele au fost folosite �
 \section{Modele Markov cu stări invizibile}
 
 Acest model statistic este caracterizat în principal de faptul că stările interne sunt ascunse de un privitor exterior. Tot ce se poate observa în cadrul acestui model este emisia unor etichete sau obiecte 
-$\{v_{1},v_{2},v_{3},\dots,v_{n}\}$ dintr-o mulțime notată pe scurt $V$. Acest lucru complică în general structura modelului și algortimii ce folosesc acest sistem. Un avantaj direct este creșterea capacității de expresivitate, putând modela mai fidel datele, datorită eliminării necesității de a cunoaște toate stările evenimentului.\par
+$\{v_{1},v_{2},v_{3},\dots,v_{n}\}$ dintr-o mulțime notată pe scurt $V$. Acest lucru complică în general structura modelului și algortimii ce folosesc acest sistem. \par
+
+Un avantaj direct este creșterea capacității de expresivitate, putând modela mai fidel datele, datorită eliminării necesității de a cunoaște toate stările evenimentului.\par
 
 Pentru a caracteriza concret și complet acest model avem nevoie de un \textit{5-uplu} $ HMM = (\textbf{S},\textbf{V},\textbf{A},\textbf{B},\pi)$ ce desemnează astfel : \par
 \begin{itemize}
 \item{$\textbf{S} = \{S_{1},S_{2},\dots,S_{N}\}$ mulțimea ce desemnează numărul de stări ascunse din model, avand un numar de $N$ elemente. Starea relativa la timpul $t$ se va nota ca si $q_{t}$.}
 \item{$\textbf{V} = \{V_{1},V_{2},\dots,V_{M}\}$ , cele $M$ etichete observabile.}
-\item{$\textbf{A} = \{a_{ij}\}$ unde $a_{i,j} = P(q_{t+1} = S_{j} | q_{t} = S_{i}) , 1 \leq i , j \leq N$.}
-\item{$\textbf{B} = \{b_{i}(k)\}$ unde $b_{i}(k) = P(v_{k}\ la\ timpul\ t\ | q_{t} = S_{i}), 1 \leq i \leq N , 1 \leq k \leq M$.}
-\item{$\pi = \{\pi_{i}\}$ unde $\pi_{i} = P(q_{1} = S_{i}) , 1 \leq i \leq N.$}
+\item{$\textbf{A} = \{a_{ij}\}$ unde $a_{i,j} = P(q_{t+1} = S_{j} | q_{t} = S_{i}) , 1 \leq i , j \leq N$ , reprezentând distribuția de probabilitea asociată tranziților între stări.}
+\item{$\textbf{B} = \{b_{i}(k)\}$ unde $b_{i}(k) = P(v_{k}\ la\ timpul\ t\ | q_{t} = S_{i}), 1 \leq i \leq N , 1 \leq k \leq M$, ce caracterizează distribuția de probabilitate asociată emiterii unui element din $V$ în starea $i$.}
+\item{$\pi = \{\pi_{i}\}$ unde $\pi_{i} = P(q_{1} = S_{i}) , 1 \leq i \leq N$, folosit inițial pentru a stabili prima stare din model și anume $q_{1}$.}
 \end{itemize}
+\par
+
+În general modul de funcționare a acestui model poate fi descris foarte ușor cu o bucată de pseudocod:
+
+\begin{lstlisting}[mathescape=true]
+t $\gets$ 1;
+stare $\gets$ alege o stare $S_{i}$ cu probabilitate $\pi_{i}$;
+repeta la infinit
+	stare $\gets$ alege o noua stare $S_{j}$ de tranzitie de la starea $S_{i}$ cu probabilitate $a_{ij} \in \textbf{A}$;
+	afiseaza observatia $V_{k}$ cu probabilitatea $b_{i}(k)\in \textbf{B}$;
+	t $\gets$ t + 1;
+\end{lstlisting}
+
+Uneori printre alte publicații de specialitate modelul poate fi descris prin specificarea parametrilor $N,M$ și cele trei distribuții de probabilitate notate astfel $\lambda = \{\textbf{A},\textbf{B},\pi\}$.\par
+\vspace{10mm}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+  \node[box,draw=white!100] (Latent) {\textbf{Stări latente}};
+  \node[main] (L1) [right=of Latent] {$q_{1}$};
+  \node[main] (L2) [right=of L1] {$q_{2}$};
+  \node[main] (L3) [right=of L2] {$q_{3}$};
+  \node[main] (Lt) [right=of L3] {$q_{t}$};
+  \node[main,fill=black!10] (O1) [below=of L1] {$v_{1}$};
+  \node[main,fill=black!10] (O2) [below=of L2] {$v_{2}$};
+  \node[main,fill=black!10] (O3) [below=of L3] {$v_{3}$};
+  \node[main,fill=black!10] (Ot) [below=of Lt] {$v_{t}$};
+  \node[box,draw=white!100,left=of O1] (Observed) {\textbf{Etichetele emise}};
+  \path (L3) -- node[auto=false]{\ldots} (Lt);
+  \path (L1) edge [connect] (L2)
+        (L2) edge [connect] (L3)
+        (L3) -- node[auto=false]{\ldots} (Lt);
+  \path (L1) edge [connect] (O1);
+  \path (L2) edge [connect] (O2);
+  \path (L3) edge [connect] (O3);
+  \path (Lt) edge [connect] (Ot);
+\end{tikzpicture}
+\caption{Structura modelului Markov cu stari invizibile}
+\end{figure}
+
 
 \section{Cele mai importante probleme computaționale }
 Aplicația prezentă este împărțită pe diferite module ce controlează sunetul, generarea, \textit{UI-ul} , instanțierea și multe altele. În \textbf{Unity} acest lucru se realizeză în mare parte prin scripturi atașate de obiectele din scena curentă. \par
