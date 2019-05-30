@@ -64,29 +64,63 @@ Uneori printre alte publicații de specialitate modelul poate fi descris prin sp
 \end{tikzpicture}
 \caption{Structura modelului Markov cu stari invizibile}
 \end{figure}
+\par
 
+În cadrul aplicației mulțimea de etichete $V$ au fost reprezentă de elementele de tip \textit{GameObject} ce urmează a fi instanțiate. Din motive de performanță și flexibilitate aplticația folosește în total un număr de sașe modele Markov cu stări invizibile a căror parametri au fost estimați să respecte anumite restricții.\par
 
-\section{Cele mai importante probleme computaționale }
-Aplicația prezentă este împărțită pe diferite module ce controlează sunetul, generarea, \textit{UI-ul} , instanțierea și multe altele. În \textbf{Unity} acest lucru se realizeză în mare parte prin scripturi atașate de obiectele din scena curentă. \par
-Am optat să construiesc jocul în jurul unei singure scene, ceea ce necesită un numar mai mare de controalere și scripturi. O consecință directă a folosirii unei singure scene este integrarea meniului principal în același mediu ca și jocul în sine. De aici derivă necesitatea de două scripturi ce controlează tranziția de la meniu la joc intitulate sugestiv \textit{MenuController} și \textit{GameController}.\par
+Se poate face o distincție între cei șase generatori după scopul lor în cadrul jocului. Trei dintre ei sunt folosiți pentru a genera terenul pe care jucătorul navighează. Această decizie a fost facută din necesitatea de a putea controla numărul de platforme pentru fiecare din cei trei generatori, ce în fond simbolizează trei zone distincte, urbană, rurală și deșertică enumerate conform ordinii de apariție în joc.\par
 
-\subsection{Probabilitatea de a observa o secvență}
-Aplicația prezentă este împărțită pe diferite module ce controlează sunetul, generarea, \textit{UI-ul} , instanțierea și multe altele. În \textbf{Unity} acest lucru se realizeză în mare parte prin scripturi atașate de obiectele din scena curentă. \par
-Am optat să construiesc jocul în jurul unei singure scene, ceea ce necesită un numar mai mare de controalere și scripturi. O consecință directă a folosirii unei singure scene este integrarea meniului principal în același mediu ca și jocul în sine. De aici derivă necesitatea de două scripturi ce controlează tranziția de la meniu la joc intitulate sugestiv \textit{MenuController} și \textit{GameController}.\par
+\vspace{10mm}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
 
-\subsection{Găsirea celor mai bune stări ce descriu secvența observată}
-Aplicația prezentă este împărțită pe diferite module ce controlează sunetul, generarea, \textit{UI-ul} , instanțierea și multe altele. În \textbf{Unity} acest lucru se realizeză în mare parte prin scripturi atașate de obiectele din scena curentă. \par
-Am optat să construiesc jocul în jurul unei singure scene, ceea ce necesită un numar mai mare de controalere și scripturi. O consecință directă a folosirii unei singure scene este integrarea meniului principal în același mediu ca și jocul în sine. De aici derivă necesitatea de două scripturi ce controlează tranziția de la meniu la joc intitulate sugestiv \textit{MenuController} și \textit{GameController}.\par
+  \node[main] (L1) {$S_{1}$};
+  \node[main] (L2) [right=of L1] {$S_{2}$};
+  \node[main] (L3) [right=of L2] {$S_{3}$};
+  \node[main] (L4) [right=of L3] {$S_{4}$};
+ \node[main] (L5) [right=of L4] {$S_{5}$};
+  \node[main] (S) [above=2cm of L3]{$S$};
+
+  \node[main,fill=black!10] (V) [below=2cm of L3] {$V$};
+  \path (L1) edge [connect,bend right=45] (L2);
+  \path (L2) edge [connect, bend right=45] (L3);
+  \path (L3) edge [connect, bend right=45] (L4);
+  \path (L4) edge [connect, bend right=45] (L5);
+  \path (L2) edge [connect,bend right=45] (L1);
+  \path (L3) edge [connect, bend right=45] (L2);
+  \path (L4) edge [connect, bend right=45] (L3);
+  \path (L5) edge [connect, bend right=45] (L4);
+  \path (L1) edge [connect, bend right=30] (V);
+  \path (L2) edge [connect, bend right=30] (V);
+  \path (L3) edge [connect,] (V);
+  \path (L4) edge [connect, bend left=30] (V);
+ \path (L5) edge [connect, bend left=30] (V);
+ \path(S) edge[connect, bend right=30] (L1);
+ \path(S) edge[connect, bend right=30] (L2);
+ \path(S) edge[connect] (L3);
+ \path(S) edge[connect, bend left=30] (L4);
+ \path(S) edge[connect, bend left=30] (L5);
+\end{tikzpicture}
+\caption{Structura unui generator din cele trei zone}
+\end{figure}
+\par
+
+Se observă din figură, că avem un nod de start $S$ ce ne conduce la una dintre cele cinci stări, iar fiecare stare are acces la $V$ mulțimea etichetelor în cazul nostru, cele trei tipuri de platformă \textit{Left},\textit{Right} si \textit{Straight}. Din model s-au omis probabilitățile de pe arce tocmai pentru a nu încărca desenul căt și pentru faptul că ele vor fi inferate ulterior de un algoritm de estimare a parametrilor, inițial probabilitățile fiind necunoscute.\par
+
+Restul de generatori sunt folosiți pentru obiectele de urmează a popula platformele. Din cauza complexității și a numărului mare de stări și etichete nu se poate realiza o reprezentare grafică. Cel mai mare dintre generatori are douăzeci de stări și zece obiecte ce au rol de etichete pentru emisie.\par
+
+O observație importantă legată de mulțimea $V$ este că aceasta conține un element mai special și anume un \textit{GameObject} denumit sugestiv epsilon. Acest obiect semnifică elementul vid, prin care se poate insera un spațiu între etichete pentru un aspect mai plăcut la instanțierea pe platforme. Această decizie s-a luat din necesitatea de a separa unele obiecte de celelalte pentru a putea reproduce mai fidel lumea reală.\par
+
 
 \subsection{Estimare de parametri}
+Această dilema este una dintre cele trei mari aspecte a modelelor Markov cu stări invizibile, celelalte două fiind determinarea probabilității de emisie a unei secvențe și determinarea celei mai bune secvențe de stări ce descriu seria de emisii observate. Problema estimării de parametri este cea mai grea dintre cele trei, nici acum neexistănd un algoritm simplu ce rezolvă această problemă. Majoritatea algoritmilor folosesc o metodă iterativă pentru a incerca o estimare a parametrilor ce descriu unu HMM și anume $\lambda = \{\textbf{A},\textbf{B},\pi\}$.\par
+
+\section{Algoritmi ce tratează problema estimării de parametri}
 Aplicația prezentă este împărțită pe diferite module ce controlează sunetul, generarea, \textit{UI-ul} , instanțierea și multe altele. În \textbf{Unity} acest lucru se realizeză în mare parte prin scripturi atașate de obiectele din scena curentă. \par
 Am optat să construiesc jocul în jurul unei singure scene, ceea ce necesită un numar mai mare de controalere și scripturi. O consecință directă a folosirii unei singure scene este integrarea meniului principal în același mediu ca și jocul în sine. De aici derivă necesitatea de două scripturi ce controlează tranziția de la meniu la joc intitulate sugestiv \textit{MenuController} și \textit{GameController}.\par
 
 \section{Limitări ale modelului}
-Aplicația prezentă este împărțită pe diferite module ce controlează sunetul, generarea, \textit{UI-ul} , instanțierea și multe altele. În \textbf{Unity} acest lucru se realizeză în mare parte prin scripturi atașate de obiectele din scena curentă. \par
-Am optat să construiesc jocul în jurul unei singure scene, ceea ce necesită un numar mai mare de controalere și scripturi. O consecință directă a folosirii unei singure scene este integrarea meniului principal în același mediu ca și jocul în sine. De aici derivă necesitatea de două scripturi ce controlează tranziția de la meniu la joc intitulate sugestiv \textit{MenuController} și \textit{GameController}.\par
-
-\section{Algoritmi ce tratează problema estimării de parametri}
 Aplicația prezentă este împărțită pe diferite module ce controlează sunetul, generarea, \textit{UI-ul} , instanțierea și multe altele. În \textbf{Unity} acest lucru se realizeză în mare parte prin scripturi atașate de obiectele din scena curentă. \par
 Am optat să construiesc jocul în jurul unei singure scene, ceea ce necesită un numar mai mare de controalere și scripturi. O consecință directă a folosirii unei singure scene este integrarea meniului principal în același mediu ca și jocul în sine. De aici derivă necesitatea de două scripturi ce controlează tranziția de la meniu la joc intitulate sugestiv \textit{MenuController} și \textit{GameController}.\par
 
