@@ -112,7 +112,7 @@ Restul de generatori sunt folosiți pentru obiectele de urmează a popula platfo
 
 O observație importantă legată de mulțimea $V$ este că aceasta conține un element mai special și anume un \textit{GameObject} denumit sugestiv epsilon. Acest obiect semnifică elementul vid, prin care se poate insera un spațiu între etichete pentru un aspect mai plăcut la instanțierea pe platforme. Această decizie s-a luat din necesitatea de a separa unele obiecte de celelalte pentru a putea reproduce mai fidel lumea reală.\par
 
-\subsection{Estimare de parametri}
+\section{Estimare de parametri}
 Această dilema este una dintre cele trei mari aspecte a modelelor Markov cu stări invizibile, celelalte două fiind determinarea probabilității de emisie a unei secvențe și determinarea celei mai bune secvențe de stări ce descriu seria de emisii observate. Problema estimării de parametri este cea mai grea dintre cele trei, nici acum neexistănd un algoritm simplu ce rezolvă această problemă. Majoritatea algoritmilor folosesc o metodă iterativă pentru a incerca o estimare a parametrilor ce descriu unu HMM și anume $\lambda = \{\textbf{A},\textbf{B},\pi\}$.\par
 
 Din cauză naturii iterative în general acești algoritmi se bazează pe convergența parametrilor pentru terminare. Un lucru bun este că s-a demonstrat apropierea de un anumit punct a acestor algoritmi ceea ce inseamnă ca se termină întotdeauna, cu toate acestea abordarea iterativă suferă de o convergență foarte înceată și de pericolul continuu de a ramăne blocat într-un minim local.\par
@@ -127,11 +127,21 @@ Din păcate determinarea numărului de stări latente optime pentrun un model da
 Cel mai cunoscut algoritm pentru inferare de parametri, fiind dat un model Markov cu stări invizibile este așa numitul algoritm $Baum-Welch$ sau algoritmul $Forward-Backward$. Așa cum implică și numele acest algoritm are la bază două etape. Inițial parametri modelului $\lambda = \{\textbf{A},\textbf{B},\pi\}$ sunt inițializați random și mai apoi actualizați după fiecare iterație până la convergență după cum urmează:
 \begin{itemize}
 \item{\textbf{Forward} este etapa în care se calculează de obicei $P(O|\lambda)$, unde $O$ este secvența de etichete observate, folosind tehnica programării dinamice pentru stocarea anterioară a rezultatelor. Acest calcul este necesar doarece va fi folosit în urmatoarea etapă pentru reajustarea parametrilor modelului.}
-\item{\textbf{Backward} este etapa de calcul a probabilității $P(O_{t}\dots O_{T}| S_{i},\lambda)$, unde $P(T) = 1$, ceea ce semnifică șansa de a observa secevența $O_{t}\dots O_{T}$ aflăndu-ne în starea $i$ la momentul $t$}.
+\item{\textbf{Backward} este etapa de calcul a probabilității $P(O_{t+1},\dots,O_{T}| S_{i},\lambda)$, unde $T$ este lungimea de etichete observate, ceea ce semnifică șansa de a observa secevența $O_{t+1},\dots,O_{T}$ aflându-ne în starea $i$ și la momentul $t$ din timp}.
 \end{itemize}
 \par
 
-În ciuda popularității acestui algoritm am decis să folosesc altă modalitate de estimare a parametrilor din motive de viteză și simplitate atăt la nivel de implementare căt și la nivel teoretic. Algoritmul pe care am decis să îl folosesc are la bază o matrice $C$ de dimensiune $M\times M$ cu scopul de a caracteriza numărul de apariții a unei anumite perechi $O_{t}O_{t+1}$ în secvența de etichete observate $O$.\par
+În ciuda popularității acestui algoritm am decis să folosesc altă modalitate de estimare a parametrilor din motive de viteză și simplitate atăt la nivel de implementare căt și la nivel teoretic. Publicația ce descria acest algoritm prezenta grafice convingătoare în privința vitezei atunci cănd lungimea secvenței observate $T$ depășeste numărul de etichete al modelului.\par
+
+Un alt aspect alt acestei abordări este că algoritmul actualiează doar doar parametri $\textbf{A},\textbf{B}$ ai modelului ignorând complet parametrul $\pi$ ceea ce duce la o amplificare a vitezei cu consecințe minime, acesta find folosit doar la alegerea stării inițiale $q_{1}$.\par
+
+De asemenea ca și $Baum-Welch$, fiind dată o secvență $O$ de etichete observate de lungime $T$, antrenare nu se poate face pe o subsecvență $O_{1},\dots,O_{m}$ iar mai apoi pe o alta subsecventa $O_{m+1},\dots,O_{T}$, cu $1 < m < k$, deoarece modelul ar avea parametri adaptați doar după ultima subsecvență pe care a fost antrenat.\par
+
+Algoritmul pe care am decis să îl folosesc are la bază o matrice $C$ de dimensiune $M\times M$ construită cu scopul de a caracteriza numărul de apariții a unei anumite perechi $O_{t}O_{t+1}$ în secvența de etichete observate $O$.\par
+
+Această soluție se bazează foarte mult pe calculul matriceal de accea în cadrul aplicației am fost nevoit să apelez la o librărie ce este folosită pentru calcul numeric. Deoarece acest algoritm se bazează foarte mult pe matrici, o incercare de implementare folosind unități de procesare grafice ar putea îmbunătăți substanțial viteza de convergență a algoritmului datorită puterii mai mari de calcul.\par
+
+Parametri $\textbf{A},\textbf{B},\pi$ sunt initializați random și normalizați pe linii, iar apoi este calculat $\bar{C} = B\bar{A}B^{T}$, unde $\bar{A} = {\pi_{k}\cdot a_{kl}}, 1 \leq k \leq N, 1\leq l \leq N$.\par
 
 \section{Limitări ale modelului}
 Aplicația prezentă este împărțită pe diferite module ce controlează sunetul, generarea, \textit{UI-ul} , instanțierea și multe altele. În \textbf{Unity} acest lucru se realizeză în mare parte prin scripturi atașate de obiectele din scena curentă. \par
