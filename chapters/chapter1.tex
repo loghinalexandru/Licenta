@@ -68,7 +68,7 @@ Uneori printre alte publicații de specialitate modelul poate fi descris prin sp
 
 În cadrul aplicației mulțimea de etichete $V$ au fost reprezentă de elementele de tip \textit{GameObject} ce urmează a fi instanțiate. Din motive de performanță și flexibilitate aplticația folosește în total un număr de sașe modele Markov cu stări invizibile a căror parametri au fost estimați să respecte anumite restricții.\par
 
-Se poate face o distincție între cei șase generatori după scopul lor în cadrul jocului. Trei dintre ei sunt folosiți pentru a genera terenul pe care jucătorul navighează. Această decizie a fost facută din necesitatea de a putea controla numărul de platforme pentru fiecare din cei trei generatori, ce în fond simbolizează trei zone distincte, urbană, rurală și deșertică enumerate conform ordinii de apariție în joc.\par
+Se poate face o distincție între cei șase generatori după scopul lor în cadrul jocului. Trei dintre ei sunt folosiți pentru a genera terenul pe care jucătorul navighează. Această decizie a fost facută din necesitatea de a putea controla numărul de platforme pentru fiecare din cei trei generatori, ce în fond reprezintă trei zone distincte, urbană, rurală și deșertică enumerate conform ordinii de apariție în joc.\par
 
 \vspace{10mm}
 \begin{figure}[H]
@@ -115,7 +115,7 @@ O observație importantă legată de mulțimea $V$ este că aceasta conține un 
 \section{Estimare de parametri}
 Această dilema este una dintre cele trei mari aspecte a modelelor Markov cu stări invizibile, celelalte două fiind determinarea probabilității de emisie a unei secvențe și determinarea celei mai bune secvențe de stări ce descriu seria de emisii observate. Problema estimării de parametri este cea mai grea dintre cele trei, nici acum neexistănd un algoritm simplu ce rezolvă această problemă. Majoritatea algoritmilor folosesc o metodă iterativă pentru a incerca o estimare a parametrilor ce descriu unu HMM și anume $\lambda = \{\textbf{A},\textbf{B},\pi\}$.\par
 
-Din cauză naturii iterative în general acești algoritmi se bazează pe convergența parametrilor pentru terminare. Un lucru bun este că s-a demonstrat apropierea de un anumit punct a acestor algoritmi ceea ce inseamnă ca se termină întotdeauna, cu toate acestea abordarea iterativă suferă de o convergență foarte înceată și de pericolul continuu de a ramăne blocat într-un minim local.\par
+Din cauză naturii iterative în general acești algoritmi se bazează pe convergența parametrilor pentru terminare. Un lucru bun este că s-a demonstrat apropierea de un anumit punct a acestor algoritmi ceea ce inseamnă ca se termină întotdeauna, cu toate acestea abordarea iterativă suferă de o convergență foarte înceată și de pericolul continuu de a rămâne blocat într-un optim local.\par
 
 De aceea s-au încercat multe artificii pentru a obține un $log-likelihood$ căt mai bun. Unul dintre ele, folosit și de această aplicație, este inițializarea random a parametrilor $\lambda = \{\textbf{A},\textbf{B},\pi\}$ și incercarea antrenării până la convergență de mai multe ori pastrăndu-se cel mai bun rezultat. De asemenea numărule de stări poate influența drastic comportamentul modelului, fiin un factor decisiv pentru $underfit$ și $overfit$.\par
 
@@ -135,19 +135,41 @@ Cel mai cunoscut algoritm pentru inferare de parametri, fiind dat un model Marko
 
 Un alt aspect alt acestei abordări este că algoritmul actualiează doar doar parametri $\textbf{A},\textbf{B}$ ai modelului ignorând complet parametrul $\pi$ ceea ce duce la o amplificare a vitezei cu consecințe minime, acesta find folosit doar la alegerea stării inițiale $q_{1}$.\par
 
-De asemenea ca și $Baum-Welch$, fiind dată o secvență $O$ de etichete observate de lungime $T$, antrenare nu se poate face pe o subsecvență $O_{1},\dots,O_{m}$ iar mai apoi pe o alta subsecventa $O_{m+1},\dots,O_{T}$, cu $1 < m < k$, deoarece modelul ar avea parametri adaptați doar după ultima subsecvență pe care a fost antrenat.\par
+De asemenea ca și $Baum-Welch$, fiind dată o secvență $O$ de etichete observate de lungime $T$, antrenare nu se poate face pe o subsecvență $O_{1},\dots,O_{m}$ iar mai apoi pe o alta subsecventa $O_{m+1},\dots,O_{T}$, cu $1 < m < k$, deoarece modelul ar avea parametri adaptați doar după ultima subsecvență pe care a fost antrenat. Un alt aspect important este normalizarea valorilor ce se face la fiecare iterație după actualizarea parametrilor. Acest lucru este necesar doarece fiecare tranziție și emisie depinde în fond de o varaibilă aleatoare a carei sumă de probabilități trebuie să fie exact egala cu unu.\par
 
 Algoritmul pe care am decis să îl folosesc are la bază o matrice $C$ de dimensiune $M\times M$ construită cu scopul de a caracteriza numărul de apariții a unei anumite perechi $O_{t}O_{t+1}$ în secvența de etichete observate $O$.\par
 
 Această soluție se bazează foarte mult pe calculul matriceal de accea în cadrul aplicației am fost nevoit să apelez la o librărie ce este folosită pentru calcul numeric. Deoarece acest algoritm se bazează foarte mult pe matrici, o incercare de implementare folosind unități de procesare grafice ar putea îmbunătăți substanțial viteza de convergență a algoritmului datorită puterii mai mari de calcul.\par
 
-Parametri $\textbf{A},\textbf{B},\pi$ sunt initializați random și normalizați pe linii, iar apoi este calculat $\bar{C} = B\bar{A}B^{T}$, unde $\bar{A} = {\pi_{k}\cdot a_{kl}}, 1 \leq k \leq N, 1\leq l \leq N$.\par
+Parametri $\textbf{A},\textbf{B},\pi$ sunt initializați random și normalizați pe linii, iar apoi este calculat $\bar{C} = B\bar{A}B^{T}$, unde $\bar{A} = {\pi_{k}\cdot a_{kl}}, 1 \leq k \leq N, 1\leq l \leq N$. Următorul pas este calcularea matricii $R$ prin împărțirea element cu element a matricii $C$ la matricea $\bar{C}$.\par
+
+După calculul acestor matrici intermediare urmează actualizare paremetrilor după urmatoarele ecuații preluate din publicație, $\bar{A'} = \bar{A} \odot B^{T}RB$  si $B' = B \odot(RB\bar{A}^{T} + R^{T}B\bar{A})$, unde $\odot$ reprezintă înmulțirea element cu element a două matrici. După acest calcul se face actualizarea astfel $A = norm(\bar{A'}),B = norm(B')$, unde $norm$ este o funcție ce realizează normalizarea pe toată matricea $A$ iar pentru $B$ doar pe coloane.\par
+
+Acești pași se realizează pănă un anumit criteriu de convergență este satisfăcut. De obicei aceste criterii includ ca norma matricilor $A,B$ să fie sub un anumit epsilon împreună cu funcția de $log-likelihood$. În implementarea acestui algoritm am folosit ca și criterii de convergență, cum sugera și publicația de unde am preluat ideea, calcularea unei norme de tip $L^{2}$ aplicata matricilor $A,B,R$, ce ar trebui sa fie sub un $\epsilon = 10^{-6}$ și un număr maxim de iterații pentru care ar trebui să fie îndeplinită. Bineînțeles aceste condiții sunt doar cele standard, ele putând fi ușor schimbate în funcție de necesitate.\par
 
 \section{Limitări ale modelului}
-Aplicația prezentă este împărțită pe diferite module ce controlează sunetul, generarea, \textit{UI-ul} , instanțierea și multe altele. În \textbf{Unity} acest lucru se realizeză în mare parte prin scripturi atașate de obiectele din scena curentă. \par
-Am optat să construiesc jocul în jurul unei singure scene, ceea ce necesită un numar mai mare de controalere și scripturi. O consecință directă a folosirii unei singure scene este integrarea meniului principal în același mediu ca și jocul în sine. De aici derivă necesitatea de două scripturi ce controlează tranziția de la meniu la joc intitulate sugestiv \textit{MenuController} și \textit{GameController}.\par
+
+În secțiunile anterioare am văzut avantajele modelului Markov cu stări invizibile dar acesta suferă de o mare problemă, blocarea într-un optim local. Din cauza acestei probeleme estimarea de parametri este o sarcină destul de dificilă și delicată. De asemenea modelul depinde foarte mult de proprietatea Markov ce specifică clar că o stare viitoare poate să depindă doar de starea curentă, limitănd astfel capacitatea de a modela date mult mai complex. Se poate extinde modelul la ultimele $n-1$ stări dar complexitatea de antrenare și durata crește considerabil.
+\par
+
+Cea mai simplă soluție pentru a preveni blocarea este inițializarea random a parametrilor modelului și reantrenarea lui de mai multe ori, pastrandu-se cel mai bun rezultat. Acestă soluție este fezabilă deoare prin randomizare se pot obține parametri din vecinătatea soluției optime, scăzănd posibilitatea ca algoritmul să ramană blocat într-un optim local, atunci cănd există o multitudine de aceste puncte. Deși această soluție rezolva problema în unele situații reantrenarea de foarte multe ori este costisitoare, de accea există posibilitatea de a salva parametri estimați, putănd fi ulterior utilizați de model prin o simplă citire.\par
+
+\vspace{10mm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\linewidth]{MLE.png} \par
+\caption{Grafic al functie $log-likelihood$ cu foarte multe puncte de optim local}
+\end{figure}
+
+Din cauza acestor limitări algoritmii de estimare a parametrilor precum $Baum-Welch$ nu garantează găsirea optimului global. Deseori un optim local este suficient pentru probleme ce nu necesită soluția optimă dar trebuie luat in considerare acest aspect atunci când se utiliează un astfel de algoritm.\par
 
 \section{Complexitate și metode de optimizare}
-Aplicația prezentă este împărțită pe diferite module ce controlează sunetul, generarea, \textit{UI-ul} , instanțierea și multe altele. În \textbf{Unity} acest lucru se realizeză în mare parte prin scripturi atașate de obiectele din scena curentă. \par
-Am optat să construiesc jocul în jurul unei singure scene, ceea ce necesită un numar mai mare de controalere și scripturi. O consecință directă a folosirii unei singure scene este integrarea meniului principal în același mediu ca și jocul în sine. De aici derivă necesitatea de două scripturi ce controlează tranziția de la meniu la joc intitulate sugestiv \textit{MenuController} și \textit{GameController}.\par
+În acestă secțiune se vor prezenta problem legate de complexitatea algoritmului de antrenare căt și a algoritmului de eșantionare dintr-o distribuție de probabilitate discretă. Conform publicației algoritmul de estimare a parametrilor prezentat anterior ce foloseste de o matrice de apariție $C$ are complexitatea timp de ordinul $O(IM^{2}N + T)$\par, unde $I$ reprezintă numărul de iterații până la convergență.\par
 
+Comparativ cu algoritmul $Baum-Welch$ ce are ca si complexitate timp $O(IN^{2}T)$ iar în practică secvența de etichete pe care e antrenat algoritmul are o lungime considerabil mai mare decăt cardinalul mulțimii $V$, adică $M$, de unde se observă că abordarea cu matricea de apariție aduce un surplus de rapiditate de procesare ce este important în domeniul jocurilor unde viteza este foarte importantă pentru a nu îngreuna procesul de randare și mulți alți factori de care este influențat un joc complex.\par
+
+Legat de procesul de eșantionare, acesta este realizat prin calcularea distribuției $CDF$\footnote{Cumulative Distribution Function} pentru parametri $A,B$ ce mai apoi sunt sortate în ordine crescătoare pe linii pentru a putea realiza o căutare binară a stării către care se va face tranziția fiind dat un număr generat pseudorandom.Din punct de vedere al complexității sunt necesari pași adiționali cum ar fi sortarea și stocarea valorilor cumulative dar asta se face în etapa de inițializare avănd efect minimal asupra jocului. Ce se poate spune totuși de această abordare este că timpul de cautare a stării se transforma din $O(N)$, unde $N$ repezintă numărul de stări, în $O(log(N))$. Această optimizare este importantă deoarece operația de eșantionare are loc de zeci de ori pentru o platformă fiind practic cea mai folosită operație din cadrul librăriei.\par
+
+Deși în practică metoda de $sampling$ în timp de $O(log(N))$ s-a dovedit a fi suficientă, există un algoritm și mai eficient decăt cel prezentat ce reușeste sa determine starea sau emisia find dat un număr generat random în timp de $O(1)$, avănd aceiași complexitate la inițializare căt și memorie ca și algoritmul de căutare binară.\par
+
+Acest algoritm se numește \textit{metoda lui Alias}, și reușeste să obțina cea mai bună viteză posibilă pentru eșantionarea dintr-o distribuție de probabilitate discretă. În general ideea din spatele algorimlui este de a crea o altă distribuție pe baza celei de la intrare ce permite eșantionare în timp constant.\par
