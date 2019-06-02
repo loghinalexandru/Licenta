@@ -22,7 +22,7 @@ Datorită motorului grafic folosit și a limitărilor acestuia întregul proiect
 
 \section{Structura proiectului}
 
-Aplicația creată este împărțită în doua etape , generare și instanțiere. Din cauza unor motive de performanță fiecare zonă, deșertică, rurală și urbană are propriul său generator. De asemenea fiecare tip de platforma folosește propriul său model Markov însumând astlfel un total de șase generatori, ce se ocupă doar cu producerea unei secvențe specifice de obiecte. Pentru partea de instanțiere am fost nevoit să construiesc un sistem ce facilitează instanțierea obiectelor generate, plasândule pe platformă în sensul acelor de ceasornic.\par
+Aplicația creată este împărțită în doua etape , generare și instanțiere. Din cauza unor motive de performanță fiecare zonă, deșertică, rurală și urbană are propriul său generator. De asemenea fiecare tip de platformă folosește propriul său model Markov însumând astlfel un total de șase generatori, ce se ocupă doar cu producerea unei secvențe specifice de obiecte. Pentru partea de instanțiere am fost nevoit să construiesc un sistem ce facilitează instanțierea obiectelor generate, plasândule pe platformă în sensul acelor de ceasornic.\par
 
 Aplicația fiind facută în \textbf{Unity} fișierele și directoarele au o structură arborescentă după cum urmează: \par
 
@@ -60,11 +60,18 @@ Directorul de \textbf{Assets} conține toate elementele necesare aplicației, de
 
 \section{Componente}
 Aplicația prezentă este împărțită pe diferite module ce controlează sunetul, generarea, \textit{UI-ul} , instanțierea și multe altele. În \textbf{Unity} acest lucru se realizeză în mare parte prin scripturi atașate de obiectele din scena curentă. \par
+
 Am optat să construiesc jocul în jurul unei singure scene, ceea ce necesită un numar mai mare de controalere și scripturi. O consecință directă a folosirii unei singure scene este integrarea meniului principal în același mediu ca și jocul în sine. De aici derivă necesitatea de două scripturi ce controlează tranziția de la meniu la joc intitulate sugestiv \textit{MenuController} și \textit{GameController}.\par
+
+\vspace{10mm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\linewidth]{Structure.png} \par
+\caption{Structura arborescentă a obiectelor din scenă}
+\end{figure}
 
 De asemenea există un obiect \textit{Generator} ce conține toți generatori necesari pentru construirea scenei. Unul pentru fiecare tip de zonă de interes și tip de platformă. Legătura între cei sașe generatori este facută de cele două scripturi atașate de obiectul \textit{Camera} denumite \textit{PlatformBuilder} și \textit{PlatformController}. Primul se ocupă cu instanțiera și plasarea obiectelor pe platformă în funcție de parametri de instanțiere setați de un script atașat de un \textit{Spawn Point}. Cel de-al doilea se ocupă cu randomizarea și controlarea numărului de platforme pentru fiecare zonă rurală , urbană și deșertică.\par
 \par
-\includegraphics[width=0.8\linewidth]{Structure.png} \par
 
 \subsection{MenuController}
 
@@ -73,24 +80,17 @@ Acest obiect se ocupă de toate aspectele ce țin de meniul principal. Deoarece 
 În continuare se vor prezenta cele mai importante secvențe de cod ce se găsesc în fișierul \textbf{MenuController}.\par
 
 \begin{lstlisting}[caption=Funcțiile din MenuController]
-public void OnGameExit()
-{
+public void OnGameExit(){
         Application.Quit();
 }
-
-public static void OnGameReset()
-{
+public static void OnGameReset(){
         retry = true;
 }
-
-public void OnCredits()
-{
+public void OnCredits(){
         this.creditsStart = true;
         this.credits.SetActive(true);
 }
-
-public void OnGameStart()
-{
+public void OnGameStart(){
         gameStart = true;
         gameController.SetActive(true);
         player.constraints = RigidbodyConstraints.None;
@@ -111,22 +111,17 @@ Legat de parte de cod , fișierul sursă atașat de obiect arată astfel:\par
 
 \begin{lstlisting}[caption=Funcțiile din GameController,
   label=a_label]
-public void SetPausedState()
-{
+public void SetPausedState(){
         gamePaused = gamePaused == true ? false : true;
 }
-
-public void SetGameOverState()
-{
+public void SetGameOverState(){
         player.GetComponent<CarController>().enabled = false;
         cameraScript.enabled = false;
         enemyScript.enabled = false;
         gameOver = true;
         gameOverScreen.SetActive(true);
 }
-
-public void TogglePause()
-{
+public void TogglePause(){
         ToggleSound();
         ToggleRender();
         TogglePauseMenu();
@@ -142,18 +137,15 @@ Scriptul ce realizează construirea în timp real a platformelor și le instanț
 
 \begin{lstlisting}[caption=Funcțiile din PlatformBuilder,
   label=a_label]
-public GameObject BuildPlatform(GameObject state)
-{
+public GameObject BuildPlatform(GameObject state){
         GameObject nextPlatform = Instantiate(state, new Vector3(currentPlatform.transform.position.x + xOffset, -15, currentPlatform.transform.position.z + zOffset), Quaternion.Euler(0, 0, 0));
         HMM propGenerator = ChoosePropGenerator(nextPlatform.name);
         Transform spawnPoints = nextPlatform.transform.Find("SpawnPoints");
-        foreach (Transform spawn in spawnPoints)
-        {
+        foreach (Transform spawn in spawnPoints){
             SpawnSettings spawnSettings = spawn.GetComponent<SpawnSettings>();
             if (spawnSettings.isStackable == false && spawnSettings.maxObjectStack > 1)
                 throw new System.Exception("Spawn is not stackable!");
-            for (int i = 0; i < spawnSettings.maxObjectStack; ++i)
-            {
+            for (int i = 0; i < spawnSettings.maxObjectStack; ++i){
                 InstantiateProp(propGenerator, spawn, spawnSettings, i);
             }
         }
@@ -171,19 +163,16 @@ Din cauza necesității de a controla durata unei anumite zone evitănd astfel i
 \begin{lstlisting}[caption=Funcțiile din PlatformController,
   label=a_label,
   mathescape=false]
-public GameObject GetNextPlatform()
-{
+public GameObject GetNextPlatform(){
         GameObject output;
         currentEmissionCount++;
-        if (currentEmissionCount > maxEmissionCount)
-        {
+        if (currentEmissionCount > maxEmissionCount){
             output = transitionPlatforms[currentGeneratorIndex];
             currentEmissionCount = 0;
             currentGeneratorIndex = (currentGeneratorIndex + 1) % generators.Length;
             maxEmissionCount = Random.Range(lowerBound, upperBound);
         }
-        else
-        {
+        else{
             output = generators[currentGeneratorIndex].NextEmission();
         }
         return output;

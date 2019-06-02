@@ -1,3 +1,34 @@
 \chapter{Arhitectura aplicației}
 
-Amet venenatis urna cursus eget. Quam vulputate dignissim suspendisse in est ante. Proin nibh nisl condimentum id. Egestas maecenas pharetra convallis posuere morbi. Risus viverra adipiscing at in. Vulputate eu scelerisque felis imperdiet. Cras adipiscing enim eu turpis egestas pretium aenean pharetra. In aliquam sem fringilla ut morbi tincidunt augue. Montes nascetur ridiculus mus mauris. Viverra accumsan in nisl nisi scelerisque eu ultrices vitae. In nibh mauris cursus mattis molestie a iaculis. Interdum consectetur libero id faucibus nisl tincidunt eget. Gravida in fermentum et sollicitudin ac orci. Suscipit adipiscing bibendum est ultricies. Etiam non quam lacus suspendisse. Leo urna molestie at elementum eu facilisis sed odio morbi. Egestas congue quisque egestas diam in arcu cursus. Amet consectetur adipiscing elit ut aliquam purus.
+În mare parte aplicația este construită în jurul unei singure scene folosind $Unity$, arhitectura aplicației depinzând în mare parte de uneltele disponibile în motorul grafic și modul în care acesta funcționează Am încercat să împart căt de mult se poate să împart aplicația în module cu o coeziune căt mai ridicată. De acceea sistemul de instanțiere, generare și amplasare a obiectelor este construit cu principalul scop de a fi modular. Chiar și librăria ce modelează prototipul Markov cu stări invizibile este decuplat de algoritmul de antrenare în sine, putând fi schimbat oricând fără repercursiuni.\par
+
+Aplicația folosește și multe funcții de $callback$ pentru a determina cănd anumite elemente din cadrul jocului ar trebui activate. Spre exemplu cea mai folosită funcție este cea de $OnTriggerEnter$, ce determină cănd un $RigidBody$\footnote{Componenta ce determina daca obiectul este supus motorului de fizica} se intersectează cu un \textit{Box}\textit{Collider}\footnote{Componenta ce determina zona de coliziune a unui obiect}.\par
+
+\begin{lstlisting}[caption=Exemplu de utilizare a functiei OnTriggerEnter]
+void OnTriggerEnter(Collider collidingObject){
+        if (!this.triggered){
+            this.callbackObject.GetComponent<PlatformBuilder>().InstantiatePlatform();
+            this.triggered = true;
+        }
+}
+\end{lstlisting}
+\par
+
+De asemena $Unity$ dispune de o unealtă foarte utilă numită $Inspector$ ce permite asignarea de referințe a obiectelor din scenă în scripturi, lucru foarte util și eficient atunci cănd este necesară legarea anumitor module. De exemplu $callbackObject$ reprezintă obiectul din scenă de care este atașat codul sursă ce se ocupă de construirea platformelor, numit sugestiv $PlatformBuilder$, din care se apelează funcția $IntantiatePlatform$ destinată acestui scop.\par
+
+\section{Detalii legate de implementarea librăriei}
+
+\vspace{10mm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.65\linewidth]{HMM.png} \par
+\caption{Diagrama UML ce modeleaza libraria de HMM}
+\end{figure}
+
+\section{Detalii legate de implementarea sistemului de instanțiere}
+
+\section{Utilizarea librăriei în joc}
+
+\section{Detalii legate de aspectul aplicatiei}
+
+\section{Structura întregii aplicații}
