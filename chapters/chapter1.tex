@@ -1,6 +1,6 @@
 \chapter{Aspecte teoretice}
 
-\section{Introducere}
+\section{Preambul}
 
 În domeniul probabilităților un model Markov este folosit pentru a modela un sistem ce se schimbă într-un mod aleator. De obicei acesta ține cont doar de starea curentă și nu depinde de evenimentele aleatoare , acest lucru numindu-se și prorietatea Markov. Ulterior s-au dezvoltat modele ce au un așa numit ordin , extinzând astfel numărul de stări de care se ține cont în cadrul modelului.\par
 
@@ -21,7 +21,7 @@ Pentru a caracteriza concret și complet acest model avem nevoie de un \textit{5
 \begin{itemize}
 \item{$\textbf{S} = \{S_{1},S_{2},\dots,S_{N}\}$ mulțimea ce desemnează numărul de stări ascunse din model, avand un numar de $N$ elemente. Starea relativa la timpul $t$ se va nota ca si $q_{t}$.}
 \item{$\textbf{V} = \{V_{1},V_{2},\dots,V_{M}\}$ , cele $M$ etichete observabile.}
-\item{$\textbf{A} = \{a_{ij}\}$ unde $a_{i,j} = P(q_{t+1} = S_{j} | q_{t} = S_{i}) , 1 \leq i , j \leq N$ , reprezentând distribuția de probabilitea asociată tranziților între stări.}
+\item{$\textbf{A} = \{a_{ij}\}$ unde $a_{i,j} = P(q_{t+1} = S_{j} | q_{t} = S_{i}) , 1 \leq i , j \leq N$ , reprezentând distribuția de probabilitea asociată tranzițiilor între stări.}
 \item{$\textbf{B} = \{b_{i}(k)\}$ unde $b_{i}(k) = P(V_{k}\ la\ timpul\ t\ | q_{t} = S_{i}), 1 \leq i \leq N , 1 \leq k \leq M$, ce caracterizează distribuția de probabilitate asociată emiterii unui element din $V$ în starea $i$.}
 \item{$\pi = \{\pi_{i}\}$ unde $\pi_{i} = P(q_{1} = S_{i}) , 1 \leq i \leq N$, folosit inițial pentru a stabili prima stare din model și anume $q_{1}$.}
 \end{itemize}
