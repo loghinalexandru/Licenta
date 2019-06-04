@@ -163,6 +163,8 @@ Cea mai simplă soluție pentru a preveni blocarea este inițializarea random a 
 
 Din cauza acestor limitări algoritmii de estimare a parametrilor precum $Baum-Welch$ nu garantează găsirea optimului global. Deseori un optim local este suficient pentru probleme ce nu necesită soluția optimă dar trebuie luat in considerare acest aspect atunci când se utiliează un astfel de algoritm.\par
 
+O altă problemă a acestei abordări este că in general este asumată independența etichetelor una față de celălaltă limitănd astfel flexibilitatea modelului și capacitatea de modelare a datelor.\par
+
 \section{Complexitate și metode de optimizare}
 În acestă secțiune se vor prezenta problem legate de complexitatea algoritmului de antrenare căt și a algoritmului de eșantionare dintr-o distribuție de probabilitate discretă. Conform publicației algoritmul de estimare a parametrilor prezentat anterior ce foloseste de o matrice de apariție $C$ are complexitatea timp de ordinul $O(IM^{2}N + T)$\par, unde $I$ reprezintă numărul de iterații până la convergență.\par
 

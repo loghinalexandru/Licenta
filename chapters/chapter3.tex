@@ -102,27 +102,88 @@ public double Train(List<int> observations, double[,] transitionProbabilities, d
 }
 \end{lstlisting}
 
-Funcția $Train$ descrisă mai sus este folosită în clasa mare denumită sugestiv $HMM$ pentru a antrena modelul. Modul cum funcționează $Unity$ toate clasele ce sunt derivate din $MonoBehaviour$ pot fi atașate pe un obiect din scenă. De accea există un obiect ascuns în scenă ce are atașat toți generatorii, putănd schimba foarte ușor toți parametri modelului chiar din $Inspector$. Din cauza acestui lucru librăria este foarte ușor de preluat și utilizat, aceasta conținând și un modul de salvare/citire a a parametrilor modelului.\par
+Funcția $Train$ descrisă mai sus este folosită în clasa mare denumită sugestiv $HMM$ pentru a antrena modelul. Modul cum funcționează $Unity$ toate clasele ce sunt derivate din $MonoBehaviour$ pot fi atașate pe un obiect din scenă. De accea există un obiect ascuns în scenă ce are atașat toți generatorii, putănd schimba foarte ușor toți parametri modelului chiar din $Inspector$. Din cauza acestui lucru librăria este foarte ușor de preluat și utilizat, aceasta conținând și un modul de salvare/citire a parametrilor modelului.\par
 
-În continuare se va prezenta o diagramă $UML$ ce descrie librăria și relația dintre componentele ei. Se poate observa că modelul Markov cu stări invizibile poate lucra complet independent de algoritmul de învătare automată.\par
+În continuare se va prezenta o diagramă $UML$ ce descrie librăria și relația dintre componentele ei. Se poate observa că modelul Markov cu stări invizibile poate lucra complet independent de algoritmul de învățare automată.\par
 
 \vspace{10mm}
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\linewidth]{HMM.png} \par
+\includegraphics[width=0.75\linewidth]{HMM.png} \par
 \caption{Diagrama UML ce modelează libraria de HMM}
 \end{figure}
 
+\textit{IEstimator} este interfața ce specifică ce proprietăți și metode algortimul de estimare are nevoie să implementeze. Se observă din schemă implementare modelului $Strategy$, ce elimină asocierea dintre clasa \textit{HMM} și algoritmul de antrenare. Din această cauză se poate face foarte ușor schimbarea algoritmului de antrenare în timpul rulării programului în funcție de necesitate.\par
+
+\begin{lstlisting}[caption=Folosirea funcție $Train$ în cadrul modelului]
+public void ParameterInference(List<int> observations)
+{
+        double[,] bestEmission = this.emissionProbabilities;
+        double[,] bestTransition = this.transitionProbabilities;
+        double[] startProbabilites = this.stateStartProbabilities.ToArray();
+        double maxLoglikelihood = double.MinValue;
+        for (int i = 0; i < this.maxParalelModels; ++i){
+            double likelihood = estimator.Train(observations, this.transitionProbabilities, this.emissionProbabilities, this.stateStartProbabilities);
+            if (maxLoglikelihood < likelihood){
+                maxLoglikelihood = likelihood;
+                bestEmission = estimator.GetEmissionMatrix();
+                bestTransition = estimator.GetTransitionMatrix();
+                startProbabilites = estimator.GetStartProbabilities();
+            }
+            this.SetRandomProbabilities();
+        }
+        this.emissionProbabilities = bestEmission;
+        this.transitionProbabilities = bestTransition;
+        this.stateStartProbabilities = new List<double>(startProbabilites);
+        this.currentStateIndex = this.SetInitialState();
+        this.SetCumulativeDistributions();
+    }
+}
+\end{lstlisting}
+
+
 \section{Detalii legate de implementarea sistemului de instanțiere}
 
+Așa cum am mai menționat modelul Markov cu stări invizibile este folosit ca și generator iar pentru instanțiere a fost necesară implementarea unui sistem ce folosește puncte de $spawn$ amplasate pe platforme. Odată cu aceste puncte există și un script ce descrie dacă punctul de instanțiere poate să conțină mai multe obiecte sau nu, amplasarea lor facandu-se unu după altul. Se poate specifica și rotația obiectului, dar in general se urmarește ca obiectele de pe platformă să fie orientate înspre jucător, în sensul acelor de ceasornic.\par
+
+\vspace{10mm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{Spawn.png} \par
+\caption{Sistemul de instanțiere}
+\end{figure}
+
+De asemenea punctele de $spawn$ sunt plasate exact pe marginea platformei iar algoritmul de instanțiere ia în calcul acest lucru. Cu toate acestea ele pot fi mutate spre interiorul platformei pentru a da senzația de realism. O limitare a acestui sistem este sensibilitatea la numărul de obiecte pe un loc de instanțiere, deoarece acesta nu ține cont de lungimea platformei.
+
 \section{Utilizarea librăriei în joc}
+
+În dezvoltarea acestei librării obiectivele principale au fost modularitatea și usurința de utilizare. Acest lucru a fost realizat foarte simplu datorită modului în care $Unity$ permite atasarea de fisiere sursă pe obiecte din scenă, avănd la dispoziție toti parametri disponibili din acea clasă.\par
+
+\vspace{10mm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{Generator.png} \par
+\caption{Generatorii folosiți în cadrul jocului}
+\end{figure}
+
+În general pentru a putea folosi librăria, se definește o clasă nouă ce moștenește din clasa $HMM$, în cadrul careia se apelează funcția $Init()$ în funcția $Start()$.\par
+
+\begin{lstlisting}[caption=Exemplu de folosire a librăriei]
+public class DesertObjectsGenerator : HMM{
+    void Start(){
+        this.Init();
+    }
+}
+\end{lstlisting}
+
+Este necesară această procedură din cauza modului cum functionează $Unity$, deoarece scripturile nu pot fi atașate pe obiecte în cadrul scenei dacă nu sunt derivate din $MonoBehaviour$ iar $C\#$ nu permite moștenire multiplă.\par
 
 \section{Detalii legate de aspectul aplicatiei}
 
 \vspace{10mm}
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.65\linewidth]{Unity.png} \par
+\includegraphics[width=\linewidth]{Unity.png} \par
 \caption{Motorul Grafic Unity}
 \end{figure}
 
