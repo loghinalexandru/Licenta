@@ -1,8 +1,8 @@
 \chapter{Arhitectura aplicației}
 
-În mare parte aplicația este construită în jurul unei singure scene folosind $Unity$, arhitectura aplicației depinzând în mare parte de uneltele disponibile în motorul grafic și modul în care acesta funcționează Am încercat să împart căt de mult se poate să împart aplicația în module cu o coeziune căt mai ridicată. De acceea sistemul de instanțiere, generare și amplasare a obiectelor este construit cu principalul scop de a fi modular. Chiar și librăria ce modelează prototipul Markov cu stări invizibile este decuplat de algoritmul de antrenare în sine, putând fi schimbat oricând fără repercursiuni.\par
+În mare parte aplicația este construită în jurul unei singure scene folosind $Unity$, arhitectura aplicației depinzând în mare parte de uneltele disponibile în motorul grafic și modul în care acesta funcționează. Am încercat să împart căt de mult se poate aplicația în module cu o coeziune căt mai ridicată. De acceea sistemul de instanțiere, generare și amplasare a obiectelor este construit cu principalul scop de a fi modular. Chiar și librăria ce modelează prototipul Markov cu stări invizibile este decuplat de algoritmul de antrenare în sine, putând fi schimbat oricând fără a afecta funcționalitatea librăriei.\par
 
-Aplicația folosește și multe funcții de $callback$ pentru a determina cănd anumite elemente din cadrul jocului ar trebui activate. Spre exemplu cea mai folosită funcție este cea de $OnTriggerEnter$, ce determină cănd un $RigidBody$\footnote{Componenta ce determina daca obiectul este supus motorului de fizica} se intersectează cu un \textit{Box}\textit{Collider}\footnote{Componenta ce determina zona de coliziune a unui obiect}.\par
+Aplicația folosește și multe funcții de $callback$ pentru a determina cănd anumite elemente din cadrul jocului ar trebui activate. Spre exemplu cea mai folosită funcție este cea de $OnTriggerEnter$, ce determină când un $RigidBody$\footnote{Componenta ce determina daca obiectul este supus motorului de fizica} se intersectează cu un \textit{Box}\textit{Collider}\footnote{Componenta ce determina zona de coliziune a unui obiect}.\par
 
 \begin{lstlisting}[caption=Exemplu de utilizare a functiei OnTriggerEnter]
 void OnTriggerEnter(Collider collidingObject){
@@ -18,9 +18,9 @@ De asemena $Unity$ dispune de o unealtă foarte utilă numită $Inspector$ ce pe
 
 \section{Detalii legate de implementarea librăriei}
 
-Cum menționam și anterior pentru implementare am avut nevoie de o librărie ce se ocupă cu calcul numeric. Am folosit $Math.NET$ pentru calculul matriceal și a normelor $L^{2}$, împreună cu structurile speciale $Matrix$ și $Vector$ din cadrul librarie pentru a manipula parametri $\lambda = \{\textbf{A},\textbf{B},\pi\}$ ai modelului.\par
+Cum menționam și anterior pentru implementare am avut nevoie de o librărie ce se ocupă cu calcul numeric. Am folosit $Math.NET$ pentru calculul matriceal și a normelor $L^{2}$, împreună cu structurile speciale $Matrix$ și $Vector$ din cadrul librăriei pentru a manipula parametri $\lambda = \{\textbf{A},\textbf{B},\pi\}$ ai modelului.\par
 
-În cadrul librăriei s-au folosit o multitudine de funcții auxiliare ce ajută la normalizare și structurarea mai bună a codului. Mai jost sunt prezentate cele mai importante funcții auxiliare din cadrul acesteia.\par
+În cadrul librăriei ce descrie modelul Markov cu stări invizibile s-au folosit o multitudine de funcții auxiliare ce ajută la normalizare și structurarea mai bună a codului. Mai jost sunt prezentate cele mai importante funcții auxiliare din cadrul acesteia.\par
 
 \begin{lstlisting}[caption=Funcție auxiliara ce realizează normalizarea]
 private Matrix<double> Normalize(Matrix<double> target, Vector<double> divisors, string mode){
@@ -157,7 +157,7 @@ De asemenea punctele de $spawn$ sunt plasate exact pe marginea platformei iar al
 
 \section{Utilizarea librăriei în joc}
 
-În dezvoltarea acestei librării obiectivele principale au fost modularitatea și usurința de utilizare. Acest lucru a fost realizat foarte simplu datorită modului în care $Unity$ permite atasarea de fisiere sursă pe obiecte din scenă, avănd la dispoziție toti parametri disponibili din acea clasă.\par
+În dezvoltarea acestei librării obiectivele principale au fost modularitatea și usurința de utilizare. Acest lucru a fost realizat foarte simplu datorită modului în care $Unity$ permite atașarea de fișiere sursă pe obiecte din scenă, avănd la dispoziție toti parametri disponibili din acea clasă.\par
 
 \vspace{10mm}
 \begin{figure}[H]
@@ -176,9 +176,9 @@ public class DesertObjectsGenerator : HMM{
 }
 \end{lstlisting}
 
-Este necesară această procedură din cauza modului cum functionează $Unity$, deoarece scripturile nu pot fi atașate pe obiecte în cadrul scenei dacă nu sunt derivate din $MonoBehaviour$ iar $C\#$ nu permite moștenire multiplă.\par
+Este necesară această procedură din cauza modului cum functionează $Unity$, deoarece scripturile nu pot fi atașate pe obiecte în cadrul scenei dacă nu sunt derivate din $MonoBehaviour$ iar $C\#$ nu permite moștenirea multiplă.\par
 
-\section{Detalii legate de aspectul aplicatiei}
+\section{Detalii legate de aspectul aplicației}
 
 \vspace{10mm}
 \begin{figure}[H]
