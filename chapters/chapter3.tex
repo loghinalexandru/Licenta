@@ -141,6 +141,14 @@ public void ParameterInference(List<int> observations)
 }
 \end{lstlisting}
 
+\vspace{10mm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\linewidth]{Learning.png} \par
+\caption{Grafic ce arată antrenarea unui generator}
+\end{figure}
+
+
 
 \section{Detalii legate de implementarea sistemului de instanțiere}
 
@@ -193,6 +201,37 @@ Un alt aspect ce a necesitat destul de mult timp în cadrul acestei aplicații a
 \caption{Motorul Grafic Unity}
 \end{figure}
 
+Pe lângă partea grafică am încercat să adaug animații  atâr obiectelor din cadrul scenei căt și a butoanelor cu care înteracționează jucătorul. Datorită uneltelor din $Unity$ acest lucru a fost ușor de realizat. Pe lângă crearea animațiilor am fost nevoit să utilizez și un automat cu stări finite, unde fiecare nod reprezintă de fapt o altă animație. În $Unity$ acestă unealtă se numește $Animator$, și manipulează condițiile de trece de la o stare la altă și durata.\par
+
+\vspace{10mm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{Animator.png} \par
+\caption{Utilitarul folosit pentru animații}
+\end{figure}
+
+Am încercat în mare parte să refolosesc animații și obiecte din motive de eficiență și spațiu de stocare. De acceea multe stări din automatele de animații se repetă. Pentru controlul acțiunii butoanelor din meniuri, comportamentul s-a modelat folosind funcții ce sunt apelate la ieșirea din stare, mai exact la terminarea animației.\par
+
+\begin{lstlisting}[caption=Exemplu de folosire a evenimentului $OnStateExit$]
+override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+{
+        MenuController controller = GameObject.FindGameObjectWithTag("MenuController").GetComponent<MenuController>();
+        switch (animator.name){
+            case "Play":
+                controller.OnGameStart();
+                break;
+            case "Credits":
+                controller.OnCredits();
+                break;
+            case "Exit":
+                controller.OnGameExit();
+                break;
+            default:
+                break;
+        }
+}
+\end{lstlisting}
+
 Jocul dispune de un meniu principal, unu de pauză în timpul jocului și unul ce anunță sfărșitul jocului. Mai jos sunt prezentate aceste trei meniuri, împreună cu opțiunile lor.\par
 
 \vspace{10mm}
@@ -201,7 +240,6 @@ Jocul dispune de un meniu principal, unu de pauză în timpul jocului și unul c
 \includegraphics[width=\linewidth]{Meniu.png} \par
 \caption{Meniul principal din joc}
 \end{figure}
-
 
 \vspace{10mm}
 \begin{figure}[H]
@@ -216,7 +254,5 @@ Jocul dispune de un meniu principal, unu de pauză în timpul jocului și unul c
 \includegraphics[width=\linewidth]{GameOver.png} \par
 \caption{Meniul atunci cănd jocul s-a terminat}
 \end{figure}
-
-
 
 \section{Structura întregii aplicații}
