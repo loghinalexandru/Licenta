@@ -178,7 +178,13 @@ public class DesertObjectsGenerator : HMM{
 
 Este necesară această procedură din cauza modului cum functionează $Unity$, deoarece scripturile nu pot fi atașate pe obiecte în cadrul scenei dacă nu sunt derivate din $MonoBehaviour$ iar $C\#$ nu permite moștenirea multiplă.\par
 
+Acest lucru face un pic incomodă folosirea librăriei dar capabilitatea de a putea atașa scriptul de orice obiect din scenă și de a putea adăuga referințe direct din $Inspector$ este mult prea importantă pentru a nu deriva din clasa $MonoBehaviour$.\par
+
+Librăria dispune și de o modalitate persistentă de încarcare e parametrilor unui model și anume prin așa numitele obiecte $TextAsset$ disponibile în cadrul motorului de joc. De exemplu, după antrenarea modelului parametri acestuia pot fi salvați prin apelarea unei funcții într-un astfel de obiect ce poate fi ulterior referențiat librăriei pentru a putea încărca modelul.\par
+
 \section{Detalii legate de aspectul aplicației}
+
+Un alt aspect ce a necesitat destul de mult timp în cadrul acestei aplicații a fost partea de $UI$\footnote{User Interface} căt și îmbunătățirile grafice aduse prin postprocesare, $SSR$, reflecții în timp real, anti-aliasing, bloom, lumină volumetrică și corectare de culoare.\par
 
 \vspace{10mm}
 \begin{figure}[H]
@@ -186,5 +192,31 @@ Este necesară această procedură din cauza modului cum functionează $Unity$, 
 \includegraphics[width=\linewidth]{Unity.png} \par
 \caption{Motorul Grafic Unity}
 \end{figure}
+
+Jocul dispune de un meniu principal, unu de pauză în timpul jocului și unul ce anunță sfărșitul jocului. Mai jos sunt prezentate aceste trei meniuri, împreună cu opțiunile lor.\par
+
+\vspace{10mm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{Meniu.png} \par
+\caption{Meniul principal din joc}
+\end{figure}
+
+
+\vspace{10mm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{Pause.png} \par
+\caption{Meniul de pauza}
+\end{figure}
+
+\vspace{10mm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{GameOver.png} \par
+\caption{Meniul atunci cănd jocul s-a terminat}
+\end{figure}
+
+
 
 \section{Structura întregii aplicații}
