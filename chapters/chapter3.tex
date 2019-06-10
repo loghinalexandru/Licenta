@@ -148,7 +148,7 @@ public void ParameterInference(List<int> observations)
 \caption{Grafic ce prezintă antrenarea unui generator}
 \end{figure}
 
-După cum se observă funcția de $log-likelihood$ este monoton crescătoare și modelul de la un anumit numar de interații converge.
+După cum se observă funcția de $log-likelihood$ este monoton crescătoare și modelul de la un anumit numar de interații converge.\par
 
 \section{Detalii legate de implementarea sistemului de instanțiere}
 
@@ -161,7 +161,7 @@ Așa cum am mai menționat modelul Markov cu stări invizibile este folosit ca �
 \caption{Sistemul de instanțiere}
 \end{figure}
 
-De asemenea punctele de $spawn$ sunt plasate exact pe marginea platformei iar algoritmul de instanțiere ia în calcul acest lucru. Cu toate acestea ele pot fi mutate spre interiorul platformei pentru a da senzația de realism. O limitare a acestui sistem este sensibilitatea la numărul de obiecte pe un loc de instanțiere, deoarece acesta nu ține cont de lungimea platformei.
+De asemenea punctele de $spawn$ sunt plasate exact pe marginea platformei iar algoritmul de instanțiere ia în calcul acest lucru. Cu toate acestea ele pot fi mutate spre interiorul platformei pentru a da senzația de realism. O limitare a acestui sistem este sensibilitatea la numărul de obiecte pe un loc de instanțiere, deoarece acesta nu ține cont de lungimea platformei.\par
 
 \section{Utilizarea librăriei în joc}
 
@@ -241,7 +241,7 @@ Jocul dispune de un meniu principal, unu de pauză în timpul jocului și unul c
 \caption{Meniul principal din joc}
 \end{figure}
 
-Meniul principal este contruit în aceeași scenă ca și jocul principal. Pentru butoanele $3D$, ce au fost mai apoi alungite, s-a folosit $Blender$ împreună cu fontul $Borg$ ce este folosit mai peste tot în cadrul jocului pentru a păstra consistența.
+Meniul principal este contruit în aceeași scenă ca și jocul principal. Pentru butoanele $3D$, ce au fost mai apoi alungite, s-a folosit $Blender$ împreună cu fontul $Borg$ ce este folosit mai peste tot în cadrul jocului pentru a păstra consistența.\par
 
 \vspace{10mm}
 \begin{figure}[H]
@@ -250,7 +250,7 @@ Meniul principal este contruit în aceeași scenă ca și jocul principal. Pentr
 \caption{Meniul de pauza}
 \end{figure}
 
-Dacă jucătorul este nevoie să oprească jocul acesta poate apăsa tasta $Escape$, dezvăluind astfel meniul de pauză. De aici acesta poate da $Resume$ sau $Exit To Menu$ pentru a scoate pauză jocului, respectiv pentru a reveni la meniu. Modul prin care se realizează acest lucru este setarea parametrului $Time.timeScale$ la zero respectiv unu.
+Dacă jucătorul este nevoie să oprească jocul acesta poate apăsa tasta $Escape$, dezvăluind astfel meniul de pauză. De aici acesta poate da $Resume$ sau $Exit To Menu$ pentru a scoate pauză jocului, respectiv pentru a reveni la meniu. Modul prin care se realizează acest lucru este setarea parametrului $Time.timeScale$ la zero respectiv unu.\par
 
 \begin{lstlisting}[caption=Exemplu de folosire a $Time.timeScale$]
 private void ToggleRender(){
@@ -265,7 +265,7 @@ private void ToggleRender(){
 \caption{Meniul atunci cănd jocul s-a terminat}
 \end{figure}
 
-Deoarece jocul este un $EndlessRunner$, condiția de terminare este fie ca jucătorul să cadă de pe platformă fie ca acesta sa se află în proximitatea inamicului ce îl urmărește. Legat de partea de inteligență artificială a adversarului de care trebuie să fugă jucătorul, s-a folosit un simplu script ce urmărește mișcarea acestuia. Bineînțeles această metodă prezintă multe probleme ce pot fi foarte ușor rezolvate cu o abordare ce foloșeste $Raycasting$\footnote{Metodă de testare a intersecțiilor dintre obiecte într-o scenă}.
+Deoarece jocul este un $EndlessRunner$, condiția de terminare este fie ca jucătorul să cadă de pe platformă fie ca acesta sa se află în proximitatea inamicului ce îl urmărește. Legat de partea de inteligență artificială a adversarului de care trebuie să fugă jucătorul, s-a folosit un simplu script ce urmărește mișcarea acestuia. Bineînțeles această metodă prezintă multe probleme ce pot fi foarte ușor rezolvate cu o abordare ce foloșeste $Raycasting$\footnote{Metodă de testare a intersecțiilor dintre obiecte într-o scenă}.\par
 
 \section{Structura întregii aplicații}
 
