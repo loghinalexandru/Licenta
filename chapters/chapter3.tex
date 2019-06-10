@@ -145,10 +145,10 @@ public void ParameterInference(List<int> observations)
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.75\linewidth]{Learning.png} \par
-\caption{Grafic ce arată antrenarea unui generator}
+\caption{Grafic ce prezintă antrenarea unui generator}
 \end{figure}
 
-
+După cum se observă funcția de $log-likelihood$ este monoton crescătoare și modelul de la un anumit numar de interații converge.
 
 \section{Detalii legate de implementarea sistemului de instanțiere}
 
@@ -241,12 +241,22 @@ Jocul dispune de un meniu principal, unu de pauză în timpul jocului și unul c
 \caption{Meniul principal din joc}
 \end{figure}
 
+Meniul principal este contruit în aceeași scenă ca și jocul principal. Pentru butoanele $3D$, ce au fost mai apoi alungite, s-a folosit $Blender$ împreună cu fontul $Borg$ ce este folosit mai peste tot în cadrul jocului pentru a păstra consistența.
+
 \vspace{10mm}
 \begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth]{Pause.png} \par
 \caption{Meniul de pauza}
 \end{figure}
+
+Dacă jucătorul este nevoie să oprească jocul acesta poate apăsa tasta $Escape$, dezvăluind astfel meniul de pauză. De aici acesta poate da $Resume$ sau $Exit To Menu$ pentru a scoate pauză jocului, respectiv pentru a reveni la meniu. Modul prin care se realizează acest lucru este setarea parametrului $Time.timeScale$ la zero respectiv unu.
+
+\begin{lstlisting}[caption=Exemplu de folosire a $Time.timeScale$]
+private void ToggleRender(){
+        Time.timeScale = 1.0f - Time.timeScale;
+}
+\end{lstlisting}
 
 \vspace{10mm}
 \begin{figure}[H]
@@ -255,4 +265,13 @@ Jocul dispune de un meniu principal, unu de pauză în timpul jocului și unul c
 \caption{Meniul atunci cănd jocul s-a terminat}
 \end{figure}
 
+Deoarece jocul este un $EndlessRunner$, condiția de terminare este fie ca jucătorul să cadă de pe platformă fie ca acesta sa se află în proximitatea inamicului ce îl urmărește. Legat de partea de inteligență artificială a adversarului de care trebuie să fugă jucătorul, s-a folosit un simplu script ce urmărește mișcarea acestuia. Bineînțeles această metodă prezintă multe probleme ce pot fi foarte ușor rezolvate cu o abordare ce foloșeste $Raycasting$\footnote{Metodă de testare a intersecțiilor dintre obiecte într-o scenă}.
+
 \section{Structura întregii aplicații}
+
+\vspace{10mm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\linewidth]{Full.png} \par
+\caption{Diagramă ce modelează sistemul de generare și instanțiere}
+\end{figure}

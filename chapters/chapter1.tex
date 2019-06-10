@@ -139,6 +139,22 @@ De asemenea ca și $Baum-Welch$, fiind dată o secvență $O$ de etichete observ
 
 Algoritmul pe care am decis să îl folosesc are la bază o matrice $C$ de dimensiune $M\times M$ construită cu scopul de a caracteriza numărul de apariții a unei anumite perechi $O_{t}O_{t+1}$ în secvența de etichete observate $O$.\par
 
+\vspace{10mm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\linewidth]{CityPlatformPlot.png} \par
+\caption{Histogramă a unei secvențe de etichete folosite la antrenare}
+\end{figure}
+
+
+\vspace{10mm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\linewidth]{CityPlatformPairPlot.png} \par
+\caption{Histogramă a perechilor de etichete din secvența folosită la antrenare}
+\end{figure}
+
+
 Această soluție se bazează foarte mult pe calculul matriceal de accea în cadrul aplicației am fost nevoit să apelez la o librărie ce este folosită pentru calcul numeric. Deoarece acest algoritm se bazează foarte mult pe matrici, o incercare de implementare folosind unități de procesare grafice ar putea îmbunătăți substanțial viteza de convergență a algoritmului datorită puterii mai mari de calcul.\par
 
 Parametri $\textbf{A},\textbf{B},\pi$ sunt initializați random și normalizați pe linii, iar apoi este calculat $\bar{C} = B\bar{A}B^{T}$, unde $\bar{A} = {\pi_{k}\cdot a_{kl}}, 1 \leq k \leq N, 1\leq l \leq N$. Următorul pas este calcularea matricii $R$ prin împărțirea element cu element a matricii $C$ la matricea $\bar{C}$.\par
