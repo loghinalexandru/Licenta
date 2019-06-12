@@ -123,7 +123,7 @@ Din păcate determinarea numărului de stări latente optime pentrun un model da
 
 În cadrul acestei proiect a fost folosită metoda $trial\ and\ error$ în defavoarea criteriilor prezentate mai sus doarece, modelele sunt relativ mici și nu necesită cei mai optimi parametri. În general s-a urmărit ca numărul de stări să fie mai mare decăt numărul de etichete, ceea ce previne de fapt inabilitatea rețelei de a învăța restricțiile la antrenare. Acest lucru se mai numește și $underfit$.\par
 
-\section{Algoritmi ce tratează problema estimării de parametri}
+\section{Algoritmi pentru estimare de parametri}
 Cel mai cunoscut algoritm pentru inferare de parametri, fiind dat un model Markov cu stări invizibile este așa numitul algoritm $Baum-Welch$ sau algoritmul $Forward-Backward$. Așa cum implică și numele acest algoritm are la bază două etape. Inițial parametri modelului $\lambda = \{\textbf{A},\textbf{B},\pi\}$ sunt inițializați random și mai apoi actualizați după fiecare iterație până la convergență după cum urmează:
 \begin{itemize}
 \item{\textbf{Forward} este etapa în care se calculează de obicei $P(O|\lambda)$, unde $O$ este secvența de etichete observate, folosind tehnica programării dinamice pentru stocarea anterioară a rezultatelor. Acest calcul este necesar doarece va fi folosit în urmatoarea etapă pentru reajustarea parametrilor modelului.}
@@ -163,19 +163,14 @@ După calculul acestor matrici intermediare urmează actualizare paremetrilor du
 
 Acești pași se realizează pănă un anumit criteriu de convergență este satisfăcut. De obicei aceste criterii includ ca norma matricilor $A,B$ să fie sub un anumit epsilon împreună cu funcția de $log-likelihood$. În implementarea acestui algoritm am folosit ca și criterii de convergență, cum sugera și publicația de unde am preluat ideea, calcularea unei norme de tip $L^{2}$ aplicată matricilor $A,B,R$, ce ar trebui sa fie sub un $\epsilon = 10^{-6}$ și un număr maxim de iterații pentru care ar trebui să fie îndeplinită. Bineînțeles aceste condiții sunt doar cele standard, ele putând fi ușor schimbate în funcție de necesitate.\par
 
+BAGA PSEUDOCOD ALGORIMT DIN ARTICOL AICI!!!\par
+
 \section{Limitări ale modelului}
 
 În secțiunile anterioare am văzut avantajele modelului Markov cu stări invizibile dar acesta suferă de o mare problemă, blocarea într-un optim local. Din cauza acestei probeleme estimarea de parametri este o sarcină destul de dificilă și delicată. De asemenea modelul depinde foarte mult de proprietatea Markov ce specifică clar că o stare viitoare poate să depindă doar de starea curentă, limitănd astfel capacitatea de a modela date mult mai complexe. Se poate extinde modelul la ultimele $n-1$ stări dar complexitatea de antrenare și durata crește considerabil.
 \par
 
 Cea mai simplă soluție pentru a preveni blocarea este inițializarea random a parametrilor modelului și reantrenarea lui de mai multe ori, pastrandu-se cel mai bun rezultat. Acestă soluție este fezabilă deoare prin randomizare se pot obține parametri din vecinătatea soluției optime, scăzănd posibilitatea ca algoritmul să ramană blocat într-un optim local, atunci cănd există o multitudine de aceste puncte. Deși această soluție rezolva problema în unele situații reantrenarea de foarte multe ori este costisitoare, de accea există posibilitatea de a salva parametri estimați, putănd fi ulterior utilizați de model prin o simplă citire.\par
-
-\vspace{10mm}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.4\linewidth]{MLE.png} \par
-\caption{Grafic al functie $log-likelihood$ cu foarte multe puncte de optim local}
-\end{figure}
 
 Din cauza acestor limitări algoritmii de estimare a parametrilor precum $Baum-Welch$ nu garantează găsirea optimului global. Deseori un optim local este suficient pentru probleme ce nu necesită soluția optimă dar trebuie luat in considerare acest aspect atunci când se utiliează un astfel de algoritm.\par
 

@@ -6,6 +6,7 @@
 \item \textbf{Blender} : program \textit{open source} folosit pentru modelarea 3D și contrucția obiectelor ce au fost ulterior importate în motorul grafic.
 \item \textbf{Math.NET} : librărie \textit{open source} folosită pentru realizarea algoritmului de învățare automată deoarece acesta se bazează foarte mult pe lucru cu matrici.
 \item \textbf{C\#} : limbajul nativ folosit de Unity pe lângă JavaScript , decizia fiind luată pur din motive de viteză.
+\item \textbf{Unelte din Unity} : utilitare $built-in$ ce au ajutat la construirea aplicații de la coliziuni pănă la animații.
 \end{itemize}
 
 Din multitudinea de motoare grafice disponibile am ales \textbf{Unity} doarece e o tehnologie cu care am mai lucrat, fiind conștient de capabilitățile acestuia. Multitudinea de unelte îl fac foarte ușor de recomandat și împreună cu magazinul de \textit{assets} m-au ajutat foarte mult în procesul de construcție al acestui proiect. De asemenea \textbf{Unity} dispune de o documentație foarte bogată și bine pusă la punct , calități cheie pentru aprofundarea acestui motor grafic.\par
@@ -20,6 +21,8 @@ Din punct de vedere al librăriilor externe am folosit \textbf{Math.NET} , impor
 
 Datorită motorului grafic folosit și a limitărilor acestuia întregul proiect a fost construit folosind \textbf{C\#}, alternativa sa fiind \textbf{JavaScript}. Din cauza experienței cu \textbf{C\#} și a performanței ridicate am luat decizia de a folosi acest limbaj.\par
 
+Legat de uneltele folosite din cadrul lui $Unity$ acestea au ajutat foarte mult la grăbirea procesului de crearea a aplicației. Căteva unelte folosite sunt $Inspector$, $WheelCollider$, $BoxCollider$, $RigidBody$, $Animator$, $Light$ și multe altele.\par
+
 \section{Structura proiectului}
 
 Aplicația creată este împărțită în doua etape , generare și instanțiere. Din cauza unor motive de performanță fiecare zonă, deșertică, rurală și urbană are propriul său generator. De asemenea fiecare tip de platformă folosește propriul său model Markov însumând astlfel un total de șase generatori, ce se ocupă doar cu producerea unei secvențe specifice de obiecte. Pentru partea de instanțiere am fost nevoit să construiesc un sistem ce facilitează instanțierea obiectelor generate, plasândule pe platformă în sensul acelor de ceasornic.\par
@@ -30,7 +33,6 @@ Aplicația fiind facută în \textbf{Unity} fișierele și directoarele au o str
 .1 \textbf{Assets}.
 .2 \textbf{Generators}.
 .2 \textbf{HMM}.
-.2 \textbf{Sound}.
 .2 \textbf{Prefabs}.
 .2 \textbf{Scripts}.
 .2 \textbf{Textures}.
@@ -44,8 +46,6 @@ Directorul de \textbf{Assets} conține toate elementele necesare aplicației, de
 \textbf{Generators} aici se află cei sașe generatori folosiți pentru construirea mediului.\par
 
 \textbf{HMM} este directorul ce conține scripturile necesare pentru construirea modelului Markov și a antrenării lui.\par
-
-\textbf{Sound} conține toate efectele de sunet și muzica din joc.\par
 
 \textbf{Prefabs} este directorul cu toate prefabricatele din joc, incluzând modelele pentru platforme, obiecte, jucător cât și inamici.
 
@@ -63,7 +63,7 @@ Aplicația prezentă este împărțită pe diferite module ce controlează sunet
 
 Am optat să construiesc jocul în jurul unei singure scene, ceea ce necesită un numar mai mare de controalere și scripturi. O consecință directă a folosirii unei singure scene este integrarea meniului principal în același mediu ca și jocul în sine. De aici derivă necesitatea de două scripturi ce controlează tranziția de la meniu la joc intitulate sugestiv \textit{MenuController} și \textit{GameController}.\par
 
-\vspace{10mm}
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.5\linewidth]{Structure.png} \par

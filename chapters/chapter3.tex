@@ -150,7 +150,7 @@ public void ParameterInference(List<int> observations)
 
 După cum se observă funcția de $log-likelihood$ este monoton crescătoare și modelul de la un anumit numar de interații converge.\par
 
-\section{Detalii legate de implementarea sistemului de instanțiere}
+\section{Detalii despre sistemul de instanțiere}
 
 Așa cum am mai menționat modelul Markov cu stări invizibile este folosit ca și generator iar pentru instanțiere a fost necesară implementarea unui sistem ce folosește puncte de $spawn$ amplasate pe platforme. Odată cu aceste puncte există și un script ce descrie dacă punctul de instanțiere poate să conțină mai multe obiecte sau nu, amplasarea lor facandu-se unu după altul. Se poate specifica și rotația obiectului, dar in general se urmarește ca obiectele de pe platformă să fie orientate înspre jucător, în sensul acelor de ceasornic.\par
 
@@ -258,6 +258,9 @@ private void ToggleRender(){
 }
 \end{lstlisting}
 
+
+Deoarece jocul este un $EndlessRunner$, condiția de terminare este fie ca jucătorul să cadă de pe platformă fie ca acesta sa se află în proximitatea inamicului ce îl urmărește. Legat de partea de inteligență artificială a adversarului de care trebuie să fugă jucătorul, s-a folosit un simplu script ce urmărește mișcarea acestuia. Bineînțeles această metodă prezintă multe probleme ce pot fi foarte ușor rezolvate cu o abordare ce foloșeste $Raycasting$\footnote{Metodă de testare a intersecțiilor dintre obiecte într-o scenă}.\par
+
 \vspace{10mm}
 \begin{figure}[H]
 \centering
@@ -265,13 +268,54 @@ private void ToggleRender(){
 \caption{Meniul atunci cănd jocul s-a terminat}
 \end{figure}
 
-Deoarece jocul este un $EndlessRunner$, condiția de terminare este fie ca jucătorul să cadă de pe platformă fie ca acesta sa se află în proximitatea inamicului ce îl urmărește. Legat de partea de inteligență artificială a adversarului de care trebuie să fugă jucătorul, s-a folosit un simplu script ce urmărește mișcarea acestuia. Bineînțeles această metodă prezintă multe probleme ce pot fi foarte ușor rezolvate cu o abordare ce foloșeste $Raycasting$\footnote{Metodă de testare a intersecțiilor dintre obiecte într-o scenă}.\par
+În general scopul aplicației a fost validarea abordării de generare cu modelul Markov, de accea unele aspecte ale jocului pot primi îmbunătățiri, mai ales la partea de inteligență artificială discutată mai sus. Am optat să scriu o mică bucată de cod ce simulează un agent inteligent foarte primitiv tocmai din această cauză, putănd foarte ușor importa o librărie pentru acest lucru.\par
 
-\section{Structura întregii aplicații}
+\section{Detalii legate de controlul mașinilor}
+
+Așa cum menționează și titlu pe langă partea de generare și instanțiere a fost nevoie de implementarea unui script ce controlează și verifică intrarea de la tastatură pentru a putea controla vehiculul din joc. Pe lăngă acest lucru s-au implementat și anumite artificii vizuale ce conferă realism jocului împreună cu utilizarea unei $ReflectionProbe$ pentru a simula reflecția în timp real de pe caroseria mașinii. Deși această metodă este costisitoare computațional am încercat să folosesc această tehnică într-un mod căt de optim posibil, cea mai simplă optimizare fiind reducerea dimensiunii texturii generate de aceasta.\par
 
 \vspace{10mm}
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.5\linewidth]{Full.png} \par
+\includegraphics[width=\linewidth]{Probe.png} \par
+\caption{Utilizarea componentei $ReflectionProbe$ în joc}
+\end{figure}
+
+Pe lângă această unealtă în cadrul mașinilor s-au utilizat și o componentă special facută pentru interacțiunea dintre o roată și carosabil, aceasta numindu-se $WheelCollider$. Atăt jucătorul căt și adversaul folosesc această componentă pe fiecare roată, pentru a simula aderența, forța de frânare, acțiunea suspensiei asupra roților și multe altele.\par
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{WheelCollider.png} \par
+\caption{Utilizarea componentei $WheelCollider$ în joc}
+\end{figure}
+
+\section{Structura întregii aplicații}
+
+În general aplicația este contruită în jurul uneltelor disponibile din $Unity$, folosind în mare parte sistemul de referințe. Din cauza acestui lucru aplicația este foarte simplă de înțeles și se observă foarte ușor fluxul acesteia după cum se vede din diagrama de mai jos.\par
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\linewidth]{Flow.png} \par
+\caption{Diagramă ce modelează fluxul aplicației}
+\end{figure}
+
+Din punct de vedere a celor două sisteme de generare și instanțiere deoarece sunt decuplate este necesară o referință a generatorului în cadrul clasei de instanțiere. Odată asignată, sistemul de instanțiere expune o funcție $InstantiatePlatform$ ce este mai apoi apelată când jucatorul declanșează o zonă de pe platformă. De asemena se face o verificare pentru a nu declanșa instanțierea de două sau mai multe ori neintenționat.\par
+
+\begin{lstlisting}[caption=Apelul de instanțiere a unei platforme]
+void OnTriggerEnter(Collider collidingObject)
+{
+        if (!this.triggered){
+            this.callbackObject.GetComponent<PlatformBuilder>().InstantiatePlatform();
+            this.triggered = true;
+        }
+}
+\end{lstlisting}
+
+Mai jos este se poate observa diagrama $UML$ ce modelează comportamentul celor două sisteme. Din necesitatea de a controla numărul de platforme pentru fiecare din cele trei zone, rurală , urbană și desertică s-a introdus un mediator între $PlatformBuilder$ și generatori de platforme și anume $PlatformController$ ce expune o funcție $GetNextPlatform$ ce verifică numărul de platforme de un anumit tip ce au fost generate, înlocuind generatorul, prin rotație, atunci când o anumită limită a fost atinsă, limită ce este determinată aleator după doi parametri ce setează o margine inferioră și superioară.\par
+
+\vspace{10mm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\linewidth]{Full.png} \par
 \caption{Diagramă ce modelează sistemul de generare și instanțiere}
 \end{figure}
