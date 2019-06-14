@@ -29,7 +29,7 @@ Pentru a caracteriza concret și complet acest model avem nevoie de un \textit{5
 
 În general modul de funcționare a acestui model poate fi descris foarte ușor cu o bucată de pseudocod:
 
-\begin{lstlisting}[mathescape=true]
+\begin{lstlisting}[mathescape=true , caption=Pseudocod ce descrie modul de operare a unui $HMM$]
 t $\gets$ 1;
 stare $\gets$ alege o stare $S_{i}$ cu probabilitate $\pi_{i}$;
 repeta la infinit
@@ -157,13 +157,23 @@ Algoritmul pe care am decis să îl folosesc are la bază o matrice $C$ de dimen
 
 Această soluție se bazează foarte mult pe calculul matriceal de accea în cadrul aplicației am fost nevoit să apelez la o librărie ce este folosită pentru calcul numeric. Deoarece acest algoritm se bazează foarte mult pe matrici, o incercare de implementare folosind unități de procesare grafice ar putea îmbunătăți substanțial viteza de convergență a algoritmului datorită puterii mai mari de calcul.\par
 
-Parametri $\textbf{A},\textbf{B},\pi$ sunt initializați random și normalizați pe linii, iar apoi este calculat $\bar{C} = B\bar{A}B^{T}$, unde $\bar{A} = {\pi_{k}\cdot a_{kl}}, 1 \leq k \leq N, 1\leq l \leq N$. Următorul pas este calcularea matricii $R$ prin împărțirea element cu element a matricii $C$ la matricea $\bar{C}$.\par
+\begin{lstlisting}[mathescape=true, caption=Pseudocod ce descrie algoritmul de inferență]
+Intrare: Matricea $\mathbf{C}, \mathbf{\bar{A}} , \mathbf{B^T}$
+repeta pana la convergenta:
+	$\textbf{R} \gets \textbf{C}  \oslash \mathbf{\bar{C}}$
+	$\mathbf{\bar{A'}} \gets \mathbf{\bar{A'}} \odot (\mathbf{B^TRB})$
+	$\mathbf{\bar{B'}} \gets \textbf{B} \odot (\mathbf{RB\bar{A^T}} + \mathbf{R^TB\bar{A}})$
+	$\mathbf{\bar{A}} \gets norm(\mathbf{\bar{A'}})$
+	$\textbf{B} \gets norm(\textbf{B'})$
+$\textbf{A} \gets norm(\mathbf{\bar{A'}})$
+\end{lstlisting}
+
+Parametri $\textbf{A},\textbf{B},\pi$ sunt initializați random și normalizați pe linii, iar apoi este calculat $\bar{C} = B\bar{A}B^{T}$, unde $\bar{A} = {\pi_{k}\cdot a_{kl}}, 1 \leq k \leq N, 1\leq l \leq N$. Următorul pas este calcularea matricii $R$ prin împărțirea element cu element a matricii $C$ la matricea $\bar{C}$, notat cu $\oslash$ în cadrul pseudocodului.\par
 
 După calculul acestor matrici intermediare urmează actualizare paremetrilor după urmatoarele ecuații preluate din publicație, $\bar{A'} = \bar{A} \odot B^{T}RB$  si $B' = B \odot(RB\bar{A}^{T} + R^{T}B\bar{A})$, unde $\odot$ reprezintă înmulțirea element cu element a două matrici. După acest calcul se face actualizarea astfel $A = norm(\bar{A'}),B = norm(B')$, unde $norm$ este o funcție ce realizează normalizarea pe toată matricea $A$ iar pentru $B$ doar pe coloane.\par
 
 Acești pași se realizează pănă un anumit criteriu de convergență este satisfăcut. De obicei aceste criterii includ ca norma matricilor $A,B$ să fie sub un anumit epsilon împreună cu funcția de $log-likelihood$. În implementarea acestui algoritm am folosit ca și criterii de convergență, cum sugera și publicația de unde am preluat ideea, calcularea unei norme de tip $L^{2}$ aplicată matricilor $A,B,R$, ce ar trebui sa fie sub un $\epsilon = 10^{-6}$ și un număr maxim de iterații pentru care ar trebui să fie îndeplinită. Bineînțeles aceste condiții sunt doar cele standard, ele putând fi ușor schimbate în funcție de necesitate.\par
 
-BAGA PSEUDOCOD ALGORIMT DIN ARTICOL AICI!!!\par
 
 \section{Limitări ale modelului}
 

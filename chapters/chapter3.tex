@@ -201,7 +201,7 @@ Un alt aspect ce a necesitat destul de mult timp în cadrul acestei aplicații a
 \caption{Motorul Grafic Unity}
 \end{figure}
 
-Pe lângă partea grafică am încercat să adaug animații  atâr obiectelor din cadrul scenei căt și a butoanelor cu care înteracționează jucătorul. Datorită uneltelor din $Unity$ acest lucru a fost ușor de realizat. Pe lângă crearea animațiilor am fost nevoit să utilizez și un automat cu stări finite, unde fiecare nod reprezintă de fapt o altă animație. În $Unity$ acestă unealtă se numește $Animator$, și manipulează condițiile de trece de la o stare la altă și durata.\par
+Pe lângă partea grafică am încercat să adaug animații  atât obiectelor din cadrul scenei căt și a butoanelor cu care înteracționează jucătorul. Datorită uneltelor din $Unity$ acest lucru a fost ușor de realizat. Pe lângă crearea animațiilor am fost nevoit să utilizez și un automat cu stări finite, unde fiecare nod reprezintă de fapt o altă animație. În $Unity$ acestă unealtă se numește $Animator$, și manipulează condițiile de trece de la o stare la altă și durata.\par
 
 \vspace{10mm}
 \begin{figure}[H]
@@ -257,7 +257,6 @@ private void ToggleRender(){
         Time.timeScale = 1.0f - Time.timeScale;
 }
 \end{lstlisting}
-
 
 Deoarece jocul este un $EndlessRunner$, condiția de terminare este fie ca jucătorul să cadă de pe platformă fie ca acesta sa se află în proximitatea inamicului ce îl urmărește. Legat de partea de inteligență artificială a adversarului de care trebuie să fugă jucătorul, s-a folosit un simplu script ce urmărește mișcarea acestuia. Bineînțeles această metodă prezintă multe probleme ce pot fi foarte ușor rezolvate cu o abordare ce foloșeste $Raycasting$\footnote{Metodă de testare a intersecțiilor dintre obiecte într-o scenă}.\par
 
