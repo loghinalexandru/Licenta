@@ -102,7 +102,7 @@ public double Train(List<int> observations, double[,] transitionProbabilities, d
 }
 \end{lstlisting}
 
-Funcția $Train$ descrisă mai sus este folosită în clasa mare denumită sugestiv $HMM$ pentru a antrena modelul. Modul cum funcționează $Unity$ toate clasele ce sunt derivate din $MonoBehaviour$ pot fi atașate pe un obiect din scenă. De accea există un obiect ascuns în scenă ce are atașat toți generatorii, putănd schimba foarte ușor toți parametri modelului chiar din $Inspector$. Din cauza acestui lucru librăria este foarte ușor de preluat și utilizat, aceasta conținând și un modul de salvare/citire a parametrilor modelului.\par
+Funcția $Train$ descrisă mai sus este folosită în clasa mare denumită sugestiv $HMM$ pentru a antrena modelul. Modul cum funcționează $Unity$ este astfel, toate clasele ce sunt derivate din $MonoBehaviour$ pot fi atașate pe un obiect din scenă. De accea există un obiect ascuns în scenă ce are atașat toți generatorii, putănd schimba foarte ușor toți parametri modelului chiar din $Inspector$. Din cauza acestui lucru librăria este foarte ușor de preluat și utilizat, aceasta conținând și un modul de salvare/citire a parametrilor modelului.\par
 
 În continuare se va prezenta o diagramă $UML$ ce descrie librăria și relația dintre componentele ei. Se poate observa că modelul Markov cu stări invizibile poate lucra complet independent de algoritmul de învățare automată.\par
 
@@ -152,7 +152,7 @@ După cum se observă funcția de $log-likelihood$ este monoton crescătoare și
 
 \section{Detalii despre sistemul de instanțiere}
 
-Așa cum am mai menționat modelul Markov cu stări invizibile este folosit ca și generator iar pentru instanțiere a fost necesară implementarea unui sistem ce folosește puncte de $spawn$ amplasate pe platforme. Odată cu aceste puncte există și un script ce descrie dacă punctul de instanțiere poate să conțină mai multe obiecte sau nu, amplasarea lor facandu-se unu după altul. Se poate specifica și rotația obiectului, dar in general se urmarește ca obiectele de pe platformă să fie orientate înspre jucător, în sensul acelor de ceasornic.\par
+Așa cum am mai menționat modelul Markov cu stări invizibile este folosit ca și generator iar pentru instanțiere a fost necesară implementarea unui sistem ce folosește puncte de $spawn$ amplasate pe platforme. Odată cu aceste puncte există și un script ce descrie dacă punctul de instanțiere poate să conțină mai multe obiecte sau nu, amplasarea lor facandu-se unu după altul. Se poate specifica și rotația obiectului, dar în general se urmarește ca obiectele de pe platformă să fie orientate înspre jucător, în sensul acelor de ceasornic.\par
 
 \vspace{10mm}
 \begin{figure}[H]
@@ -174,7 +174,7 @@ De asemenea punctele de $spawn$ sunt plasate exact pe marginea platformei iar al
 \caption{Generatorii folosiți în cadrul jocului}
 \end{figure}
 
-În general pentru a putea folosi librăria, se definește o clasă nouă ce moștenește din clasa $HMM$, în cadrul careia se apelează funcția $Init()$ în funcția $Start()$.\par
+În general pentru a putea folosi librăria, se definește o clasă nouă ce moștenește din clasa $HMM$, în cadrul căreia se apelează funcția $Init()$ din funcția $Start()$.\par
 
 \begin{lstlisting}[caption=Exemplu de folosire a librăriei]
 public class DesertObjectsGenerator : HMM{
@@ -201,7 +201,7 @@ Un alt aspect ce a necesitat destul de mult timp în cadrul acestei aplicații a
 \caption{Motorul Grafic Unity}
 \end{figure}
 
-Pe lângă partea grafică am încercat să adaug animații  atât obiectelor din cadrul scenei căt și a butoanelor cu care înteracționează jucătorul. Datorită uneltelor din $Unity$ acest lucru a fost ușor de realizat. Pe lângă crearea animațiilor am fost nevoit să utilizez și un automat cu stări finite, unde fiecare nod reprezintă de fapt o altă animație. În $Unity$ acestă unealtă se numește $Animator$, și manipulează condițiile de trece de la o stare la altă și durata.\par
+Pe lângă partea grafică am încercat să adaug animații atât obiectelor din cadrul scenei căt și a butoanelor cu care înteracționează jucătorul. Datorită uneltelor din $Unity$ acest lucru a fost ușor de realizat. Pe lângă crearea animațiilor am fost nevoit să utilizez și un automat cu stări finite, unde fiecare nod reprezintă de fapt o altă animație. În $Unity$ acestă unealtă se numește $Animator$, și manipulează condițiile de trece de la o stare la altă cât și durata.\par
 
 \vspace{10mm}
 \begin{figure}[H]
@@ -210,7 +210,7 @@ Pe lângă partea grafică am încercat să adaug animații  atât obiectelor di
 \caption{Utilitarul folosit pentru animații}
 \end{figure}
 
-Am încercat în mare parte să refolosesc animații și obiecte din motive de eficiență și spațiu de stocare. De acceea multe stări din automatele de animații se repetă. Pentru controlul acțiunii butoanelor din meniuri, comportamentul s-a modelat folosind funcții ce sunt apelate la ieșirea din stare, mai exact la terminarea animației.\par
+Am încercat în mare parte să refolosesc animații și obiecte din motive de eficiență și spațiu de stocare. De acceea multe stări din automatele ce se ocupă de animații se repetă. Pentru controlul acțiunii butoanelor din meniuri, comportamentul s-a modelat folosind funcții ce sunt apelate la ieșirea din stare, mai exact la terminarea animației.\par
 
 \begin{lstlisting}[caption=Exemplu de folosire a evenimentului $OnStateExit$]
 override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -232,7 +232,7 @@ override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo,
 }
 \end{lstlisting}
 
-Jocul dispune de un meniu principal, unu de pauză în timpul jocului și unul ce anunță sfărșitul jocului. Mai jos sunt prezentate aceste trei meniuri, împreună cu opțiunile lor.\par
+Jocul dispune de un meniu principal, unu de pauză în timpul jocului și unul ce anunță sfârșitul jocului. Mai jos sunt prezentate aceste trei meniuri, împreună cu opțiunile lor.\par
 
 \vspace{10mm}
 \begin{figure}[H]
@@ -247,7 +247,7 @@ Meniul principal este contruit în aceeași scenă ca și jocul principal. Pentr
 \begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth]{Pause.png} \par
-\caption{Meniul de pauza}
+\caption{Meniul de pauză}
 \end{figure}
 
 Dacă jucătorul este nevoie să oprească jocul acesta poate apăsa tasta $Escape$, dezvăluind astfel meniul de pauză. De aici acesta poate da $Resume$ sau $Exit To Menu$ pentru a scoate pauză jocului, respectiv pentru a reveni la meniu. Modul prin care se realizează acest lucru este setarea parametrului $Time.timeScale$ la zero respectiv unu.\par
@@ -258,7 +258,7 @@ private void ToggleRender(){
 }
 \end{lstlisting}
 
-Deoarece jocul este un $EndlessRunner$, condiția de terminare este fie ca jucătorul să cadă de pe platformă fie ca acesta sa se află în proximitatea inamicului ce îl urmărește. Legat de partea de inteligență artificială a adversarului de care trebuie să fugă jucătorul, s-a folosit un simplu script ce urmărește mișcarea acestuia. Bineînțeles această metodă prezintă multe probleme ce pot fi foarte ușor rezolvate cu o abordare ce foloșeste $Raycasting$\footnote{Metodă de testare a intersecțiilor dintre obiecte într-o scenă}.\par
+Deoarece jocul este un $EndlessRunner$, condiția de terminare este fie ca jucătorul să cadă de pe platformă fie ca acesta să se afle în proximitatea inamicului ce îl urmărește. Legat de partea de inteligență artificială a adversarului de care trebuie să fugă jucătorul, s-a folosit un simplu script ce urmărește mișcarea acestuia. Bineînțeles această metodă prezintă multe probleme ce pot fi foarte ușor rezolvate cu o abordare ce foloșeste $Raycasting$\footnote{Metodă de testare a intersecțiilor dintre obiecte într-o scenă}.\par
 
 \vspace{10mm}
 \begin{figure}[H]
@@ -298,7 +298,7 @@ Pe lângă această unealtă în cadrul mașinilor s-au utilizat și o component
 \caption{Diagramă ce modelează fluxul aplicației}
 \end{figure}
 
-Din punct de vedere a celor două sisteme de generare și instanțiere deoarece sunt decuplate este necesară o referință a generatorului în cadrul clasei de instanțiere. Odată asignată, sistemul de instanțiere expune o funcție $InstantiatePlatform$ ce este mai apoi apelată când jucatorul declanșează o zonă de pe platformă. De asemena se face o verificare pentru a nu declanșa instanțierea de două sau mai multe ori neintenționat.\par
+Din punct de vedere a celor două sisteme de generare și instanțiere, deoarece sunt decuplate, este necesară o referință a generatorului în cadrul clasei de instanțiere. Odată asignată, sistemul de instanțiere expune o funcție $InstantiatePlatform$ ce este mai apoi apelată când jucatorul declanșează o zonă de pe platformă. De asemena se face o verificare pentru a nu declanșa instanțierea de două sau mai multe ori neintenționat.\par
 
 \begin{lstlisting}[caption=Apelul de instanțiere a unei platforme]
 void OnTriggerEnter(Collider collidingObject)
