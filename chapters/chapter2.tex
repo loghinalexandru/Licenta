@@ -9,9 +9,9 @@
 \item \textbf{Componente din Unity} : module $built-in$ ce au ajutat la construirea aplicații de la coliziuni pănă la animații.
 \end{itemize}
 
-Din multitudinea de motoare grafice disponibile am ales \textbf{Unity} doarece e o tehnologie cu care am mai lucrat, fiind conștient de capabilitățile acestuia. Multitudinea de unelte îl fac foarte ușor de recomandat și împreună cu magazinul de \textit{assets} m-au ajutat foarte mult în procesul de construcție al acestui proiect. De asemenea \textbf{Unity} dispune de o documentație foarte bogată și bine pusă la punct , calități cheie pentru aprofundarea acestui motor grafic.\par
+Din multitudinea de motoare grafice disponibile am ales \textbf{Unity} doarece e o tehnologie cu care am mai lucrat, fiind conștient de capabilitățile acestuia. Multitudinea de unelte îl fac foarte ușor de recomandat și împreună cu magazinul de \textit{assets} m-au ajutat foarte mult în procesul de construcție al acestui proiect. De asemenea \textbf{Unity} dispune de o documentație foarte bogată și bine pusă la punct , calități cheie pentru aprofundarea și folosirea acestui motor grafic.\par
 
-Câteva exemple de sisteme \textit{in-house} de care dispune motorul grafic ar fi , motorul de simularea a fizicii , motorul audio , sistemul de prefabricate , sistemul de iluminare și randare etc. Fără folosirea unei tehnologii ca \textbf{Unity} , acest proiect nu ar fi fost posibil într-un timp atăt de scurt , timpul de dezvoltare putând fi chiar triplat. Singurul dezavantaj imediat al acestui motor grafic este natura sa \textit{closed source}.\par
+Câteva exemple de sisteme ce vin la pachet cu motorul grafic ar fi, motorul de simularea a fizicii, motorul audio, sistemul de prefabricate, sistemul de iluminare și randare etc. Fără folosirea unei tehnologii ca \textbf{Unity}, acest proiect nu ar fi fost posibil într-un timp atăt de scurt , timpul de dezvoltare putând fi chiar triplat. Singurul dezavantaj imediat al acestui motor grafic este natura sa \textit{closed source}.\par
 
 Pentru modelele 3D folosite în cadrul jocului a fost necesară folosirea unei editor și anume \textbf{Blender}. Deși mare parte din obiectele importate în joc sunt preluate de pe magazinul integrat în \textbf{Unity} , există anumite obiecte ce au fost modelate de către mine. Cu acest prilej am aprofundat anumite tehnici ce implică modelarea 3D , unul dintre cele mai importante find \textit {UV unwrapping}.\par
 
@@ -62,7 +62,7 @@ Aplicația fiind facută în \textbf{Unity} fișierele și directoarele au o str
 \section{Componente}
 Aplicația prezentă este împărțită pe diferite module ce controlează sunetul, generarea, \textit{UI-ul} , instanțierea și multe altele. În \textbf{Unity} acest lucru se realizeză în mare parte prin fișiere sursă atașate de obiectele din scena curentă. \par
 
-Am optat să construiesc jocul în jurul unei singure scene, ceea ce necesită un numar mai mare de controalere și cod. O consecință directă a folosirii unei singure scene este integrarea meniului principal în același mediu ca și jocul în sine. De aici derivă necesitatea de două scripturi ce controlează tranziția de la meniu la joc intitulate sugestiv \textit{MenuController} și \textit{GameController}.\par
+Am optat să construiesc jocul în jurul unei singure scene, ceea ce necesită un numar mai mare de operatori și fișiere sursă. O consecință directă a folosirii unei singure scene este integrarea meniului principal în același mediu ca și jocul în sine. De aici derivă necesitatea de două scripturi ce controlează tranziția de la meniu la joc intitulate sugestiv \textit{MenuController} și \textit{GameController}.\par
 
 
 \begin{figure}[H]
@@ -71,12 +71,12 @@ Am optat să construiesc jocul în jurul unei singure scene, ceea ce necesită u
 \caption{Structura arborescentă a obiectelor din scenă}
 \end{figure}
 
-De asemenea există un obiect \textit{Generator} ce conține toți generatori necesari pentru construirea scenei. Unul pentru fiecare tip de zonă de interes și tip de platformă. Legătura între cei sașe generatori este facută de cele două scripturi atașate de obiectul \textit{Camera} denumite \textit{PlatformBuilder} și \textit{PlatformController}. Primul se ocupă cu instanțiera și plasarea obiectelor pe platformă în funcție de parametri de instanțiere setați de un script atașat de un \textit{Spawn Point}. Cel de-al doilea se ocupă cu randomizarea și controlarea numărului de platforme pentru fiecare zonă rurală , urbană și deșertică.\par
+De asemenea există un obiect \textit{Generator} ce conține toți generatori necesari pentru construirea scenei. Unul pentru fiecare tip de zonă de interes și tip de platformă. Legătura între cei sașe generatori este facută de cele două scripturi atașate de obiectul \textit{Camera} denumite \textit{PlatformBuilder} și \textit{PlatformController}. Primul se ocupă cu instanțiera și plasarea obiectelor pe platformă în funcție de parametri de instanțiere setați de un script atașat de un \textit{Spawn Point}. Cel de-al doilea se ocupă cu randomizarea și controlarea numărului de platforme pentru fiecare zonă de interes.\par
 \par
 
 \subsection{MenuController}
 
-Acest obiect se ocupă de toate aspectele ce țin de meniul principal. Deoarece există o singură scenă scriptul este destul de complex , rolul său fiind activarea tuturor componentelor ce țin de jocul principal, sunet, inamici, jucător, cameră, efecte și multe altele.\par
+Acest obiect se ocupă de toate aspectele ce țin de meniul principal. Deoarece există o singură scenă scriptul este destul de complex, rolul său fiind activarea tuturor componentelor ce țin de jocul principal, sunet, inamici, jucător, cameră, efecte și multe altele.\par
 
 În continuare se vor prezenta cele mai importante secvențe de cod ce se găsesc în fișierul \textbf{MenuController}.\par
 
@@ -108,7 +108,7 @@ Cele patru funcții controlează tranzițiile aplicației în funcție de intera
 
 Obiectul ce se ocupă de funcționalitatea principală din joc. În mare parte meniul de pauză și meniul de final al jocului sunt controlate de acest script.\par
 
-Legat de parte de cod , fișierul sursă atașat de obiect arată astfel:\par
+Legat de parte de cod, fișierul sursă atașat de obiect arată astfel:\par
 
 \begin{lstlisting}[caption=Funcțiile din GameController,
   label=a_label]
@@ -134,7 +134,7 @@ Meniul din joc odată activat oprește actualizarea grafică a jocului, lucru ce
 
 \subsection{PlatformBuilder}
 
-Scriptul ce realizează construirea în timp real a platformelor și le instanțiază. Datorită volumului mare de cod mai jos este prezentată doar funcția ce adaugă obiectele pe platformă. Înainte de instanțiere funcția are grija să preia datele de \textit{spawn} , conținute de scriptul atașat \textit{SpawnSettings} pentru fiecare loc valid de instanțiere.\par
+Scriptul ce realizează construirea în timp real a platformelor și le instanțiază. Datorită volumului mare de cod mai jos este prezentată doar funcția ce adaugă obiectele pe platformă. Înainte de instanțiere funcția are grija să preia datele de \textit{spawn}, conținute de scriptul atașat \textit{SpawnSettings} pentru fiecare loc valid de instanțiere.\par
 
 \begin{lstlisting}[caption=Funcțiile din PlatformBuilder,
   label=a_label]
@@ -159,7 +159,7 @@ Scriptul \textit{SpawnSettings} conține doi parametri \textit{isStackable} și 
 
 \subsection{PlatformController}
 
-Din cauza necesității de a controla durata unei anumite zone evitănd astfel inconsistența, \textit{PlatformController} alege un număr de platforme pentru fiecare secțiune tinând cont de o limită superioara și inferioară.\par
+Din cauza necesității de a controla durata unei anumite zone evitănd astfel inconsistența, \textit{PlatformController} alege un număr de platforme pentru fiecare secțiune ținând cont de o limită superioară și inferioară.\par
 
 \begin{lstlisting}[caption=Funcțiile din PlatformController,
   label=a_label,
