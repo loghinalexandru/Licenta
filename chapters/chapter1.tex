@@ -4,11 +4,11 @@
 
 În domeniul probabilităților un model Markov este folosit pentru a modela un sistem ce se schimbă într-un mod aleator. De obicei acesta ține cont doar de starea curentă și nu depinde de evenimentele aleatoare, acest lucru numindu-se și prorietatea Markov. Ulterior s-au dezvoltat modele ce au un așa numit ordin, extinzând astfel numărul de stări de care se ține cont în cadrul modelului.\par
 
-De obicei există o separație clară între tipurile de modele Markov, criteriul folosit este disponibilitatea de a observa sau nu stările modelului. Așadar rezultă două mari categorii, sisteme cu stări complet observabile, din care fac parte lanțurile Markov și sisteme cu stări parțial observabile, cel mai cunoscut sistem fiind modelul Markov cu stări invizibile sau HMM \footnote{Hidden Markov Model}. Pe langă aceste modele prezentate, s-au dezvoltat și anumite derivate fiecare cu avantajele sale demonstrând astfel flexibilitatea și capacitatea de modelare a acestor sisteme.\par
+De obicei există o separație clară între tipurile de modele Markov, criteriul folosit este disponibilitatea de a observa sau nu stările modelului. Așadar rezultă două mari categorii, sisteme cu stări complet observabile, din care fac parte lanțurile Markov și sisteme cu stări parțial observabile, cel mai cunoscut sistem fiind modelul Markov cu stări invizibile sau HMM \footnote{Hidden Markov Model}. Pe langă aceste sistem prezentate, s-au dezvoltat și anumite derivate fiecare cu avantajele sale demonstrând astfel flexibilitatea și capacitatea de modelare a acestor sisteme.\par
 
-În mare parte această teză se axează în jurul parții discrete a acestor modele, numărul de stări/observații find finit numărabile și ușor de caracterizat dar există și o ramură ce se ocupă cu partea continuă a acestor modele, fiecare abordare avănd avantajele și dezavantajele ei.\par
+În mare parte această teză se axează în jurul parții discrete a acestor modele, numărul de stări/observații find finit numărabile și ușor de caracterizat dar există și o ramură ce se ocupă cu partea continuă, fiecare abordare avănd avantajele și dezavantajele ei.\par
 
-Legat de partea practică, de-a lungul timpului aceste modele au fost folosite în foarte multe domenii de la bioinformatică până la lingvistică computațională. O aplicație foarte importantă a acestor modele este recunoașterea vocală, modelele Markov fiind standardul folosit în industrie pentru asistenții personali ca \textit{Siri} și \textit{Alexa}.\par
+Legat de partea practică, de-a lungul timpului aceste sisteme au fost folosite în foarte multe domenii de la bioinformatică până la lingvistică computațională. O aplicație foarte importantă a acestor modele este recunoașterea vocală, modelele Markov fiind standardul folosit în industrie pentru asistenții personali ca \textit{Siri} și \textit{Alexa}.\par
 
 \section{Modele Markov cu stări invizibile}
 
@@ -62,7 +62,7 @@ Uneori printre alte publicații de specialitate modelul poate fi descris prin sp
   \path (L3) edge [connect] (O3);
   \path (Lt) edge [connect] (Ot);
 \end{tikzpicture}
-\caption{Modul de funcționare a modelului Markov cu stari invizibile}
+\caption{Modul de funcționare a modelului Markov cu stări invizibile}
 \end{figure}
 \par
 
@@ -120,7 +120,7 @@ Din cauză naturii iterative în general acești algoritmi se bazează pe conver
 
 De aceea s-au încercat multe artificii pentru a obține un $log-likelihood$ căt mai bun. Unul dintre ele, folosit și de această aplicație, este inițializarea aleatoare a parametrilor $\lambda = \{\textbf{A},\textbf{B},\pi\}$ și incercarea antrenării până la convergență de mai multe ori pastrăndu-se cel mai bun rezultat. De asemenea numărul de stări latente poate influența drastic comportamentul modelului, fiind un factor decisiv între $underfit$ și $overfit$.\par
 
-Din păcate determinarea acestui număr de stări optim pentrun un model dat este o problemă grea ce nu are o soluție fixă. În general abordarea acestei probleme este prin $trial\ and\ error$. Există și anumite criterii bazate pe $log-likelihood$ cum ar fi $BIC$ \footnote{Bayesian Information Criterion} sau $AIC$ \footnote{Akaike Information Criterion}.\par
+Din păcate determinarea acestui număr de stări optim pentrun un model dat este o problemă grea ce nu are o soluție fixă. În general abordarea acestei probleme este prin $trial\ and\ error$. Există și anumite criterii bazate pe $log-likelihood$ și numărul parametrilor din model, cum ar fi $BIC$ \footnote{Bayesian Information Criterion} sau $AIC$ \footnote{Akaike Information Criterion}.\par
 
 În cadrul acestei proiect a fost folosită metoda $trial\ and\ error$ în defavoarea criteriilor prezentate mai sus doarece, modelele sunt relativ mici și nu necesită cei mai optimi parametri. În general s-a urmărit ca numărul de stări să fie mai mare decăt numărul de etichete, ceea ce previne de fapt inabilitatea rețelei de a învăța restricțiile la antrenare. Acest lucru se mai numește și $underfit$.\par
 
@@ -133,11 +133,11 @@ Cel mai cunoscut algoritm pentru inferare de parametri, fiind dat un model Marko
 \end{itemize}
 \par
 
-În ciuda popularității acestui algoritm am decis să folosesc altă modalitate de estimare a parametrilor din motive de viteză și simplitate atăt la nivel de implementare căt și la nivel teoretic. Publicația ce descrie acest algoritm prezintă grafice convingătoare în privința vitezei atunci cănd lungimea secvenței observate $T$ depășeste numărul de etichete posibile al modelului.\par
+În ciuda popularității acestui algoritm am decis să folosesc altă modalitate de estimare a parametrilor din motive de viteză și simplitate atăt la nivel de implementare căt și la nivel teoretic. Publicația ce descrie acest algoritm prezintă grafice convingătoare în privința vitezei atunci cănd lungimea secvenței observate $O$ depășeste numărul de etichete posibile al modelului.\par
 
 Un alt aspect alt acestei abordări este că algoritmul actualiează doar parametri $\textbf{A},\textbf{B}$ ai modelului ignorând complet parametrul $\pi$ ceea ce duce la o amplificare a vitezei cu consecințe minime, parametrul $\pi$  find folosit doar la alegerea stării inițiale $q_{1}$.\par
 
-De asemenea ca și $Baum-Welch$, fiind dată o secvență $O$ de etichete observate de lungime $T$, antrenare nu se poate face pe o subsecvență $O_{1},\dots,O_{m}$ iar mai apoi pe o alta subsecvență $O_{m+1},\dots,O_{T}$, cu $1 < m < k$, deoarece modelul ar avea parametri adaptați doar după ultima subsecvență pe care a fost antrenat. Un alt aspect important este normalizarea valorilor ce se face la fiecare iterație după actualizarea parametrilor. Acest lucru este necesar doarece fiecare tranziție și emisie depinde în fond de o varaibilă aleatoare a carei sumă de probabilități trebuie să fie exact egală cu unu.\par
+De asemenea ca și $Baum-Welch$, fiind dată o secvență $O$ de etichete observate de lungime $T$, antrenare nu se poate face pe o subsecvență $O_{1},\dots,O_{m}$ iar mai apoi pe o alta subsecvență $O_{m+1},\dots,O_{T}$, cu $1 \leq m \leq T$, deoarece modelul ar avea parametri adaptați doar după ultima subsecvență pe care a fost antrenat. Un alt aspect important este normalizarea valorilor ce se face la fiecare iterație după actualizarea parametrilor. Acest lucru este necesar doarece fiecare tranziție și emisie depinde în fond de o variabilă aleatoare a carei sumă de probabilități trebuie să fie exact egală cu unu.\par
 
 Algoritmul pe care am decis să îl folosesc are la bază o matrice $C$ de dimensiune $M\times M$ construită cu scopul de a caracteriza numărul de apariții a unei anumite perechi $O_{t}O_{t+1}$ în secvența de etichete observate $O$.\par
 
@@ -172,13 +172,13 @@ $\mathbf{A} \gets norm(\mathbf{\bar{A'}})$
 
 Parametri $\textbf{A},\textbf{B},\pi$ sunt initializați aleator și normalizați pe linii, iar apoi este calculat $\mathbf{\bar{C} = B\bar{A}B^{T}}$, unde $\mathbf{\bar{A}} = {\pi_{k}\cdot a_{kl}}, 1 \leq k \leq N, 1\leq l \leq N$. Următorul pas este calcularea matricii \textbf{R} prin împărțirea element cu element a matricii \textbf{C} la matricea $\mathbf{\bar{C}}$, notat cu $\oslash$ în cadrul pseudocodului.\par
 
-După calculul acestor matrici intermediare urmează actualizare paremetrilor după urmatoarele ecuații preluate din publicație, $\mathbf{\bar{A'} = \bar{A} \odot B^{T}RB}$ și $\mathbf{B'} = \mathbf{B} \odot \mathbf{(RB\bar{A}^{T} + R^{T}B\bar{A})}$, unde $\odot$ reprezintă înmulțirea element cu element a două matrici. După acest calcul se face actualizarea astfel $\mathbf{A} = norm(\mathbf{\bar{A'}}),\mathbf{B} = norm(\mathbf{B'})$, unde $norm$ este o funcție ce realizează normalizarea pe toată matricea \textbf{A} iar pentru \textbf{B} doar pe coloane. De asemena se realizează și o normalizare a matricii \textbf{A} pe linii, la finalul iterațiilor.\par
+După calculul acestor matrici intermediare urmează actualizare paremetrilor după urmatoarele ecuații, $\mathbf{\bar{A'} = \bar{A} \odot B^{T}RB}$ și $\mathbf{B'} = \mathbf{B} \odot \mathbf{(RB\bar{A}^{T} + R^{T}B\bar{A})}$, unde $\odot$ reprezintă înmulțirea element cu element a două matrici. După acest calcul se face actualizarea astfel $\mathbf{A} = norm(\mathbf{\bar{A'}}),\mathbf{B} = norm(\mathbf{B'})$, unde $norm$ este o funcție ce realizează normalizarea pe toată matricea \textbf{A} iar pentru \textbf{B} doar pe coloane. De asemena se realizează și o normalizare a matricii \textbf{A} pe linii, la finalul iterațiilor.\par
 
 Acești pași se realizează până un anumit set de criterii de convergență sunt satisfăcute. De obicei aceste criterii includ ca norma matricilor \textbf{A,B} să fie sub un anumit epsilon împreună cu funcția de $log-likelihood$. În implementarea acestui algoritm am folosit ca și criterii de convergență, cum sugera și publicația de unde am preluat ideea, calcularea unei norme de tip $L^{2}$ aplicată matricilor \textbf{A,B,R}, ce ar trebui sa fie sub un $\epsilon = 10^{-6}$ și un număr maxim de iterații pentru care ar trebui să fie îndeplinită. Bineînțeles aceste condiții sunt doar cele standard, ele putând fi ușor schimbate în funcție de necesitate.\par
 
 \section{Limitări ale modelului}
 
-În secțiunile anterioare am văzut avantajele modelului Markov cu stări invizibile dar acesta suferă de o mare problemă, blocarea într-un optim local. Din cauza acestei probeleme estimarea de parametri este o sarcină destul de dificilă și delicată. De asemenea modelul depinde foarte mult de proprietatea Markov ce specifică clar că o stare viitoare poate să depindă doar de starea curentă, limitănd astfel capacitatea de a modela date mult mai complexe. Se poate extinde modelul la ultimele $n-1$ stări dar complexitatea de antrenare și durata crește considerabil.
+În secțiunile anterioare am văzut avantajele modelului Markov cu stări invizibile dar acesta suferă de blocarea într-un optim local. Din cauza acestei probeleme estimarea de parametri este o sarcină destul de dificilă și delicată. De asemenea modelul depinde foarte mult de proprietatea Markov ce specifică clar că o stare viitoare poate să depindă doar de starea curentă, limitănd astfel capacitatea de a modela date mult mai complexe. Se poate extinde modelul la ultimele $n-1$ stări dar complexitatea de antrenare și durata crește considerabil, se mai numește și model cu memorie.
 \par
 
 Cea mai simplă soluție pentru a preveni blocarea este inițializarea aleatoare a parametrilor modelului și reantrenarea lui de mai multe ori, pastrandu-se cel mai bun rezultat. Acestă soluție este fezabilă deoarece prin randomizare se pot obține parametri din vecinătatea soluției optime, scăzănd posibilitatea ca algoritmul să ramană blocat într-un optim local, atunci cănd există o multitudine de aceste puncte. Deși această soluție rezolva problema în unele situații reantrenarea de foarte multe ori este costisitoare, de accea există posibilitatea de a salva parametri estimați.\par
@@ -189,12 +189,12 @@ O altă problemă a acestei abordări este că in general este asumată independ
 
 \section{Complexitate și metode de optimizare}
 
-În acestă secțiune se vor prezenta problem legate de complexitatea algoritmului de antrenare căt și a algoritmului de eșantionare dintr-o distribuție de probabilitate discretă. Conform publicației algoritmul de estimare a parametrilor prezentat anterior ce se folosește de o matrice de apariție \textbf{C} are complexitatea timp de ordinul $O(IM^{2}N+T)$, unde $I$ reprezintă numărul de iterații până la convergență.\par
+În acestă secțiune se vor prezenta problem legate de complexitatea algoritmului de antrenare căt și a algoritmului de eșantionare dintr-o distribuție de probabilitate discretă. Algoritmul de estimare a parametrilor$^{[1]}$ prezentat anterior ce se folosește de o matrice de apariție \textbf{C} are complexitatea timp de ordinul $O(IM^{2}N+T)$, unde $I$ reprezintă numărul de iterații până la convergență.\par
 
 Comparativ cu algoritmul $Baum-Welch$ ce are ca și complexitate timp $O(IN^{2}T)$ iar în practică secvența de etichete pe care e antrenat algoritmul are o lungime considerabil mai mare decăt cardinalul mulțimii \textbf{V}, adică $M$, de unde se observă că abordarea cu matricea de apariție aduce un surplus de rapiditate de procesare, ce este important în domeniul jocurilor unde eficiența este un aspect cheie.\par
 
 Legat de procesul de eșantionare, numit și $Inverse \ transform \ method$, acesta este realizat prin calcularea distribuției $CDF$\footnote{Cumulative Distribution Function} pentru parametri $A,B$ pentru a putea realiza o căutare binară a stării către care se va face tranziția fiind dat un număr generat pseudorandom.Din punct de vedere al complexității sunt necesari pași adiționali cum ar fi stocarea valorilor cumulative dar asta se face în etapa de inițializare avănd efect minimal asupra jocului. Ce se poate spune totuși de această abordare este că timpul de cautare a stării se transforma din $O(N)$, unde $N$ repezintă numărul de stări, în $O(log(N))$. Această optimizare este importantă deoarece operația de eșantionare are loc de zeci de ori pentru o platformă fiind practic cea mai folosită operație din cadrul librăriei.\par
 
-Deși în practică metoda de $sampling$ în timp de $O(log(N))$ s-a dovedit a fi suficientă, există un algoritm și mai eficient decăt cel prezentat ce reușeste să determine starea sau emisia find dat un număr generat aleator în timp de $O(1)$, având o complexitate la inițializare căt și memorie ca și cea a algoritmul de căutare binară.\par
+Deși în practică metoda de $sampling$ în timp de $O(log(N))$ s-a dovedit a fi suficientă, există un algoritm și mai eficient decăt cel prezentat ce reușeste să determine starea sau emisia find dat un număr generat aleator în timp de $O(1)$, având o complexitate la inițializare căt și memorie echivalentă cu cea a algoritmului de căutare binară.\par
 
 Acest algoritm se numește \textit{metoda lui Alias}, și reușeste să obțina cea mai bună viteză posibilă pentru eșantionarea dintr-o distribuție de probabilitate discretă. În general ideea din spatele algorimlui este de a crea o altă distribuție pe baza celei de la intrare ce permite eșantionarea în timp constant.\par

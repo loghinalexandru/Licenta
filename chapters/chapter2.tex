@@ -13,11 +13,11 @@ Din multitudinea de motoare grafice disponibile am ales \textbf{Unity} doarece e
 
 Câteva exemple de sisteme ce vin la pachet cu motorul grafic ar fi, motorul de simularea a fizicii, motorul audio, sistemul de prefabricate, sistemul de iluminare și randare etc. Fără folosirea unei tehnologii ca \textbf{Unity}, acest proiect nu ar fi fost posibil într-un timp atăt de scurt , timpul de dezvoltare putând fi chiar triplat. Singurul dezavantaj imediat al acestui motor grafic este natura sa \textit{closed source}.\par
 
-Pentru modelele 3D folosite în cadrul jocului a fost necesară folosirea unei editor și anume \textbf{Blender}. Deși mare parte din obiectele importate în joc sunt preluate de pe magazinul integrat în \textbf{Unity} , există anumite obiecte ce au fost modelate de către mine. Cu acest prilej am aprofundat anumite tehnici ce implică modelarea 3D , unul dintre cele mai importante find \textit {UV unwrapping}.\par
+Pentru modelele 3D folosite în cadrul jocului a fost necesară folosirea unei editor și anume \textbf{Blender}. Deși mare parte din obiectele importate în joc sunt preluate de pe magazinul integrat în \textbf{Unity}, există și anumite obiecte ce au fost modelate de către mine. Cu acest prilej am aprofundat anumite tehnici ce implică modelarea 3D , unul dintre cele mai importante find \textit {UV unwrapping}.\par
 
 Am ales \textbf{Blender} datorită politcii \textit{open source} și a documentației vaste disponibile, fiind foarte ușor de lucrat în acesta, neputând aduce aplicația la un nivel dorit de finisaj fară acestă unealtă.\par
 
-Din punct de vedere al librăriilor externe am folosit \textbf{Math.NET} , importată în \textbf{Unity} folosind \textbf{NuGet}. Necesitatea acestei librări este datorat algoritmului de invățare automată ce se bazează foarte mult pe lucrul și manipularea matricilor, de la adunarea cu un scalar până la înmulțirea/împărțirea element cu element. Detaliile legate de acest algoritm împreuna cu avantajele și dezavantajele acestuia vor fi discutate în secțiunea teoretică.\par
+Din punct de vedere al librăriilor externe am folosit \textbf{Math.NET} , importată în \textbf{Unity} folosind \textbf{NuGet}. Necesitatea acestei librări este datorat algoritmului de invățare automată ce se bazează foarte mult pe lucrul și manipularea matricilor, de la adunarea cu un scalar până la înmulțirea/împărțirea element cu element. Detaliile legate de acest algoritm împreuna cu avantajele și dezavantajele acestuia au fost discutate în secțiunea teoretică.\par
 
 Datorită motorului grafic folosit și a limitărilor acestuia întregul proiect a fost construit folosind \textbf{C\#}, alternativa sa fiind \textbf{JavaScript}. Din cauza experienței cu \textbf{C\#} și a performanței ridicate am luat decizia de a folosi acest limbaj.\par
 
@@ -71,7 +71,7 @@ Am optat să construiesc jocul în jurul unei singure scene, ceea ce necesită u
 \caption{Structura arborescentă a obiectelor din scenă}
 \end{figure}
 
-De asemenea există un obiect \textit{Generator} ce conține toți generatori necesari pentru construirea scenei. Unul pentru fiecare tip de zonă de interes și tip de platformă. Legătura între cei sașe generatori este facută de cele două scripturi atașate de obiectul \textit{Camera} denumite \textit{PlatformBuilder} și \textit{PlatformController}. Primul se ocupă cu instanțiera și plasarea obiectelor pe platformă în funcție de parametri de instanțiere setați de un script atașat de un \textit{Spawn Point}. Cel de-al doilea se ocupă cu randomizarea și controlarea numărului de platforme pentru fiecare zonă de interes.\par
+De asemenea există un obiect \textit{Generator} în scenă ce conține toți generatori necesari pentru construirea mediului pentru jucător. Unul pentru fiecare tip de zonă de interes și tip de platformă. Legătura între cei sașe generatori este facută de cele două scripturi atașate de obiectul \textit{Camera} denumite \textit{PlatformBuilder} și \textit{PlatformController}. Primul se ocupă cu instanțiera și plasarea obiectelor pe platformă în funcție de parametri de instanțiere setați de un script atașat de un \textit{Spawn Point}. Cel de-al doilea se ocupă cu randomizarea și controlarea numărului de platforme pentru fiecare zonă de interes.\par
 \par
 
 \subsection{MenuController}

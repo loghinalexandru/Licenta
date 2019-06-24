@@ -22,7 +22,7 @@ Cum menționam și anterior pentru implementare am avut nevoie de o librărie ce
 
 În cadrul librăriei ce descrie modelul Markov cu stări invizibile s-au folosit o multitudine de funcții auxiliare ce ajută la normalizare și structurarea mai bună a codului. Mai jost sunt prezentate cele mai importante funcții auxiliare din cadrul acesteia.\par
 
-\begin{lstlisting}[caption=Funcție auxiliara ce realizează normalizarea]
+\begin{lstlisting}[caption=Funcție auxiliară ce realizează normalizarea]
 private Matrix<double> Normalize(Matrix<double> target, Vector<double> divisors, string mode){
         Matrix<double> output = Matrix<double>.Build.DenseOfMatrix(target);
         for (int i = 0; i < target.RowCount; ++i){
@@ -38,7 +38,7 @@ private Matrix<double> Normalize(Matrix<double> target, Vector<double> divisors,
 \end{lstlisting}
 
 
-\begin{lstlisting}[caption=Funcție auxiliara ce construiește matricea de frecvență $C$]
+\begin{lstlisting}[caption=Funcție auxiliară ce construiește matricea de frecvență $C$]
 private Matrix<double> GetOccurenceMatrix(List<int> observations){
         Matrix<double> occurences = Matrix<double>.Build.Dense(this.emissionCount, this.emissionCount);
         for (int i = 0; i < observations.Count - 1; ++i){
@@ -48,7 +48,7 @@ private Matrix<double> GetOccurenceMatrix(List<int> observations){
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption=Funcție auxiliara ce contruieste o matrice cu intrări random]
+\begin{lstlisting}[caption=Funcție auxiliară ce contruiește o matrice cu intrări aleatoare]
 private void SetRandomMatrix(double[,] matrix){
         double[] divisors = new double[matrix.GetLength(0)];
         double rowMax = 0.0f;
@@ -152,7 +152,7 @@ După cum se observă funcția de $log-likelihood$ este monoton crescătoare și
 
 \section{Detalii despre sistemul de instanțiere}
 
-Așa cum am mai menționat modelul Markov cu stări invizibile este folosit ca și generator iar pentru instanțiere a fost necesară implementarea unui sistem ce folosește puncte de $spawn$ amplasate pe platforme. Odată cu aceste puncte există și un script ce descrie dacă punctul de instanțiere poate să conțină mai multe obiecte sau nu, amplasarea lor facandu-se unu după altul. Se poate specifica și rotația obiectului, dar în general se urmarește ca obiectele de pe platformă să fie orientate înspre jucător, în sensul acelor de ceasornic.\par
+Așa cum am mai menționat modelul Markov cu stări invizibile este folosit ca și generator iar pentru instanțiere a fost necesară implementarea unui sistem ce folosește puncte de $spawn$ amplasate pe platforme. Odată cu aceste puncte există și un script ce descrie dacă punctul de instanțiere poate să conțină mai multe obiecte sau nu, amplasarea lor facandu-se unu după altul. Se poate specifica și rotația obiectului, dar în general se urmarește ca obiectele de pe platformă să fie orientate spre jucător, în sensul acelor de ceasornic.\par
 
 \vspace{10mm}
 \begin{figure}[H]
@@ -188,7 +188,7 @@ Este necesară această procedură din cauza modului cum functionează $Unity$, 
 
 Acest lucru face un pic incomodă folosirea librăriei dar capabilitatea de a putea atașa scriptul de orice obiect din scenă și de a putea adăuga referințe direct din $Inspector$ este mult prea importantă pentru a nu deriva din clasa $MonoBehaviour$.\par
 
-Librăria dispune și de o modalitate persistentă de încarcare e parametrilor unui model și anume prin așa numitele obiecte $TextAsset$ disponibile în cadrul motorului de joc. De exemplu, după antrenarea modelului parametri acestuia pot fi salvați prin apelarea unei funcții într-un astfel de obiect ce poate fi ulterior referențiat librăriei pentru a putea încărca modelul.\par
+Librăria dispune și de o modalitate persistentă de încarcare e parametrilor unui model și anume prin așa numitele obiecte $TextAsset$ disponibile în cadrul motorului de joc. De exemplu, după antrenarea modelului parametri acestuia pot fi salvați prin apelarea unei funcții într-un astfel de obiect ce poate fi ulterior referențiat librăriei pentru a putea încărca modelul gata antrenat.\par
 
 \section{Detalii legate de aspectul aplicației}
 
@@ -250,7 +250,7 @@ Meniul principal este contruit în aceeași scenă ca și jocul principal. Pentr
 \caption{Meniul de pauză}
 \end{figure}
 
-Dacă jucătorul este nevoie să oprească jocul acesta poate apăsa tasta $Escape$, dezvăluind astfel meniul de pauză. De aici acesta poate da $Resume$ sau $Exit To Menu$ pentru a scoate pauză jocului, respectiv pentru a reveni la meniu. Modul prin care se realizează acest lucru este setarea parametrului $Time.timeScale$ la zero respectiv unu.\par
+Dacă jucătorul este nevoie să oprească jocul acesta poate apăsa tasta $Escape$, dezvăluind astfel meniul de pauză. De aici acesta poate da $Resume$ sau $Exit To Menu$ pentru a scoate jocul din starea de pauză, respectiv pentru a reveni la meniul principal. Modul prin care se realizează acest lucru este setarea parametrului $Time.timeScale$ la zero respectiv unu.\par
 
 \begin{lstlisting}[caption=Exemplu de folosire a $Time.timeScale$]
 private void ToggleRender(){
