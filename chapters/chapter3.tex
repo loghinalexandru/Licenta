@@ -303,23 +303,13 @@ De asemenea jucătorul căt și adversarul conțin o componentă numită $BoxCol
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.5\linewidth]{Flow.png} \par
+\includegraphics[width=0.6\linewidth]{Flow.png} \par
 \caption{Diagramă ce modelează fluxul aplicației}
 \end{figure}
 
 Din punct de vedere a celor două sisteme de generare și instanțiere, deoarece sunt decuplate, este necesară o referință a generatorului în cadrul clasei de instanțiere. Odată asignată, sistemul de instanțiere expune o funcție $InstantiatePlatform$ ce este mai apoi apelată când jucatorul declanșează o zonă de pe platformă. De asemena se face o verificare pentru a nu declanșa instanțierea de două sau mai multe ori neintenționat.\par
 
-\begin{lstlisting}[caption=Apelul de instanțiere a unei platforme]
-void OnTriggerEnter(Collider collidingObject)
-{
-        if (!this.triggered){
-            this.callbackObject.GetComponent<PlatformBuilder>().InstantiatePlatform();
-            this.triggered = true;
-        }
-}
-\end{lstlisting}
-
-Mai jos se poate observa diagrama \textbf{UML} ce modelează comportamentul celor două sisteme. Din necesitatea de a controla numărul de platforme pentru fiecare din cele trei zone, rurală , urbană și deșertică s-a introdus un mediator între $PlatformBuilder$ și generatori de platforme numit $PlatformController$, mediator ce expune o funcție $GetNextPlatform$ a cărei scop este de a verifica numărul de platforme de un anumit tip ce au fost generate, înlocuind generatorul prin rotație atunci când o anumită limită a fost atinsă, limită ce este determinată aleator după doi parametri ce setează o margine inferioară și superioară.\par
+Mai jos se poate observa diagrama \textbf{UML} ce modelează comportamentul celor două sisteme. Din necesitatea de a controla numărul de platforme pentru fiecare din cele trei zone, rurală , urbană și deșertică s-a introdus un mediator între $PlatformBuilder$ și generatori de platforme numit $PlatformController$.\par Acest mediator expune o funcție $GetNextPlatform$ a cărei scop este de a verifica numărul de platforme de un anumit tip ce au fost generate, înlocuind generatorul prin rotație atunci când o anumită limită a fost atinsă.\par Determinarea limitei se face aleator după doi parametri aleși convenabil din motorul grafic, parametri ce setează de fapt o margine inferioară și superioară.\par
 
 \vspace{10mm}
 \begin{figure}[H]
@@ -327,4 +317,6 @@ Mai jos se poate observa diagrama \textbf{UML} ce modelează comportamentul celo
 \includegraphics[width=0.6\linewidth]{Full.png} \par
 \caption{Diagramă ce modelează sistemul de generare și instanțiere}
 \end{figure}
+
+
 

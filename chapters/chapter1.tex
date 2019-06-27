@@ -2,9 +2,9 @@
 
 \section{Preambul}
 
-În domeniul probabilităților un model Markov este folosit pentru a modela un sistem ce se schimbă într-un mod aleator. De obicei acesta ține cont doar de starea curentă și nu depinde de evenimentele aleatoare, acest lucru numindu-se și prorietatea Markov. Ulterior s-au dezvoltat modele ce au un așa numit ordin, extinzând astfel numărul de stări de care se ține cont în cadrul modelului.\par
+În domeniul probabilităților un model Markov este folosit pentru a modela un sistem ce se schimbă într-un mod aleator. De obicei acesta ține cont doar de starea curentă și nu depinde de evenimentele anterioare, acest lucru numindu-se și prorietatea Markov. Ulterior s-au dezvoltat modele ce au un așa numit ordin, extinzând astfel numărul de stări de care se ține cont în cadrul modelului.\par
 
-De obicei există o separație clară între tipurile de modele Markov, criteriul folosit este disponibilitatea de a observa sau nu stările modelului. Așadar rezultă două mari categorii, sisteme cu stări complet observabile, din care fac parte lanțurile Markov și sisteme cu stări parțial observabile, cel mai cunoscut sistem fiind modelul Markov cu stări invizibile sau \textbf{HMM} \footnote{Hidden Markov Model}. Pe langă aceste sistem prezentate, s-au dezvoltat și anumite derivate fiecare cu avantajele sale demonstrând astfel flexibilitatea și capacitatea de modelare a acestor sisteme.\par
+De obicei există o separare clară între tipurile de modele Markov, criteriul folosit este disponibilitatea de a observa sau nu stările modelului. Așadar rezultă două mari categorii, sisteme cu stări complet observabile, din care fac parte lanțurile Markov și sisteme cu stări parțial observabile, cel mai cunoscut sistem fiind modelul Markov cu stări invizibile sau \textbf{HMM} \footnote{Hidden Markov Model}. Pe langă aceste sistem prezentate, s-au dezvoltat și anumite derivate fiecare cu avantajele sale demonstrând astfel flexibilitatea și capacitatea de modelare a acestor sisteme.\par
 
 În mare parte această teză se axează în jurul parții discrete a acestor modele, numărul de stări/observații find finit numărabile și ușor de caracterizat dar există și o ramură ce se ocupă cu partea continuă, fiecare abordare avănd avantajele și dezavantajele ei.\par
 
@@ -13,21 +13,21 @@ Legat de partea practică, de-a lungul timpului aceste sisteme au fost folosite 
 \section{Modele Markov cu stări invizibile}
 
 Acest model statistic este caracterizat în principal de faptul că stările interne sunt ascunse de un privitor exterior. Tot ce se poate observa în cadrul acestui model este emisia unor etichete sau obiecte 
-$\{v_{1},v_{2},v_{3},\dots,v_{n}\}$ dintr-o mulțime notată pe scurt $V$. Acest lucru complică în general structura modelului și algortimii ce folosesc acest sistem. \par
+$\{V_{1},V_{2},V_{3},\dots,V_{n}\}$ dintr-o mulțime notată pe scurt $V$. Acest lucru complică în general structura modelului și algortimii ce folosesc acest sistem. \par
 
 Un avantaj direct este creșterea capacității de expresivitate, putând modela mai fidel datele, datorită eliminării necesității de a cunoaște toate stările evenimentului.\par
 
 Pentru a caracteriza concret și complet acest model avem nevoie de un \textit{5-uplu} $ HMM = (\textbf{S},\textbf{V},\textbf{A},\textbf{B},\pi)$ ce desemnează astfel : \par
 \begin{itemize}
-\item{$\textbf{S} = \{S_{1},S_{2},\dots,S_{N}\}$ mulțimea ce desemnează numărul de stări ascunse din model, avand un numar de $N$ elemente. Starea relativa la timpul $t$ se va nota ca și $q_{t}$.}
+\item{$\textbf{S} = \{S_{1},S_{2},\dots,S_{N}\}$ mulțimea ce desemnează numărul de stări ascunse din model, avand un numar de $N$ elemente. Starea relativă la timpul $t$ se va nota ca și $q_{t}$.}
 \item{$\textbf{V} = \{V_{1},V_{2},\dots,V_{M}\}$ , cele $M$ etichete observabile.}
 \item{$\textbf{A} = \{a_{ij}\}$ unde $a_{i,j} = P(q_{t+1} = S_{j} | q_{t} = S_{i}) , 1 \leq i , j \leq N$ , reprezentând distribuția de probabilitea asociată tranzițiilor între stări.}
-\item{$\textbf{B} = \{b_{i}(k)\}$ unde $b_{i}(k) = P(V_{k}\ la\ timpul\ t\ | q_{t} = S_{i}), 1 \leq i \leq N , 1 \leq k \leq M$, ce caracterizează distribuția de probabilitate asociată emiterii unui element din $V$ în starea $i$.}
+\item{$\textbf{B} = \{b_{i}(k)\}$ unde $b_{i}(k) = P(V_{k}\ la\ timpul\ t\ | q_{t} = S_{i}), 1 \leq i \leq N , 1 \leq k \leq M$, reprezentând distribuția de probabilitate asociată emiterii unui element din $V$ în starea $i$.}
 \item{$\pi = \{\pi_{i}\}$ unde $\pi_{i} = P(q_{1} = S_{i}) , 1 \leq i \leq N$, folosit inițial pentru a stabili prima stare din model și anume $q_{1}$.}
 \end{itemize}
 \par
 
-În general modul de funcționare a acestui model poate fi descris foarte ușor cu o bucată de pseudocod:
+În general modul de funcționare a acestui model poate fi descris foarte ușor cu o porțiune de pseudocod:
 
 \begin{lstlisting}[mathescape=true , caption=Pseudocod ce descrie modul de operare a unui $HMM$]
 t $\gets$ 1;
@@ -102,7 +102,7 @@ Se poate face o distincție între cei șase generatori după scopul lor în cad
  \path(S) edge[connect, bend left=30] (L4);
  \path(S) edge[connect, bend left=30] (L5);
 \end{tikzpicture}
-\caption{Structura unui generator din cele trei zone}
+\caption{Structura orientativă a unui generator}
 \end{figure}
 \par
 
@@ -179,7 +179,7 @@ Intrare: Matricea $\mathbf{C}, \mathbf{\bar{A}} , \mathbf{B^T}$
 repeta pana la convergenta:
 	$\mathbf{R} \gets \mathbf{C}  \oslash \mathbf{\bar{C}}$
 	$\mathbf{\bar{A'}} \gets \mathbf{\bar{A'}} \odot (\mathbf{B^TRB})$
-	$\mathbf{\bar{B'}} \gets \mathbf{B} \odot (\mathbf{RB\bar{A^T}} + \mathbf{R^TB\bar{A}})$
+	$\mathbf{B'} \gets \mathbf{B} \odot (\mathbf{RB\bar{A^T}} + \mathbf{R^TB\bar{A}})$
 	$\mathbf{\bar{A}} \gets norm(\mathbf{\bar{A'}})$
 	$\mathbf{B} \gets norm(\mathbf{B'})$
 $\mathbf{A} \gets norm(\mathbf{\bar{A'}})$
