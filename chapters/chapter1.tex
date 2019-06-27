@@ -4,7 +4,7 @@
 
 În domeniul probabilităților un model Markov este folosit pentru a modela un sistem ce se schimbă într-un mod aleator. De obicei acesta ține cont doar de starea curentă și nu depinde de evenimentele aleatoare, acest lucru numindu-se și prorietatea Markov. Ulterior s-au dezvoltat modele ce au un așa numit ordin, extinzând astfel numărul de stări de care se ține cont în cadrul modelului.\par
 
-De obicei există o separație clară între tipurile de modele Markov, criteriul folosit este disponibilitatea de a observa sau nu stările modelului. Așadar rezultă două mari categorii, sisteme cu stări complet observabile, din care fac parte lanțurile Markov și sisteme cu stări parțial observabile, cel mai cunoscut sistem fiind modelul Markov cu stări invizibile sau HMM \footnote{Hidden Markov Model}. Pe langă aceste sistem prezentate, s-au dezvoltat și anumite derivate fiecare cu avantajele sale demonstrând astfel flexibilitatea și capacitatea de modelare a acestor sisteme.\par
+De obicei există o separație clară între tipurile de modele Markov, criteriul folosit este disponibilitatea de a observa sau nu stările modelului. Așadar rezultă două mari categorii, sisteme cu stări complet observabile, din care fac parte lanțurile Markov și sisteme cu stări parțial observabile, cel mai cunoscut sistem fiind modelul Markov cu stări invizibile sau \textbf{HMM} \footnote{Hidden Markov Model}. Pe langă aceste sistem prezentate, s-au dezvoltat și anumite derivate fiecare cu avantajele sale demonstrând astfel flexibilitatea și capacitatea de modelare a acestor sisteme.\par
 
 În mare parte această teză se axează în jurul parții discrete a acestor modele, numărul de stări/observații find finit numărabile și ușor de caracterizat dar există și o ramură ce se ocupă cu partea continuă, fiecare abordare avănd avantajele și dezavantajele ei.\par
 
@@ -66,7 +66,7 @@ Uneori printre alte publicații de specialitate modelul poate fi descris prin sp
 \end{figure}
 \par
 
-În cadrul aplicației mulțimea de etichete \textbf{V} au fost reprezentată de elementele de tip \textit{GameObject} ce urmează a fi instanțiate. Din motive de performanță și flexibilitate aplticația folosește în total un număr de sașe modele Markov cu stări invizibile a căror parametri au fost estimați să respecte anumite restricții.\par
+În cadrul aplicației mulțimea de etichete \textbf{V} au fost reprezentată de elementele de tip \textit{GameObject} ce urmează a fi instanțiate. Din motive de performanță și flexibilitate, aplicația folosește în total un număr de sașe modele Markov cu stări invizibile a căror parametri au fost estimați să respecte anumite restricții.\par
 
 Se poate face o distincție între cei șase generatori după scopul lor în cadrul jocului, trei dintre ei sunt folosiți pentru a genera terenul pe care jucătorul navighează. Această decizie a fost facută din necesitatea de a putea controla numărul de platforme pentru fiecare din cei trei generatori, ce în fond reprezintă trei zone distincte, urbană, rurală și deșertică enumerate conform ordinii de apariție în joc.\par
 
@@ -106,17 +106,17 @@ Se poate face o distincție între cei șase generatori după scopul lor în cad
 \end{figure}
 \par
 
-Se observă din figură, că avem un nod de start \textbf{S} ce ne conduce la una dintre cele cinci stări, iar fiecare stare are acces la \textbf{V}, mulțimea etichetelor, în cazul nostru la cele trei tipuri de platformă \textit{Left},\textit{Right} și \textit{Straight}. Din model s-au omis probabilitățile de pe arce tocmai pentru a nu încărca desenul căt și pentru faptul că ele vor fi inferate ulterior de un algoritm de estimare a parametrilor, inițial probabilitățile fiind necunoscute.\par
+Se observă din figură, că avem un nod de start \textbf{S} ce ne conduce la una dintre cele cinci stări, iar fiecare stare are acces la \textbf{V}, mulțimea etichetelor, în cazul nostru la cele trei tipuri de platformă \textit{Left},\textit{Right} și \textit{Straight}. Din model s-au omis probabilitățile de pe arce tocmai pentru a nu încărca desenul căt și pentru faptul că ele vor fi stabilite ulterior de un algoritm de estimare a parametrilor, inițial probabilitățile fiind generate aleator.\par
 
-Restul de generatori sunt folosiți pentru obiectele ce urmează a popula platformele. Din cauza complexității și a numărului mare de stări și etichete nu se poate realiza o reprezentare grafică. Cel mai mare dintre generatori are douăzeci de stări și zece obiecte ce au rol de etichete pentru emisie.\par
+Restul generatorilor sunt folosiți pentru obiectele ce urmează a popula platformele. Din cauza complexității și a numărului mare de stări și etichete nu se poate realiza o reprezentare grafică. Cel mai mare dintre generatori are douăzeci de stări și zece obiecte ce au rol de etichete pentru emisie.\par
 
 O observație importantă legată de mulțimea \textbf{V} este că aceasta conține un element mai special și anume un \textit{GameObject} denumit sugestiv epsilon. Acest obiect semnifică elementul vid, prin care se poate insera un spațiu între obiectele din scenă pentru un aspect mai plăcut la instanțierea pe platforme. Această decizie s-a luat din necesitatea de a separa unele obiecte de celelalte pentru a putea reproduce mai fidel lumea reală.\par
 
 \section{Estimare de parametri}
 
-Această dilema este una dintre cele trei mari aspecte a modelelor Markov cu stări invizibile, celelalte două fiind determinarea probabilității de emisie a unei secvențe și determinarea celei mai bune secvențe de stări ce descriu seria de emisii observate. Problema estimării de parametri este cea mai grea dintre cele trei, nici până în momentul de fața nu s-a dezvoltat un algoritm simplu ce rezolvă această problemă. Majoritatea algoritmilor folosesc o metodă iterativă pentru a incerca o estimare a parametrilor ce descriu un HMM și anume $\lambda = \{\textbf{A},\textbf{B},\pi\}$.\par
+Această dilema este una dintre cele trei mari aspecte a modelelor Markov cu stări invizibile, celelalte două fiind determinarea probabilității de emisie a unei secvențe și determinarea celei mai bune secvențe de stări ce descriu seria de emisii observate. Problema estimării de parametri este cea mai grea dintre cele trei, nici până în momentul de fața nu s-a dezvoltat un algoritm simplu ce rezolvă această problemă. Majoritatea algoritmilor folosesc o metodă iterativă pentru a incerca o estimare a parametrilor ce descriu un \textbf{HMM} și anume $\lambda = \{\textbf{A},\textbf{B},\pi\}$.\par
 
-Din cauză naturii iterative în general acești algoritmi se bazează pe convergența parametrilor pentru terminare. Un lucru bun este că s-a demonstrat apropierea de un anumit punct a acestor algoritmi ceea ce inseamnă ca se termină întotdeauna, cu toate acestea abordarea iterativă suferă de o convergență foarte înceată și de pericolul continuu de a rămâne blocat într-un optim local.\par
+Din cauză naturii iterative în general acești algoritmi se bazează pe aproprierea față de un anumit punct pentru terminare. Un lucru bun este că s-a demonstrat proprietatea de convergență a acestor algoritmi, ceea ce inseamnă că se termină întotdeauna, cu toate acestea abordarea iterativă suferă de o convergență foarte înceată și de pericolul continuu de a rămâne blocat într-un optim local.\par
 
 De aceea s-au încercat multe artificii pentru a obține un $log-likelihood$ căt mai bun. Unul dintre ele, folosit și de această aplicație, este inițializarea aleatoare a parametrilor $\lambda = \{\textbf{A},\textbf{B},\pi\}$ și incercarea antrenării până la convergență de mai multe ori pastrăndu-se cel mai bun rezultat. De asemenea numărul de stări latente poate influența drastic comportamentul modelului, fiind un factor decisiv între $underfit$ și $overfit$.\par
 
@@ -126,36 +126,51 @@ Din păcate determinarea acestui număr de stări optim pentrun un model dat est
 
 \section{Algoritmi pentru estimare de parametri}
 
-Cel mai cunoscut algoritm pentru inferare de parametri, fiind dat un model Markov cu stări invizibile este așa numitul algoritm $Baum-Welch$ sau algoritmul $Forward-Backward$. Așa cum implică și numele acest algoritm are la bază două etape. Inițial parametri modelului $\lambda = \{\textbf{A},\textbf{B},\pi\}$ sunt inițializați aleator și mai apoi actualizați după fiecare iterație până la convergență după cum urmează:
+Cel mai cunoscut algoritm pentru inferare de parametri, fiind dat un model Markov cu stări invizibile este așa numitul algoritm \textbf{Baum-Welch} sau algoritmul \textbf{Forward-Backward}. Așa cum implică și numele acest algoritm are la bază două etape. Inițial parametri modelului $\lambda = \{\textbf{A},\textbf{B},\pi\}$ sunt inițializați aleator și mai apoi actualizați după fiecare iterație până la convergență după cum urmează:
 \begin{itemize}
 \item{\textbf{Forward} este etapa în care se calculează de obicei $P(O|\lambda)$, unde $O$ este secvența de etichete observate, folosind tehnica programării dinamice pentru stocarea anterioară a rezultatelor. Acest calcul este necesar doarece va fi folosit în urmatoarea etapă pentru reajustarea parametrilor modelului.}
 \item{\textbf{Backward} este etapa de calcul a probabilității $P(O_{t+1},\dots,O_{T}| S_{i},\lambda)$, unde $T$ este lungimea de etichete observate, ceea ce semnifică șansa de a observa secvența $O_{t+1},\dots,O_{T}$ aflându-ne în starea $i$ și la momentul $t$ din timp}.
 \end{itemize}
 \par
 
-În ciuda popularității acestui algoritm am decis să folosesc altă modalitate de estimare a parametrilor din motive de viteză și simplitate atăt la nivel de implementare căt și la nivel teoretic. Publicația ce descrie acest algoritm prezintă grafice convingătoare în privința vitezei atunci cănd lungimea secvenței observate $O$ depășeste numărul de etichete posibile al modelului.\par
+În ciuda popularității acestui algoritm am decis să folosesc altă modalitate de estimare a parametrilor din motive de viteză și simplitate atăt la nivel de implementare căt și la nivel teoretic. Acest algoritm ce estimează parametri modelului$^{\mathbf{[1]}}$ prezintă avantaje substanțiale asupra vitezei atunci cănd lungimea secvenței observate $O$ depășeste numărul de etichete posibile al modelului.\par
 
-Un alt aspect alt acestei abordări este că algoritmul actualiează doar parametri $\textbf{A},\textbf{B}$ ai modelului ignorând complet parametrul $\pi$ ceea ce duce la o amplificare a vitezei cu consecințe minime, parametrul $\pi$  find folosit doar la alegerea stării inițiale $q_{1}$.\par
+Un alt aspect alt acestei abordări este că algoritmul actualiează doar parametri $\textbf{A},\textbf{B}$ ai modelului ignorând complet parametrul $\pi$ ceea ce duce la o amplificare a vitezei cu consecințe minime, parametrul $\pi$ find folosit doar la alegerea stării inițiale $q_{1}$.\par
 
-De asemenea ca și $Baum-Welch$, fiind dată o secvență $O$ de etichete observate de lungime $T$, antrenare nu se poate face pe o subsecvență $O_{1},\dots,O_{m}$ iar mai apoi pe o alta subsecvență $O_{m+1},\dots,O_{T}$, cu $1 \leq m \leq T$, deoarece modelul ar avea parametri adaptați doar după ultima subsecvență pe care a fost antrenat. Un alt aspect important este normalizarea valorilor ce se face la fiecare iterație după actualizarea parametrilor. Acest lucru este necesar doarece fiecare tranziție și emisie depinde în fond de o variabilă aleatoare a carei sumă de probabilități trebuie să fie exact egală cu unu.\par
+De asemenea ca și \textbf{Baum-Welch}, fiind dată o secvență $O$ de etichete observate de lungime $T$, antrenare nu se poate face pe o subsecvență $O_{1},\dots,O_{m}$ iar mai apoi pe o alta subsecvență $O_{m+1},\dots,O_{T}$, cu $1 \leq m \leq T$, deoarece modelul ar avea parametri adaptați doar după ultima subsecvență pe care a fost antrenat. Un alt aspect important este normalizarea valorilor ce se face la fiecare iterație după actualizarea parametrilor. Acest lucru este necesar doarece fiecare tranziție și emisie depinde în fond de o variabilă aleatoare a carei sumă de probabilități trebuie să fie exact egală cu unu.\par
 
-Algoritmul pe care am decis să îl folosesc are la bază o matrice $C$ de dimensiune $M\times M$ construită cu scopul de a caracteriza numărul de apariții a unei anumite perechi $O_{t}O_{t+1}$ în secvența de etichete observate $O$.\par
+Algoritmul pe care am decis să îl folosesc, deși foarte similar cu \textbf{Baum-Welch}, are la bază o matrice $C$ de dimensiune $M\times M$ construită cu scopul de a caracteriza numărul de apariții a unei anumite perechi $O_{t}O_{t+1}$ în secvența de etichete observate $O$.\par
+
+Mai jos sunt prezentate câteva histograme ce modelează etichetele observate împreună cu perechile de etichete folosite la construirea matricei de frecvență.\par
 
 \vspace{10mm}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.75\linewidth]{CityPlatformPlot.png} \par
-\caption{Histogramă a unei secvențe de etichete folosite la antrenare}
+\caption{Histogramă a etichetelor pentru generatorul de platforme}
+\end{figure}
+
+\vspace{10mm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\linewidth]{CityPlatformPairPlot.png} \par
+\caption{Histogramă a perechilor de etichete pentru generatorul de platforme}
+\end{figure}
+
+\vspace{10mm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\linewidth]{DesertPropsPlot.png} \par
+\caption{Histogramă a etichetelor folosite pentru generatorul de obiecte}
 \end{figure}
 
 
 \vspace{10mm}
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.75\linewidth]{CityPlatformPairPlot.png} \par
-\caption{Histogramă a perechilor de etichete din secvența folosită la antrenare}
+\includegraphics[width=0.75\linewidth]{DesertPropsPairPlot.png} \par
+\caption{Histogramă a perechilor de etichete pentru generatorul de obiecte}
 \end{figure}
-
 
 Această soluție se bazează foarte mult pe calculul matriceal de accea în cadrul aplicației am fost nevoit să apelez la o librărie ce este folosită pentru calcul numeric. Deoarece acest algoritm se bazează foarte mult pe matrici, o incercare de implementare folosind unități de procesare grafice ar putea îmbunătăți substanțial viteza de convergență a algoritmului datorită puterii mai mari de calcul.\par
 
@@ -172,29 +187,29 @@ $\mathbf{A} \gets norm(\mathbf{\bar{A'}})$
 
 Parametri $\textbf{A},\textbf{B},\pi$ sunt initializați aleator și normalizați pe linii, iar apoi este calculat $\mathbf{\bar{C} = B\bar{A}B^{T}}$, unde $\mathbf{\bar{A}} = {\pi_{k}\cdot a_{kl}}, 1 \leq k \leq N, 1\leq l \leq N$. Următorul pas este calcularea matricii \textbf{R} prin împărțirea element cu element a matricii \textbf{C} la matricea $\mathbf{\bar{C}}$, notat cu $\oslash$ în cadrul pseudocodului.\par
 
-După calculul acestor matrici intermediare urmează actualizare paremetrilor după urmatoarele ecuații, $\mathbf{\bar{A'} = \bar{A} \odot B^{T}RB}$ și $\mathbf{B'} = \mathbf{B} \odot \mathbf{(RB\bar{A}^{T} + R^{T}B\bar{A})}$, unde $\odot$ reprezintă înmulțirea element cu element a două matrici. După acest calcul se face actualizarea astfel $\mathbf{A} = norm(\mathbf{\bar{A'}}),\mathbf{B} = norm(\mathbf{B'})$, unde $norm$ este o funcție ce realizează normalizarea pe toată matricea \textbf{A} iar pentru \textbf{B} doar pe coloane. De asemena se realizează și o normalizare a matricii \textbf{A} pe linii, la finalul iterațiilor.\par
+După calculul acestor matrici intermediare urmează actualizare paremetrilor după urmatoarele ecuații$^{\mathbf{[1]}}$, $\mathbf{\bar{A'} = \bar{A} \odot B^{T}RB}$ și $\mathbf{B'} = \mathbf{B} \odot \mathbf{(RB\bar{A}^{T} + R^{T}B\bar{A})}$, unde $\odot$ reprezintă înmulțirea element cu element a două matrici. După acest calcul se face actualizarea astfel $\mathbf{A} = norm(\mathbf{\bar{A'}}),\mathbf{B} = norm(\mathbf{B'})$, unde $norm$ este o funcție ce realizează normalizarea pe toată matricea \textbf{A} iar pentru \textbf{B} doar pe coloane. De asemena se realizează și o normalizare a matricii \textbf{A} pe linii, la finalul iterațiilor.\par
 
-Acești pași se realizează până un anumit set de criterii de convergență sunt satisfăcute. De obicei aceste criterii includ ca norma matricilor \textbf{A,B} să fie sub un anumit epsilon împreună cu funcția de $log-likelihood$. În implementarea acestui algoritm am folosit ca și criterii de convergență, cum sugera și publicația de unde am preluat ideea, calcularea unei norme de tip $L^{2}$ aplicată matricilor \textbf{A,B,R}, ce ar trebui sa fie sub un $\epsilon = 10^{-6}$ și un număr maxim de iterații pentru care ar trebui să fie îndeplinită. Bineînțeles aceste condiții sunt doar cele standard, ele putând fi ușor schimbate în funcție de necesitate.\par
+Acești pași se realizează până un anumit set de criterii de convergență sunt satisfăcute. De obicei aceste criterii includ ca norma matricilor \textbf{A,B} să fie sub un anumit epsilon împreună cu funcția de $log-likelihood$. În implementarea acestui algoritm am folosit ca și criterii de convergență, sugerate pentru algoritmul descris mai sus$^{\mathbf{[1]}}$, calcularea unei norme de tip $L^{2}$ aplicată fiecărei variabile \textbf{A,B,R} ce ar trebui să fie la un moment în timp, de la o iterație la alta, sub un $\epsilon = 10^{-6}$. De asemenea există și un număr maxim de iterații pentru care ar trebui să fie îndeplinită această normă. Bineînțeles aceste condiții sunt doar cele standard, ele putând fi ușor schimbate în funcție de necesitate.\par
 
 \section{Limitări ale modelului}
 
-În secțiunile anterioare am văzut avantajele modelului Markov cu stări invizibile dar acesta suferă de blocarea într-un optim local. Din cauza acestei probeleme estimarea de parametri este o sarcină destul de dificilă și delicată. De asemenea modelul depinde foarte mult de proprietatea Markov ce specifică clar că o stare viitoare poate să depindă doar de starea curentă, limitănd astfel capacitatea de a modela date mult mai complexe. Se poate extinde modelul la ultimele $n-1$ stări dar complexitatea de antrenare și durata crește considerabil, se mai numește și model cu memorie.
+În secțiunile anterioare am văzut avantajele modelului Markov cu stări invizibile dar acesta suferă de blocarea într-un optim local. Din cauza acestei probleme estimarea de parametri este o sarcină destul de dificilă și delicată. De asemenea modelul depinde foarte mult de proprietatea Markov ce specifică clar că o stare viitoare poate să depindă doar de starea curentă, limitănd astfel capacitatea de a modela date mult mai complexe. Se poate extinde dependența chiar până la ultimele $n-1$ stări dar complexitatea de antrenare și durata crește considerabil, acest tip de sistem numindu-se și model cu memorie.
 \par
 
-Cea mai simplă soluție pentru a preveni blocarea este inițializarea aleatoare a parametrilor modelului și reantrenarea lui de mai multe ori, pastrandu-se cel mai bun rezultat. Acestă soluție este fezabilă deoarece prin randomizare se pot obține parametri din vecinătatea soluției optime, scăzănd posibilitatea ca algoritmul să ramană blocat într-un optim local, atunci cănd există o multitudine de aceste puncte. Deși această soluție rezolva problema în unele situații reantrenarea de foarte multe ori este costisitoare, de accea există posibilitatea de a salva parametri estimați.\par
+Cea mai simplă soluție pentru a preveni blocarea este inițializarea aleatoare a parametrilor modelului și reantrenarea lui de mai multe ori, păstrându-se cel mai bun rezultat. Acestă soluție este fezabilă deoarece prin randomizare se pot obține parametri din vecinătatea soluției optime, scăzând posibilitatea ca algoritmul să rămână blocat într-un optim local, atunci cănd există o multitudine de aceste puncte. Deși această soluție rezolvă problema în unele situații reantrenarea de foarte multe ori este costisitoare, de accea există posibilitatea de a salva parametri estimați.\par
 
-Din cauza acestor limitări algoritmii de estimare a parametrilor precum $Baum-Welch$ nu garantează găsirea optimului global. Deseori un optim local este suficient pentru probleme ce nu necesită soluția optimă dar trebuie luat in considerare acest aspect atunci când se utiliează un astfel de algoritm.\par
+Din cauza acestor limitări algoritmii de estimare a parametrilor precum \textbf{Baum-Welch} nu garantează găsirea optimului global$^{\mathbf{[3]}}$. Deseori un optim local este suficient pentru probleme ce nu necesită soluția ideală, dar trebuie luat in considerare acest aspect atunci când se utiliează un astfel de algoritm.\par
 
-O altă problemă a acestei abordări este că in general este asumată independența etichetelor una față de celălaltă limitănd astfel flexibilitatea modelului și capacitatea de modelare a datelor.\par
+O altă problemă a acestei abordări este că în general este asumată independența etichetelor una față de celălaltă limitănd astfel flexibilitatea modelului și capacitatea de modelare a datelor.\par
 
 \section{Complexitate și metode de optimizare}
 
-În acestă secțiune se vor prezenta problem legate de complexitatea algoritmului de antrenare căt și a algoritmului de eșantionare dintr-o distribuție de probabilitate discretă. Algoritmul de estimare a parametrilor$^{[1]}$ prezentat anterior ce se folosește de o matrice de apariție \textbf{C} are complexitatea timp de ordinul $O(IM^{2}N+T)$, unde $I$ reprezintă numărul de iterații până la convergență.\par
+În acestă secțiune se vor prezenta problem legate de complexitatea algoritmului de antrenare căt și a algoritmului de eșantionare dintr-o distribuție de probabilitate discretă. Algoritmul de estimare a parametrilor$^{\mathbf{[1]}}$ prezentat anterior ce se folosește de o matrice de apariție \textbf{C} are complexitatea timp de ordinul $O(IM^{2}N+T)$, unde $I$ reprezintă numărul de iterații până la convergență.\par
 
-Comparativ cu algoritmul $Baum-Welch$ ce are ca și complexitate timp $O(IN^{2}T)$ iar în practică secvența de etichete pe care e antrenat algoritmul are o lungime considerabil mai mare decăt cardinalul mulțimii \textbf{V}, adică $M$, de unde se observă că abordarea cu matricea de apariție aduce un surplus de rapiditate de procesare, ce este important în domeniul jocurilor unde eficiența este un aspect cheie.\par
+Comparativ cu algoritmul \textbf{Baum-Welch}, ce are ca și complexitate timp $O(IN^{2}T)$, în practică secvența de etichete pe care e antrenat algoritmul are o lungime considerabil mai mare decăt cardinalul mulțimii \textbf{V}, adică \textbf{M}, de unde se observă că abordarea cu matricea de apariție aduce un surplus de rapiditate de procesare, ce este important în domeniul jocurilor unde eficiența este un aspect cheie.\par
 
 Legat de procesul de eșantionare, numit și $Inverse \ transform \ method$, acesta este realizat prin calcularea distribuției $CDF$\footnote{Cumulative Distribution Function} pentru parametri $A,B$ pentru a putea realiza o căutare binară a stării către care se va face tranziția fiind dat un număr generat pseudorandom.Din punct de vedere al complexității sunt necesari pași adiționali cum ar fi stocarea valorilor cumulative dar asta se face în etapa de inițializare avănd efect minimal asupra jocului. Ce se poate spune totuși de această abordare este că timpul de cautare a stării se transforma din $O(N)$, unde $N$ repezintă numărul de stări, în $O(log(N))$. Această optimizare este importantă deoarece operația de eșantionare are loc de zeci de ori pentru o platformă fiind practic cea mai folosită operație din cadrul librăriei.\par
 
 Deși în practică metoda de $sampling$ în timp de $O(log(N))$ s-a dovedit a fi suficientă, există un algoritm și mai eficient decăt cel prezentat ce reușeste să determine starea sau emisia find dat un număr generat aleator în timp de $O(1)$, având o complexitate la inițializare căt și memorie echivalentă cu cea a algoritmului de căutare binară.\par
 
-Acest algoritm se numește \textit{metoda lui Alias}, și reușeste să obțina cea mai bună viteză posibilă pentru eșantionarea dintr-o distribuție de probabilitate discretă. În general ideea din spatele algorimlui este de a crea o altă distribuție pe baza celei de la intrare ce permite eșantionarea în timp constant.\par
+Acest algoritm se numește \textbf{metoda lui Alias}, și reușeste să obțina cea mai bună viteză posibilă pentru eșantionarea dintr-o distribuție de probabilitate discretă. În general ideea din spatele algorimlui este de a crea o altă distribuție pe baza celei de la intrare ce permite eșantionarea în timp constant.\par

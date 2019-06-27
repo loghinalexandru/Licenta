@@ -102,7 +102,7 @@ public double Train(List<int> observations, double[,] transitionProbabilities, d
 }
 \end{lstlisting}
 
-Funcția $Train$ descrisă mai sus este folosită în clasa mare denumită sugestiv $HMM$ pentru a antrena modelul. Modul cum funcționează $Unity$ este astfel, toate clasele ce sunt derivate din $MonoBehaviour$ pot fi atașate pe un obiect din scenă. De accea există un obiect ascuns în scenă ce are atașat toți generatorii, putănd schimba foarte ușor toți parametri modelului chiar din $Inspector$. Din cauza acestui lucru librăria este foarte ușor de preluat și utilizat, aceasta conținând și un modul de salvare/citire a parametrilor modelului.\par
+Funcția $Train$ descrisă mai sus este folosită în clasa mare denumită sugestiv $HMM$ pentru a antrena modelul. Modul cum funcționează \textbf{Unity} este astfel, toate clasele ce sunt derivate din $MonoBehaviour$ pot fi atașate pe un obiect din scenă. De accea există un obiect ascuns în scenă ce are atașat toți generatorii, putănd schimba foarte ușor toți parametri modelului chiar din $Inspector$. Din cauza acestui lucru librăria este foarte ușor de preluat și utilizat, aceasta conținând și un modul de salvare/citire a parametrilor modelului.\par
 
 În continuare se va prezenta o diagramă $UML$ ce descrie librăria și relația dintre componentele ei. Se poate observa că modelul Markov cu stări invizibile poate lucra complet independent de algoritmul de învățare automată.\par
 
@@ -165,7 +165,7 @@ De asemenea punctele de $spawn$ sunt plasate exact pe marginea platformei iar al
 
 \section{Utilizarea librăriei în joc}
 
-În dezvoltarea acestei librării obiectivele principale au fost modularitatea și usurința de utilizare. Acest lucru a fost realizat foarte simplu datorită modului în care $Unity$ permite atașarea de fișiere sursă pe obiecte din scenă, avănd la dispoziție toti parametri disponibili din acea clasă.\par
+În dezvoltarea acestei librării obiectivele principale au fost modularitatea și usurința de utilizare. Acest lucru a fost realizat foarte simplu datorită modului în care \textbf{Unity} permite atașarea de fișiere sursă pe obiecte din scenă, avănd la dispoziție toti parametri disponibili din acea clasă.\par
 
 \vspace{10mm}
 \begin{figure}[H]
@@ -184,7 +184,7 @@ public class DesertObjectsGenerator : HMM{
 }
 \end{lstlisting}
 
-Este necesară această procedură din cauza modului cum functionează $Unity$, deoarece scripturile nu pot fi atașate pe obiecte în cadrul scenei dacă nu sunt derivate din $MonoBehaviour$ iar $C\#$ nu permite moștenirea multiplă.\par
+Este necesară această procedură din cauza modului cum functionează \textbf{Unity}, deoarece scripturile nu pot fi atașate pe obiecte în cadrul scenei dacă nu sunt derivate din $MonoBehaviour$ iar $C\#$ nu permite moștenirea multiplă.\par
 
 Acest lucru face un pic incomodă folosirea librăriei dar capabilitatea de a putea atașa scriptul de orice obiect din scenă și de a putea adăuga referințe direct din $Inspector$ este mult prea importantă pentru a nu deriva din clasa $MonoBehaviour$.\par
 
@@ -201,7 +201,7 @@ Un alt aspect ce a necesitat destul de mult timp în cadrul acestei aplicații a
 \caption{Motorul Grafic Unity}
 \end{figure}
 
-Pe lângă partea grafică am încercat să adaug animații atât obiectelor din cadrul scenei căt și a butoanelor cu care înteracționează jucătorul. Datorită uneltelor din $Unity$ acest lucru a fost ușor de realizat. Pe lângă crearea animațiilor am fost nevoit să utilizez și un automat cu stări finite, unde fiecare nod reprezintă de fapt o altă animație. În $Unity$ acestă unealtă se numește $Animator$, și manipulează condițiile de trece de la o stare la altă cât și durata.\par
+Pe lângă partea grafică am încercat să adaug animații atât obiectelor din cadrul scenei căt și a butoanelor cu care înteracționează jucătorul. Datorită uneltelor din \textbf{Unity} acest lucru a fost ușor de realizat. Pe lângă crearea animațiilor am fost nevoit să utilizez și un automat cu stări finite, unde fiecare nod reprezintă de fapt o altă animație. În cadrul motorului grafic acestă unealtă se numește $Animator$, și manipulează condițiile de trece de la o stare la altă cât și durata lor.\par
 
 \vspace{10mm}
 \begin{figure}[H]
@@ -269,7 +269,7 @@ Deoarece jocul este un $EndlessRunner$, condiția de terminare este fie ca jucă
 
 În general scopul aplicației a fost validarea abordării de generare cu modelul Markov, de accea unele aspecte ale jocului pot primi îmbunătățiri, mai ales la partea de inteligență artificială discutată mai sus. Am optat să scriu o mică bucată de cod ce simulează un agent inteligent foarte primitiv tocmai din această cauză, putănd foarte ușor importa o librărie pentru acest lucru.\par
 
-\section{Detalii legate de controlul mașinilor}
+\section{Detalii legate de funcționarea mașinilor}
 
 Așa cum menționează și titlu pe langă partea de generare și instanțiere a fost nevoie de implementarea unui script ce controlează și verifică intrarea de la tastatură pentru a putea controla vehiculul din joc. Pe lăngă acest lucru s-au implementat și anumite artificii vizuale ce conferă realism jocului împreună cu utilizarea unei $ReflectionProbe$ pentru a simula reflecția în timp real de pe caroseria mașinii. Deși această metodă este costisitoare computațional am încercat să folosesc această tehnică într-un mod căt de optim posibil, cea mai simplă optimizare fiind reducerea dimensiunii texturii generate de aceasta.\par
 
@@ -288,9 +288,18 @@ Pe lângă această unealtă în cadrul mașinilor s-au utilizat și o component
 \caption{Utilizarea componentei $WheelCollider$ în joc}
 \end{figure}
 
-\section{Structura întregii aplicații}
+De asemenea jucătorul căt și adversarul conțin o componentă numită $BoxCollider$ pentru determinarea intersecției cu obiectele din cadrul platformei. Datorită unei condiții de terminare a jocului ce impune ca adversaul să nu se afle în proximitatea jucatorului mai mult de cinci secunde, a fost necesară încă o componentă de acest tip setată ca și declanșator pentru a avertiza jucătorul.\par
 
-În general aplicația este contruită în jurul uneltelor disponibile din $Unity$, folosind în mare parte sistemul de referințe. Din cauza acestui lucru aplicația este foarte simplă de înțeles și se observă foarte ușor fluxul acesteia după cum se vede din diagrama de mai jos.\par
+\vspace{10mm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{BoxCollider.png} \par
+\caption{Utilizare componentei $BoxCollider$ ca și declanșator}
+\end{figure}
+
+\section{Structura aplicației}
+
+În general aplicația este contruită în jurul uneltelor disponibile din \textbf{Unity}, folosind în mare parte sistemul de referințe. Din cauza acestui lucru aplicația este foarte simplă de înțeles și se observă foarte ușor fluxul acesteia după cum se vede din diagrama de mai jos.\par
 
 \begin{figure}[H]
 \centering
@@ -310,7 +319,7 @@ void OnTriggerEnter(Collider collidingObject)
 }
 \end{lstlisting}
 
-Mai jos este se poate observa diagrama $UML$ ce modelează comportamentul celor două sisteme. Din necesitatea de a controla numărul de platforme pentru fiecare din cele trei zone, rurală , urbană și desertică s-a introdus un mediator între $PlatformBuilder$ și generatori de platforme și anume $PlatformController$ ce expune o funcție $GetNextPlatform$ ce verifică numărul de platforme de un anumit tip ce au fost generate, înlocuind generatorul, prin rotație, atunci când o anumită limită a fost atinsă, limită ce este determinată aleator după doi parametri ce setează o margine inferioră și superioară.\par
+Mai jos se poate observa diagrama \textbf{UML} ce modelează comportamentul celor două sisteme. Din necesitatea de a controla numărul de platforme pentru fiecare din cele trei zone, rurală , urbană și deșertică s-a introdus un mediator între $PlatformBuilder$ și generatori de platforme numit $PlatformController$, mediator ce expune o funcție $GetNextPlatform$ a cărei scop este de a verifica numărul de platforme de un anumit tip ce au fost generate, înlocuind generatorul prin rotație atunci când o anumită limită a fost atinsă, limită ce este determinată aleator după doi parametri ce setează o margine inferioară și superioară.\par
 
 \vspace{10mm}
 \begin{figure}[H]
@@ -318,3 +327,4 @@ Mai jos este se poate observa diagrama $UML$ ce modelează comportamentul celor 
 \includegraphics[width=0.6\linewidth]{Full.png} \par
 \caption{Diagramă ce modelează sistemul de generare și instanțiere}
 \end{figure}
+
