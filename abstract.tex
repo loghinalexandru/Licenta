@@ -1,0 +1,66 @@
+%Template prepared by grzegorz ha\l aj for second AMaMeF conference, 17 Oct 2006
+
+
+\documentclass[12pt]{article}
+\usepackage{calc}
+\usepackage{color}
+\usepackage{amsfonts}
+\usepackage{latexsym}
+\usepackage{placeins}
+\ifx\pdftexversion\undefined
+  \usepackage[dvips]{graphicx}
+\else
+  \usepackage[pdftex]{graphicx}
+\fi
+\usepackage{amssymb}
+\usepackage{authblk}
+\usepackage{amsmath}
+\usepackage[cp1250]{inputenc}
+\usepackage[OT4]{fontenc}
+
+\addtolength{\voffset}{-3.5cm} \addtolength{\textheight}{4cm}
+
+\renewcommand\Authfont{\scshape\small}
+\renewcommand\Affilfont{\itshape\small}
+\setlength{\affilsep}{1em}
+
+\newcommand{\smalllineskip}{\baselineskip=15pt}
+\newcommand{\keywords}[1]{{\footnotesize\hspace{0.68cm}{\textit{Keywords}: }#1\par
+  \vskip.7\baselineskip}}
+\renewenvironment{abstract}[0]{\small\rm
+        \begin{center}ABSTRACT
+        \\ \vspace{8pt}
+        \begin{minipage}{5.2in}\smalllineskip
+        \hspace{1pc}}{\end{minipage}\end{center}\vspace{-1pt}}
+\newcommand{\emailaddress}[1]{\newline{\sf#1}}
+
+\let\LaTeXtitle\title
+\renewcommand{\title}[1]{\LaTeXtitle{\large\textsf{\textbf{#1}}}}
+
+
+%%%TITLE
+\title{Procedural Generation Using Markov Models}
+\date{\today}
+
+%%AFFILIATIONS
+\author[1]{Alexandru Loghin}
+%%DOCUMENT
+\begin{document}
+\maketitle
+
+%%PLEASE PUT YOUR ABSTRACT HERE
+\begin{abstract}
+The main selling point of this approach is the possibility of dynamically changing the requirements when generating a given set of objects. The idea of this method is to infer the probabilities for a given model using an observed sequence of labels then use the trained model to generate new randomly generated arrangement of set labels, which in this case are objects, in order to construct the environment. I used a game engine called \textit{Unity}, in order to develop and prove that this method is valid. This thesis revolves around the library I built inside the game engine that models the behavior of a HMM \footnote{Hidden Markov Model} alongside with the algorithm for the automated learning in [1]. As with other methods this model suffers from local optima since it is an iterative algorithm that relies on convergence in order to terminate [2]. It was also necessary to make a spawn system since the model is used just for the generation of the object sequence. The final result is a small game with a system that generates the environment on the spot, mimicking real world scenarios.
+\end{abstract}
+%%THE END OF ABSTRACT
+
+\begin{thebibliography}{99}
+\small
+\bibitem[1]{mad} Madhusudana Shashanka, \textit{A Fast Algorithm For Discrete HMM Training Using Observed Transitions}, 2011
+
+\bibitem[2]{fan} Fanny Yang, Sivaraman Balakrishnan, Martin J. Wainwright, \textit{Statistical and Computational Guarantees for the Baum-Welch Algorithm}, 2015
+
+\bibitem[3]{glei} Gleidson Mendes Costa, Tiago Bonini Borchartt,
+\textit{Procedural terrain generator for platform games using Markov chain} , 2018
+\end{thebibliography}
+\end{document}
